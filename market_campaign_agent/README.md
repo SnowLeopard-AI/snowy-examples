@@ -58,14 +58,16 @@ Upload to SnowLeopard → copy the DATAFILE_ID.
 Choose:
 
 1 — Interactive chat
+
 2 — Run full analysis report
 
-🧠 Example queries
 
-“How is the campaign performing?”
-“Who should I contact today?”
-“Compare segments by job and education”
-“Why did conversions drop?”
+### 🧠 Example queries
+
+- “How is the campaign performing?”
+- “Who should I contact today?”
+- “Compare segments by job and education”
+- “Why did conversions drop?”
 
 ## 🛠 Custom Workflows
 ### Adding New Workflows
