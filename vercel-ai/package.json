@@ -1,0 +1,17 @@
+{
+  "name": "snowleopard-vercel-ai-example",
+  "version": "0.1.0",
+  "description": "A simple Vercel AI agent hooked up to Snow Leopard via tool",
+  "scripts": {
+    "snowy": "node cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ai-sdk/openai": "^2.0.77",
+    "@snowleopard-ai/client": "^0.1.1",
+    "ai": "^5.0.106",
+    "zod": "^4.1.13"
+  }
+}
