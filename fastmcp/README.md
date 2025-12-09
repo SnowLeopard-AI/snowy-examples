@@ -13,13 +13,7 @@ MCP protocol.
 
 ## Setup
 
-1. Upload `superheroes.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
-
-2. Set your API keys and datafile id:
-```bash
-export SNOWLEOPARD_API_KEY=...
-export SNOWLEOPARD_EXAMPLE_DATAFILE_ID=...
-```
+1. Upload `superheroes.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID.
 
 ## Usage
 We will launch the MCP server using fastmcp:
@@ -58,3 +52,5 @@ Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API
 ```
 
 Now you can ask Claude questions about superhero data and it will use the Snow Leopard tool to retrieve information!
+
+![screenshot](screenshot.png)
