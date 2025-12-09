@@ -5,20 +5,20 @@ from pydantic_ai import Agent, RunContext
 from snowleopard import SnowLeopardPlaygroundClient
 
 # Create a pydantic agent. In this example we are using an Anthropic model
-# Note! This requires envar ANTHROPIC_API_KEY
+# Note! This requires env var ANTHROPIC_API_KEY
 agent = Agent(
     'anthropic:claude-sonnet-4-5',
     instructions='Be concise, reply with one sentence.',
 )
 
 # Instantiate your SnowLeopard Client.
-# Note! This requires envar SNOWLEOPARD_API_KEY
+# Note! This requires env var SNOWLEOPARD_API_KEY
 snowy = SnowLeopardPlaygroundClient()
 
-# This is a datafile id that corresponds to an superheroes.db datafile uploaded at http//try.snowleopard.ai
+# This is a datafile id that corresponds to a superheroes.db datafile uploaded at http//try.snowleopard.ai
 datafile_id = os.environ.get('SNOWLEOPARD_EXAMPLE_DATAFILE_ID')
 if not datafile_id:
-    print("envar SNOWLEOPARD_EXAMPLE_DATAFILE_ID required", file=sys.stderr)
+    print("environment variable SNOWLEOPARD_EXAMPLE_DATAFILE_ID required", file=sys.stderr)
     sys.exit(1)
 
 # Define the get_data tool for your agent. This allows the agent to retrieve data using Snow Leopard
