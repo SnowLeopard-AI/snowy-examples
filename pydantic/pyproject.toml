@@ -1,0 +1,15 @@
+[project]
+name = "snowleopard-pydantic-example"
+version = "0.1.0"
+description = "A simple pydantic agent hooked up to Snow Leopard via tool"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic-ai>=1.26.0",
+    "snowleopard>=0.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "clai>=1.26.0",
+]
