@@ -14,11 +14,24 @@ AI-powered marketing analytics assistant combining:
 - 🚀 **Strategy Optimization**: Get data-driven recommendations to improve campaign ROI
 - ✨ **GPT-Formatted Responses**: Professional, executive-ready insights with actionable recommendations
 
+## 📥 Prerequesits
+Prepare Database (from Kaggle CSV) - see https://www.kaggle.com/datasets/prakharrathi25/banking-dataset-marketing-targets
+download file, unzip and create sqlite3 database from csv file:
+```sh
+unzip marketing_campaign_dataset.csv.zip
+tbl=marketing_campaign_dataset
+sqlite3 "$tbl.db" <<EOF
+.mode csv
+.import $tbl.csv $tbl
+EOF
+```
+
+Upload to SnowLeopard → copy the DATAFILE_ID.
 
 ## 📦 Installation
 1. Clone repository
 ```sh
-git clone <url_repo>
+git clone git@github.com:SnowLeopard-AI/snowy-examples.git
 cd snowy-examples/market_campaign_agent
 ```
 
@@ -36,20 +49,6 @@ pip install -e .
     - `SNOWLEOPARD_API_KEY` ([Get one here](https://0647839.propelauthtest.com/account/api_keys))
     - `OPENAI_API_KEY` ([Get one here](https://platform.openai.com/api-keys))
     - `DATAFILE_ID` ([try.snowleopard.ai](https://try,snowleopard.ai) - copy ID)
-
-## Prerequesits
-📥 Prepare Database (from Kaggle CSV) - see https://www.kaggle.com/datasets/prakharrathi25/banking-dataset-marketing-targets
-download file, unzip and create sqlite3 database from csv file:
-```sh
-unzip marketing_campaign_dataset.csv.zip
-tbl=marketing_campaign_dataset
-sqlite3 "$tbl.db" <<EOF
-.mode csv
-.import $tbl.csv $tbl
-EOF
-```
-
-Upload to SnowLeopard → copy the DATAFILE_ID.
 
 ### ▶️ Running the Agent
 `python3 market_campaign_agent.py`
