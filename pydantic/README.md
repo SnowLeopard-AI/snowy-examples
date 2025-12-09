@@ -20,13 +20,12 @@ export SNOWLEOPARD_EXAMPLE_DFID=...
 ```
 
 ## Usage
-
-Run the agent:
+We will launch are agent as a CLI interface using clai:
 ```bash
 uv run clai --agent agent:agent
 ```
 
-Ask a question:
+Now we have entered an interactive repl where we can ask questions:
 ```
 clai ➤ How many superheroes are there?
 ```
