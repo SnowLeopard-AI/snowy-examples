@@ -10,7 +10,7 @@ A simple example demonstrating how to use Snow Leopard with Pydantic models for 
 
 ## Setup
 
-1. Upload `superheroes.db` datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
+1. Upload `superheroes.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
 
 2. Set your API keys and datafile id:
 ```bash
