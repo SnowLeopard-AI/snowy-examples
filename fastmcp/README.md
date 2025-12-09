@@ -2,6 +2,9 @@
 
 A simple example demonstrating how to use Snow Leopard with FastMCP to create an MCP server with data retrieval capabilities.
 
+In this example we show how to use this server with Claude Desktop, but it can be used with any system that supports the 
+MCP protocol.
+
 ## Prerequisites
 
 - [uv](https://docs.astral.sh/uv/) package manager
@@ -10,7 +13,7 @@ A simple example demonstrating how to use Snow Leopard with FastMCP to create an
 
 ## Setup
 
-1. Upload `superheroes.db` datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
+1. Upload `superheroes.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
 
 2. Set your API keys and datafile id:
 ```bash
