@@ -20,7 +20,7 @@ export SNOWLEOPARD_EXAMPLE_DFID=...
 ```
 
 ## Usage
-We will launch are agent as a CLI interface using clai:
+We will launch our agent as a CLI interface using clai:
 ```bash
 uv run clai --agent agent:agent
 ```
