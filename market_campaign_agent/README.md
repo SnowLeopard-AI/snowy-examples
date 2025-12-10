@@ -88,3 +88,18 @@ custom_workflow:
     - for
     - workflow
 ```
+
+## Project structure
+```sh
+market_campaign_agent/
+├── market_campaign_agent.py  # Main application & orchestration
+├── agent.py                   # SnowLeopard SDK wrapper
+├── config.py                  # Configuration management
+├── workflow_router.py         # Campaign action detection
+├── response_formatter.py      # GPT response formatting
+├── campaign_map.yaml          # Workflow definitions
+├── pyproject.toml            # Project dependencies
+├── tests/                    # Unit tests
+│   └── test_copilot.py
+└── README.md
+```

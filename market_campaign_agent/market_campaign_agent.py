@@ -26,7 +26,7 @@ CAMPAIGN_ACTION_MAP = {
     }
 
 # Create logger
-logLevel = logging.DEBUG
+logLevel = logging.WARNING
 logger = logging.getLogger("campaign_copilot")
 logger.setLevel(logLevel)
 console = logging.StreamHandler()
@@ -137,6 +137,9 @@ class CampaignCoPilot:
         Returns:
             Tuple of (results_list, total_steps)
         """
+        print("\n" + "=" * 80)
+        print(campaign_action['name'])
+        print("=" * 80 + "\n")
         total_steps = len(campaign_action['steps'])
         results = []
 
@@ -345,25 +348,31 @@ def run_campaign_action(copilot: CampaignCoPilot):
     campaign_actions = [c['name'] for c in CAMPAIGN_REQUEST_MAP.values()]
 
     while True:
-        mode = input("  " + "\n  ".join([f"({i + 1}) {name}" for i, name in enumerate(campaign_actions)]) + "\n\n  exit/quit\n\nSelection: ")
+        mode = input("  " +
+                     "\n  ".join([f"({i + 1}) {name}" for i, name in enumerate(campaign_actions)]) +
+                     "\n ask question - it will be parsed to possible pre-defined actions" +
+                     "\n\n  exit/quit\n\nSelection:"
+                     )
 
         if mode.lower() in ['exit', 'quit']:
             break
 
-        cid = int(mode) - 1
+        campaign_action, query = None, None
+        try:
+            cid = int(mode) - 1
+            if 0 < cid < len(campaign_actions):
+                campaign_action = campaign_actions[cid]
+                query = campaign_actions[cid].split(':')[1] # assumption on name
+        except ValueError:
+            campaign_action = 'general_query'
+            query = mode
 
-        if 0 < cid < len(campaign_actions):
-            print("\n" + "=" * 80)
-            print(campaign_actions[cid])
-            print("=" * 80 + "\n")
-            query = campaign_actions[cid].split(':')[1] # assumption on name
-            response = copilot.chat(query)
-            print(f"\n🤖 Co-Pilot:\n{response['message']}\n")
+        response = copilot.chat(query)
+        print(f"\n🤖 Co-Pilot:\n{response['message']}\n")
 
-            # Optionally show SQL queries
-            if response.get('sql_queries'):
-                print(f"📝 SQL Queries executed: {len(response['sql_queries'])}")
-
+        # Optionally show SQL queries
+        if response.get('sql_queries'):
+            print(f"📝 SQL Queries executed: {len(response['sql_queries'])}")
 
 
 def run_analysis(copilot: CampaignCoPilot):
@@ -380,8 +389,8 @@ def run_analysis(copilot: CampaignCoPilot):
 
     report = {}
     for query, title in analyses:
-        print(f"\n{title}")
-        print("-" * 40)
+        # print(f"\n{title}")
+        # print("-" * 40)
         response = copilot.chat(query)
         report[query] = response
         print(response['message'])
