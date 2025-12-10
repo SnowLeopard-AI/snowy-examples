@@ -1,0 +1,14 @@
+[project]
+name = "crewai_example"
+version = "0.1.0"
+dependencies = [
+    "gameclub",
+]
+
+[tool.uv.workspace]
+members = [
+    "packages/gameclub",
+]
+
+[tool.uv.sources]
+gameclub = { workspace = true, editable = true }
