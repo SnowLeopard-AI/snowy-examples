@@ -1,0 +1,12 @@
+
+TEST 1: Category breakdown
+You: Show me my spending by category
+Expected: Lists categories with totals
+
+TEST 2: Merchant analysis
+You: Which merchants did I spend the most at?
+Expected: Lists top merchants (Walmart, Netflix, etc.)
+
+TEST 3: Metrics
+You: stats
+Expected: Displays query statistics, timing info
