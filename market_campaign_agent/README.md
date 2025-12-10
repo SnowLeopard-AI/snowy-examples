@@ -18,10 +18,12 @@ AI-powered marketing analytics assistant combining:
 Prepare Database (from Kaggle CSV) - see https://www.kaggle.com/datasets/prakharrathi25/banking-dataset-marketing-targets
 download file, unzip and create sqlite3 database from csv file:
 ```sh
-unzip marketing_campaign_dataset.csv.zip
+unzip archive.zip
 tbl=marketing_campaign_dataset
+mv train.csv $tbl.csv
 sqlite3 "$tbl.db" <<EOF
 .mode csv
+.separator ";"
 .import $tbl.csv $tbl
 EOF
 ```
@@ -48,7 +50,7 @@ pip install -e .
     Fill in:
     - `SNOWLEOPARD_API_KEY` ([Get one here](https://0647839.propelauthtest.com/account/api_keys))
     - `OPENAI_API_KEY` ([Get one here](https://platform.openai.com/api-keys))
-    - `DATAFILE_ID` ([try.snowleopard.ai](https://try,snowleopard.ai) - copy ID)
+    - `DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - copy ID)
 
 ### ▶️ Running the Agent
 `python3 market_campaign_agent.py`
@@ -67,6 +69,7 @@ Choose:
 - “Who should I contact today?”
 - “Compare segments by job and education”
 - “Why did conversions drop?”
+- "what is the number of subscriptions in November?"
 
 ## 🛠 Custom Workflows
 ### Adding New Workflows
