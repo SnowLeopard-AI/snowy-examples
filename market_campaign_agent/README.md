@@ -19,12 +19,10 @@ Prepare Database (from Kaggle CSV) - see https://www.kaggle.com/datasets/prakhar
 download file, unzip and create sqlite3 database from csv file:
 ```sh
 unzip archive.zip
-tbl=marketing_campaign_dataset
-mv train.csv $tbl.csv
-sqlite3 "$tbl.db" <<EOF
+sqlite3 "marketing_campaign_dataset.db" <<EOF
 .mode csv
 .separator ";"
-.import $tbl.csv $tbl
+.import train.csv marketing_campaign_dataset
 EOF
 ```
 
