@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
 """
 Snowleopard Tool - wrapper for Snowleopard Playground API
 """
@@ -55,7 +52,7 @@ def query_snowleopard(query: str) -> Dict[str, Any]:
         # Call Snowleopard API with correct parameter names
         result = client.retrieve(datafile_id=datafile_id, user_query=query)
         
-        # ✅ FIXED: Extract SchemaData object attributes cleanly
+        # Extract SchemaData object attributes cleanly
         # Result is guaranteed to be a SchemaData object from Snowleopard API
         # Use getattr() to safely extract attributes with fallbacks
         

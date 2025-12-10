@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
-
 """
 CLI Formatting utilities for rich console output.
 """

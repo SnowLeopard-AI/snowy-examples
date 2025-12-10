@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
 """
 Financial Coaching Intelligence Module
 Transforms raw financial data into coaching insights, recommendations, and engagement.

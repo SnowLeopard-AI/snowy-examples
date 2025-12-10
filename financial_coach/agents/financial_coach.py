@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
 """
-Financial Coach Agent - LangGraph Implementation (FIXED)
+Financial Coach Agent - LangGraph Implementation
 
 Multi-node agent that:
 1. Enriches user queries with context
@@ -40,7 +37,7 @@ class FinancialCoachState(BaseModel):
     # SnowleopardAI response
     snowleopard_response: Dict[str, Any] = Field(default_factory=dict, description="Raw response from SnowleopardAI")
 
-    # ✨ NEW: Coaching insights
+    # Coaching insights
     coaching_insights: Dict[str, Any] = Field(default_factory=dict, description="Coaching analysis and recommendations")
 
     # Formatted response
@@ -102,7 +99,7 @@ def query_snowleopard_node(state: FinancialCoachState) -> Dict:
 
 def analyze_and_coach_node(state: FinancialCoachState) -> Dict:
     """
-    Node 2.5 (NEW): Analyze financial data and generate coaching insights
+    Node 3: Analyze financial data and generate coaching insights
     Transforms raw SnowleopardAI response into:
     - Financial analysis
     - Pattern recognition
@@ -136,7 +133,7 @@ def analyze_and_coach_node(state: FinancialCoachState) -> Dict:
 
 def format_response_node(state: FinancialCoachState) -> Dict:
     """
-    Node 3: Format response with coaching insights
+    Node 4: Format response with coaching insights
     Combines raw data with coaching to create engaging, actionable response
     """
     logger.info(f"[Turn {state.conversation_turn}] Formatting response")
@@ -250,14 +247,14 @@ def create_financial_coach_graph():
     # Add nodes
     workflow.add_node("enrich", enrich_query_node)
     workflow.add_node("query_snowleopard", query_snowleopard_node)
-    workflow.add_node("analyze_and_coach", analyze_and_coach_node)  # ✨ NEW NODE
+    workflow.add_node("analyze_and_coach", analyze_and_coach_node)
     workflow.add_node("format_response", format_response_node)
 
     # Define edges
     workflow.add_edge(START, "enrich")
     workflow.add_edge("enrich", "query_snowleopard")
-    workflow.add_edge("query_snowleopard", "analyze_and_coach")  # ✨ NEW EDGE
-    workflow.add_edge("analyze_and_coach", "format_response")  # ✨ NEW EDGE
+    workflow.add_edge("query_snowleopard", "analyze_and_coach")
+    workflow.add_edge("analyze_and_coach", "format_response")
     workflow.add_edge("format_response", END)
 
     # Compile

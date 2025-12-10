@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
-
 """
 Modern Memory Manager for Financial Coach
 

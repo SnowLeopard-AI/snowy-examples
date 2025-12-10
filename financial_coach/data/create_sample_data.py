@@ -6,7 +6,7 @@ Generates a realistic SQLite database with 6 months of personal finance transact
 This is perfect for testing the SnowleopardAI Financial Coach.
 
 Usage:
-    python scripts/create_sample_data.py
+    python data/create_sample_data.py
 
 Output:
     Creates/updates: financial_data.db
@@ -273,7 +273,7 @@ def create_database(filename='financial_data.db'):
     
     print(f"\n✅ Database created: {filename}")
     print(f"\nNext steps:")
-    print(f"  1. Upload {filename} to https://playground.snowleopard.ai")
+    print(f"  1. Upload {filename} to http://try.snowleopard.ai")
     print(f"  2. Copy the Datafile ID")
     print(f"  3. Paste into .env as SNOWLEOPARD_DATAFILE_ID")
     print(f"  4. Run: python main.py")

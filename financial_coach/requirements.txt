@@ -5,7 +5,7 @@ pandas>=2.0.3
 # LangGraph for conversational state management
 langgraph>=0.1.37
 langchain>=0.2.5
-langchain-openai>=0.1.15  # Changed from langchain-anthropic
+langchain-openai>=0.1.15
 langchain-community>=0.2.5
 
 # OpenAI SDK

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
 """
 Pydantic models for type-safe data handling.
 These validate all financial data before it's used.

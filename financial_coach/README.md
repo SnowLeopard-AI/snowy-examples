@@ -30,7 +30,7 @@ cp .env.example .env
 # Edit .env with your Snowleopard API key & datafile ID
 
 # 3. Create sample dataset
-python scripts/create_sample_data.py
+python data/create_sample_data.py
 
 # 4. Run the app
 python main.py
@@ -45,49 +45,23 @@ You: Show me my spending by category
 
 ### Overview
 
+#### Step 1: Prepare your SQLite database
+
 This application expects a **SQLite database** with financial transaction data. You have two options:
 
 1. **Use the sample dataset generator** (easiest - includes sample data)
+    1. Generate Sample Dataset
+    ```bash
+    python data/create_sample_data.py
+    ```
+    This generates `financial_data.db` with sample transactions from the past 6 months
+
 2. **Use the sample dataset** (personal_finance.db, included in repo. Download data from (Kaggle)[https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data])
-3. **Use your own SQLite file** (custom data)
-
-Both are uploaded to SnowleopardAI Playground and referenced by a **Datafile ID**.
-
----
-
-### Option 1: Generate Sample Dataset (Recommended)
-
-#### Step 1: Create Sample Data
-
-```bash
-python scripts/create_sample_data.py
-```
-
-This generates `financial_data.db` with sample transactions from the past 6 months:
-
-**Generated Schema:**
-
-```sql
-CREATE TABLE transactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    transaction_date TEXT,           -- YYYY-MM-DD
-    merchant_name TEXT,              -- e.g., "Whole Foods", "Shell Gas"
-    category_name TEXT,              -- e.g., "Groceries", "Fuel"
-    amount REAL,                     -- Transaction amount (float)
-    description TEXT                 -- Optional transaction note
-);
-```
-
-**Sample Data Included:**
-
-- 500+ realistic transactions
-- 6 months of history (June 2025 - November 2025)
-- Categories: Groceries, Dining, Fuel, Shopping, Utilities, Entertainment, Rent
-- Merchants: Whole Foods, Trader Joe's, Shell, BP, Amazon, Netflix, etc.
+    1. Use the provided `personal_finance.db` file or download from Kaggle (https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data) and run `data/transform_personal_finance.py`
 
 #### Step 2: Upload to SnowleopardAI Playground
 
-1. Go to https://playground.snowleopard.ai
+1. Go to http://try.snowleopard.ai
 2. **"Create New Datafile"** → Select `financial_data.db`
 3. Give it a name: `"Personal Finance Data"`
 4. Click **"Upload"** and wait for processing
@@ -96,85 +70,6 @@ CREATE TABLE transactions (
    ```bash
    SNOWLEOPARD_DATAFILE_ID=datafile_xxx
    ```
-
----
-
-
-### Option 2: Use the sample dataset
-
-#### Step 1: Use the provided `personal_finance.db` file
-
-#### Step 2: Upload to SnowleopardAI Playground
-Follow the same steps as Option 1 (upload to Playground, get Datafile ID).
-
----
-
-### Option 3: Use Your Own SQLite File
-
-#### Step 1: Create Your Database
-
-Your SQLite file must have this schema:
-
-```sql
-CREATE TABLE transactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    transaction_date TEXT NOT NULL,  -- Format: YYYY-MM-DD
-    merchant_name TEXT NOT NULL,     -- Store/vendor name
-    category_name TEXT NOT NULL,     -- Spending category
-    amount REAL NOT NULL,            -- Amount (e.g., 45.50)
-    description TEXT                 -- Optional notes
-);
-```
-
-**Required columns:**
-- `transaction_date` (YYYY-MM-DD)
-- `merchant_name` (string)
-- `category_name` (string)
-- `amount` (float/decimal)
-
-**Optional:**
-- `description` (string)
-- Other custom columns (queries can use them)
-
-#### Step 2: Insert Sample Data
-
-```sql
-INSERT INTO transactions (transaction_date, merchant_name, category_name, amount, description)
-VALUES 
-  ('2025-11-15', 'Whole Foods', 'Groceries', 125.50, 'Weekly groceries'),
-  ('2025-11-14', 'Shell Gas', 'Fuel', 65.00, 'Fill up'),
-  ('2025-11-13', 'Netflix', 'Entertainment', 15.99, 'Monthly subscription');
-```
-
-#### Step 3: Upload to SnowleopardAI
-
-Follow the same steps as Option 1 (upload to Playground, get Datafile ID).
-
----
-
-### Dataset Schema Reference
-
-| Column | Type | Example | Notes |
-|--------|------|---------|-------|
-| `id` | INTEGER | 1, 2, 3 | Primary key, auto-increment |
-| `transaction_date` | TEXT | 2025-11-15 | Must be YYYY-MM-DD format |
-| `merchant_name` | TEXT | Whole Foods | Store/vendor name |
-| `category_name` | TEXT | Groceries | Spending category |
-| `amount` | REAL | 125.50 | Amount in dollars |
-| `description` | TEXT | Weekly shop | Optional notes |
-
-**Sample Transactions Table:**
-
-```
-id | transaction_date | merchant_name    | category_name    | amount | description
----|------------------|------------------|------------------|--------|-------------------
-1  | 2025-11-15       | Whole Foods      | Groceries        | 125.50 | Weekly groceries
-2  | 2025-11-14       | Shell Gas        | Fuel             | 65.00  | Fill up
-3  | 2025-11-13       | Starbucks        | Dining           | 6.50   | Coffee
-4  | 2025-11-13       | Netflix          | Entertainment    | 15.99  | Monthly
-5  | 2025-11-12       | Amazon           | Shopping         | 49.99  | Headphones
-```
-
 ---
 
 ## 🔧 Environment Configuration
@@ -195,7 +90,7 @@ SNOWLEOPARD_API_KEY=sk-proj-abc123...          # Your Snowleopard API key
 SNOWLEOPARD_DATAFILE_ID=datafile_xyz789        # Your uploaded datafile ID
 
 # Debugging (optional)
-DEBUG=False                                     # Set to True for verbose logs
+DEBUG=False                                    # Set to True for verbose logs
 ```
 
 #### How to Get Credentials
@@ -211,25 +106,6 @@ DEBUG=False                                     # Set to True for verbose logs
    - On the datafile row, click **"Copy ID"**
    - Paste into `.env`
 
-### .env.example Template
-
-```bash
-# SnowleopardAI Configuration
-# Get these from https://www.snowleopard.ai
-
-# Your API key for authentication
-SNOWLEOPARD_API_KEY=sl-proj-your_api_key_here
-
-# Your datafile ID (uploaded to Playground)
-SNOWLEOPARD_DATAFILE_ID=datafile_your_id_here
-
-# Debug mode (show SQL, detailed logs)
-# Set to True for development, False for production
-DEBUG=False
-```
-
-Save as `.env` in the project root.
-
 ---
 
 ## 📁 Project Structure
@@ -237,17 +113,13 @@ Save as `.env` in the project root.
 ```
 financial-coach/
 ├── main.py                      # Entry point (CLI)
-├── requirements.txt             # Python dependencies
-├── .env.example                 # Environment template
-├── .env                         # Your credentials (DO NOT COMMIT)
-├── financial_data.db            # Sample SQLite (generated)
 │
 ├── agents/
 │   ├── financial_coach.py       # LangGraph workflow (4 nodes)
 │   └── coaching_analyzer.py     # Analysis engine (insights + recs)
 │
 ├── tools/
-│   └── snowleopard_tool.py      # API integration (fixed)
+│   └── snowleopard_tool.py      # API integration
 │
 ├── utils/
 │   ├── memory_manager.py        # Conversation memory
@@ -260,6 +132,7 @@ financial-coach/
 │
 └── data/
     └── create_sample_data.py    # Generate sample dataset
+    └── financial_data.db            # Sample SQLite (generated)
     ...
 ```
 
@@ -306,9 +179,10 @@ You: Show me my spending by category
 **Response:**
 
 ```
-🤖 ╔════════════════════════════════════════════════╗
- ║ 💡 FINANCIAL COACHING INSIGHTS
- ╚════════════════════════════════════════════════╝
+🤖 
+╔════════════════════════════════════════════════╗
+║ 💡 FINANCIAL COACHING INSIGHTS                 ║
+╚════════════════════════════════════════════════╝
 
 📊 YOUR SPENDING ANALYSIS
 ────────────────────────────────────────────────────
@@ -358,30 +232,6 @@ Set `DEBUG=True` in `.env`:
 
 ```bash
 DEBUG=True
-```
-
-Then run:
-
-```bash
-python main.py
-```
-
-This enables:
-
-- ✅ Detailed logs at `DEBUG` level
-- ✅ Generated SQL queries printed to console
-- ✅ Row structure inspection
-- ✅ Execution timing details
-
-**Example Debug Output:**
-
-```
-[2025-12-09 12:00:15] DEBUG - [Snowleopard] Response type: <class 'list'>
-[2025-12-09 12:00:15] DEBUG - [Snowleopard] Row keys: ['category_name', 'total_spending']
-[2025-12-09 12:00:15] DEBUG - [Snowleopard] Sample row: {
-  "category_name": "Groceries",
-  "total_spending": 425.50
-}
 ```
 
 ### View Generated SQL

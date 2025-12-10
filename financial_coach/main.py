@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
 """
 SnowleopardAI Financial Coach - Main Application
 

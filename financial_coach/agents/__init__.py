@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
 """Agent modules for Financial Coach"""
 
 from agents.financial_coach import coach_graph, FinancialCoachState

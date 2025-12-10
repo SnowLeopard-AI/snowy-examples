@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
-
-
 """
 Metrics tracking for debugging and performance analysis.
 """
