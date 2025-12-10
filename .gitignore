@@ -1,7 +1,19 @@
+
+# python
 node_modules
 .env
 .idea
 .venv
 __pycache__
+venv
 
+# pip
+*.dist-info
 *.egg-info
+
+# misc
+.DS_Store
+*.iml
+
+# vscode
+.vscode
