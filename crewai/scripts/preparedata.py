@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2025 Snow Leopard, Inc - all rights reserved
+# copyright 2025 Snow Leopard, Inc
 
 
 # /// script
@@ -26,22 +26,33 @@ program_description = 'convert metacritic csv file to sqlite'
 
 
 def identity(o):
+    """
+    return the parameter unchanged.
+    """
     return o
 
 
 @staticmethod
 def str_to_float_with_null_tbd(s):
-    # metacritic table uses "tbd" when a userscore hasn't been calculated yet
+    """
+    dataset-specific converter from string to float.  the dataset uses "tbd" when a userscore
+    hasn't been calculated yet.
+    """
     return None if s == 'tbd' else float(s)
 
 
-# parse abbreviated US-ordered date string (e.g. 'Oct 10, 2017') into a datetime.date
 def short_us_date_str_to_date(s):
+    """
+    parse abbreviated US-ordered date string (e.g. 'Oct 10, 2017') into a datetime.date
+    """
     dt = datetime.strptime(s, '%b %d, %Y')
     return date(dt.year, dt.month, dt.day)
 
 
 def csv_to_sqlite(sqlite_path, csv_reader, table_name, columns):
+    """
+    convert the contents of a csv.DictReader to a table in a sqlite file
+    """
     # read the first row of the CSV so csv_reader.fieldnames is populated
     row = next(csv_reader)
 
@@ -110,6 +121,9 @@ def csv_to_sqlite(sqlite_path, csv_reader, table_name, columns):
 
 
 def csv_to_sqlite_from_path(sqlite_path, csv_path, table_name, columns):
+    """
+    convert the contents of a .csv file at a given path to a table in a sqlite file
+    """
     # NOTE: csv.reader() requires the newline='' kwarg for open()
     with open(csv_path, 'r', newline='') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -117,6 +131,15 @@ def csv_to_sqlite_from_path(sqlite_path, csv_path, table_name, columns):
 
 
 def get_metacritic_table_def():
+    """
+    return (table_name, column_defs) tuple, where:
+      table_name, str: name of the table to create
+      columns. dict[str, column_def]: the set of columns to create, order is preserved, where
+        keys are the name of the column header from the .csv, and values are:
+        column_def, tuple[str, str, Optional[Callable]]: a tulple of the column name, type name,
+          and an optional converter function from the string value in the .csv to the desired
+          type.  if the converter function is None, the string from the .csv is used directly.
+    """
     columns = {
         'metascore': ('metascore_percent', 'INTEGER', int),
         'name': ('name', 'TEXT', None),
@@ -128,7 +151,7 @@ def get_metacritic_table_def():
     return 'metacritic', columns
 
 
-def parseArgs(argv):
+def parse_args(argv):
     parser = argparse.ArgumentParser(prog=program_name, description=program_description)
 
     parser.add_argument('--clean', '-c', action='store_true', help='when present, delete an existing sqlite file')
@@ -141,7 +164,7 @@ def parseArgs(argv):
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
-    args = parseArgs(argv)
+    args = parse_args(argv)
 
     # handle --clean option
     try:
