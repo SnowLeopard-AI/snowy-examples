@@ -12,7 +12,10 @@
    pip install langgraph langchain langchain-openai snowleopard python-dotenv
 
 3. Run the script:
+   ```shell
+   cd langgraph-quickstart
    python langgraph_quickstart.py
+   ```
 
 4. Expected output:
    Question: What data is available in the database?

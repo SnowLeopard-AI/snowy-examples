@@ -11,7 +11,10 @@
    pip install langchain langchain-openai snowleopard python-dotenv
 
 3. Run the script:
+   ```shell
+   cd langchain-quickstart
    python langchain_quickstart.py
+   ```
 
 4. Expected output:
    ```

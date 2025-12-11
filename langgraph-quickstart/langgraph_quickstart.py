@@ -83,7 +83,7 @@ def query_database(state: GraphState) -> GraphState:
 
 def analyze_and_answer(state: GraphState) -> GraphState:
     """Node 2: Use LLM to analyze results and provide final answer."""
-    llm = ChatOpenAI(model="gpt-4", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
     
     prompt = f"""
 You have the following database query result:
