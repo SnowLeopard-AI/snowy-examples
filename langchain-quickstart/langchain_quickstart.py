@@ -5,6 +5,7 @@ This is an integration example of SnowLeopard with LangChain.
 """
 
 import os
+import sys
 from langchain_core.tools import Tool
 from langchain_classic.agents import AgentExecutor, create_react_agent
 from langchain_core.prompts import PromptTemplate
@@ -141,6 +142,7 @@ def main():
         print(result["output"])
     except Exception as e:
         print(f"Error: {e}")
+        sys.exit(1)
 
 
 # ============================================================================

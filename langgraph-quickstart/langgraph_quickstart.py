@@ -5,6 +5,7 @@ This is an integration example of SnowLeopard with LangGraph.
 """
 
 import os
+import sys
 from typing import Any
 from langgraph.graph import StateGraph, END
 from typing_extensions import TypedDict
@@ -168,6 +169,7 @@ def main():
         
     except Exception as e:
         print(f"Error: {e}")
+        sys.exit(1)
 
 
 # ============================================================================
