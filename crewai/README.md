@@ -7,7 +7,7 @@ user plan the next meetings for a game discussion club.
 
 ## Prerequisites
 
-- [uv](https://docs.astral.sh/uv/) package manager
+- [uv](https://docs.astral.sh/uv/) package manager (tested with `uv` version 0.9.9+)
 - [Snow Leopard API key](https://auth.snowleopard.ai/account/api_keys)
 
 ## Setup
@@ -15,8 +15,9 @@ user plan the next meetings for a game discussion club.
 1. Download and prepare the dataset
     1. This example uses a dataset of metacritic scores for games
         1. Download the `.csv` version of the dataset from here: https://www.kaggle.com/datasets/destring/metacritic-reviewed-games-since-2000
+        1. The downloaded archive contains `result.csv`
     1. A script is included for converting the `.csv` version of the dataset to a sqlite file; to use this script:
-        1. `uv run scripts/preparedata.py metacritic.csv metacritic.sqlite`
+        1. `uv run scripts/preparedata.py result.csv metacritic.sqlite`
 1. Upload the sqlite file to [try.snowleopard.ai](https://try.snowleopard.ai)
 1. Copy `.env.example` to `.env` in the same directory as this file and set values for the following environment variables:
     1. `OPENAI_API_KEY`: an OpenAI API Key
