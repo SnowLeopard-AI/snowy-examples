@@ -37,7 +37,7 @@ logger.addHandler(console)
 
 SNOWLEOPARD_API_KEY = os.getenv("SNOWLEOPARD_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-DATAFILE_ID = os.getenv("DATAFILE_ID")
+SNOWLEOPARD_DATAFILE_ID = os.getenv("SNOWLEOPARD_DATAFILE_ID")
 
 
 class CampaignCoPilot:
@@ -405,7 +405,7 @@ if __name__ == "__main__":
 
     try:
         copilot = CampaignCoPilot(
-            datafile_id=DATAFILE_ID,
+            datafile_id=SNOWLEOPARD_DATAFILE_ID,
             api_key=SNOWLEOPARD_API_KEY,
             openai_api_key=OPENAI_API_KEY,
             data_only=False,
