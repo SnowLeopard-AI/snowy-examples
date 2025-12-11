@@ -6,7 +6,7 @@ Each subfolder focuses on one example, including minimal setup, runnable code, a
 ## 📁 Agent Examples
 ### [`financial_coach_langchain` - SnowleopardAI Financial Coach](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain)
 ### [`gameclub_crewai` - Game Discussion Club Plan](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai)
-### [`market_campaign_agent` - Marketing Campaign Co-Pilot Agent](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/market_campaign_agent_sdk)
+### [`market_campaign_agent_sdk` - Marketing Campaign Co-Pilot Agent](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/market_campaign_agent_sdk)
 
 ## Quickstart Examples
 ### [`fastmcp` - FastMCP + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp)
@@ -31,9 +31,8 @@ Most examples follow this pattern:
 2. **Configure your API key**
    Typically using an environment variable such as:
 
-    - `SNOWLEOPARD_API_KEY` ([Get one here](https://0647839.propelauthtest.com/account/api_keys))
-    - `OPENAI_API_KEY` ([Get one here](https://platform.openai.com/api-keys))
-    - `SNOWLEOPARD_DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - copy ID)
+    - `SNOWLEOPARD_API_KEY` [You can create an API key here](https://auth.snowleopard.ai/account/api_keys)
+    - `SNOWLEOPARD_DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - click the `Copy ID` button for your file)
 
 Check the README inside each example folder for exact steps.
 
