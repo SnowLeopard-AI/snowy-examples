@@ -3,15 +3,17 @@
 This repository contains a collection of self-contained examples demonstrating how to use the **Snowleopard API** in different environments, languages, and scenarios.
 Each subfolder focuses on one example, including minimal setup, runnable code, and explanations.
 
-## 📁 Examples
-### [`crewai` - Game Discussion Club Plan](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/crewai#:~:text=t-,crewai,-packages/gameclub)
-### [`fastmcp` - FastMCP + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/fastmcp)
-### [`financial_coach` - SnowleopardAI Financial Coach](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/financial_coach)
-### [`langchain-quickstart` - LangChain Snowleopard AI Quick Start Guide](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/langchain-quickstart)
-### [`langgraph-quickstart` - LangGraph Snowleopard AI Quick Start Guide](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/langgraph-quickstart)
-### [`market_campaign_agent` - Marketing Campaign Co-Pilot Agent](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/market_campaign_agent)
-### [`pydantic-ai` - Pydantic + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/pydantic-ai)
-### [`vercel-ai` - Vercel AI + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/vercel-ai)
+## 📁 Agent Examples
+### [`financial_coach_langchain` - SnowleopardAI Financial Coach](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain)
+### [`gameclub_crewai` - Game Discussion Club Plan](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai)
+### [`market_campaign_agent` - Marketing Campaign Co-Pilot Agent](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/market_campaign_agent_sdk)
+
+## Quickstart Examples
+### [`fastmcp` - FastMCP + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp)
+### [`langchain` - LangChain Snowleopard AI Quick Start Guide](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain)
+### [`langgraph` - LangGraph Snowleopard AI Quick Start Guide](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph)
+### [`pydantic-ai` - Pydantic + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/pydantic-ai)
+### [`vercel-ai` - Vercel AI + Snow Leopard Example](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/vercel-ai)
 
 
 > Each example directory includes its own README with instructions for installation, configuration, and running the sample.
