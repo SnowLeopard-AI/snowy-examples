@@ -8,7 +8,9 @@
    export OPENAI_API_KEY="your-openai-key"
 
 2. Install dependencies:
-   pip install langchain langchain-openai snowleopard python-dotenv
+   ```
+   pip install langchain langchain-classic langchain-openai snowleopard python-dotenv
+   ```
 
 3. Run the script:
    ```shell
