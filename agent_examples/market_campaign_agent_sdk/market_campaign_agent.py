@@ -36,8 +36,8 @@ console.setFormatter(formatter)
 logger.addHandler(console)
 
 SNOWLEOPARD_API_KEY = os.getenv("SNOWLEOPARD_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 SNOWLEOPARD_DATAFILE_ID = os.getenv("SNOWLEOPARD_DATAFILE_ID")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 class CampaignCoPilot:
