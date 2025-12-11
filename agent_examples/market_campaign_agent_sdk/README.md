@@ -32,7 +32,7 @@ Upload to SnowLeopard → 'Copy ID' for SNOWLEOPARD_DATAFILE_ID.
 1. Clone repository
 ```sh
 git clone git@github.com:SnowLeopard-AI/snowy-examples.git
-cd snowy-examples/agent_examples/market_campaign_agent
+cd snowy-examples/agent_examples/market_campaign_agent_sdk
 ```
 
 2. Install dependencies
@@ -93,7 +93,7 @@ custom_workflow:
 
 ## Project structure
 ```sh
-market_campaign_agent/
+market_campaign_agent_sdk/
 ├── market_campaign_agent.py  # Main application & orchestration
 ├── agent.py                   # SnowLeopard SDK wrapper
 ├── config.py                  # Configuration management
