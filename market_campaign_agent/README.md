@@ -18,11 +18,11 @@ AI-powered marketing analytics assistant combining:
 Prepare Database (from Kaggle CSV) - see https://www.kaggle.com/datasets/prakharrathi25/banking-dataset-marketing-targets
 download file, unzip and create sqlite3 database from csv file:
 ```sh
-unzip marketing_campaign_dataset.csv.zip
-tbl=marketing_campaign_dataset
-sqlite3 "$tbl.db" <<EOF
+unzip archive.zip
+sqlite3 "marketing_campaign_dataset.db" <<EOF
 .mode csv
-.import $tbl.csv $tbl
+.separator ";"
+.import train.csv marketing_campaign_dataset
 EOF
 ```
 
@@ -48,7 +48,7 @@ pip install -e .
     Fill in:
     - `SNOWLEOPARD_API_KEY` ([Get one here](https://0647839.propelauthtest.com/account/api_keys))
     - `OPENAI_API_KEY` ([Get one here](https://platform.openai.com/api-keys))
-    - `DATAFILE_ID` ([try.snowleopard.ai](https://try,snowleopard.ai) - copy ID)
+    - `DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - copy ID)
 
 ### ▶️ Running the Agent
 `python3 market_campaign_agent.py`
@@ -67,6 +67,7 @@ Choose:
 - “Who should I contact today?”
 - “Compare segments by job and education”
 - “Why did conversions drop?”
+- "what is the number of subscriptions in November?"
 
 ## 🛠 Custom Workflows
 ### Adding New Workflows
@@ -86,4 +87,19 @@ custom_workflow:
     - keywords
     - for
     - workflow
+```
+
+## Project structure
+```sh
+market_campaign_agent/
+├── market_campaign_agent.py  # Main application & orchestration
+├── agent.py                   # SnowLeopard SDK wrapper
+├── config.py                  # Configuration management
+├── workflow_router.py         # Campaign action detection
+├── response_formatter.py      # GPT response formatting
+├── campaign_map.yaml          # Workflow definitions
+├── pyproject.toml            # Project dependencies
+├── tests/                    # Unit tests
+│   └── test_copilot.py
+└── README.md
 ```

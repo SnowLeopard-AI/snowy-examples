@@ -2,27 +2,32 @@ import logging
 import os
 import re
 from pathlib import Path
-
-from dotenv import load_dotenv
 from datetime import datetime
-from pandas import DataFrame
-from typing import Dict, Any, List
-import yaml
+from typing import Dict, Any, List, Optional
 
-from snowleopard import SnowLeopardPlaygroundClient, models
+import yaml
+from dotenv import load_dotenv
 from openai import OpenAI
+
+from agent import Agent
 
 load_dotenv()
 
-# from playground.sl_playground.util_settings import CAMPAIGN_ACTION_MAP, CAMPAIGN__REQUEST_MAP
+# Load campaign configuration
 CAMPAIGN_PATH = os.path.join(Path(__file__).resolve().parent, 'campaign_map.yaml')
 with open(CAMPAIGN_PATH, 'r', encoding='utf-8') as f:
-    CAMPAIGN__REQUEST_MAP = yaml.safe_load(f)
-CAMPAIGN_ACTION_MAP = {w: k for k, v in CAMPAIGN__REQUEST_MAP.items() for w in v['words']}
+    CAMPAIGN_REQUEST_MAP = yaml.safe_load(f)
+
+# Create reverse mapping from keywords to campaign actions
+CAMPAIGN_ACTION_MAP = {
+    w: k
+    for k, v in CAMPAIGN_REQUEST_MAP.items()
+    for w in v['words']
+    }
 
 # Create logger
 logLevel = logging.WARNING
-logger = logging.getLogger("mkt_agent")
+logger = logging.getLogger("campaign_copilot")
 logger.setLevel(logLevel)
 console = logging.StreamHandler()
 console.setLevel(logLevel)
@@ -37,27 +42,25 @@ DATAFILE_ID = os.getenv("DATAFILE_ID")
 
 class CampaignCoPilot:
     """
-    Main agent that orchestrates campaign intelligence using SnowLeopard SQL Query SDK
-    with ChatGPT formatting for final responses
+    Marketing Campaign Co-Pilot that orchestrates campaign intelligence
+    using an Agent (SnowLeopard) for data retrieval and OpenAI for formatting
 
     Usage:
-        agent = CampaignCoPilot(datafile_id="your_datafile_id")
-        response = agent.chat("Who should I contact today?")
+        copilot = CampaignCoPilot(datafile_id="your_datafile_id")
+        response = copilot.chat("Who should I contact today?")
     """
-
-    DEFAULT_MAX_ROWS = 20
 
     def __init__(
         self,
         datafile_id: str,
-        api_key: str = None,
-        openai_api_key: str = None,
+        api_key: Optional[str] = None,
+        openai_api_key: Optional[str] = None,
         data_only: bool = False,
-        max_display_rows: int = DEFAULT_MAX_ROWS,
+        max_display_rows: int = 20,
         use_gpt_formatting: bool = True
     ):
         """
-        Initialize agent with SnowLeopard client sdk and OpenAI
+        Initialize Campaign Co-Pilot with Agent and OpenAI
 
         Args:
             datafile_id: Database ID for SnowLeopard
@@ -68,14 +71,17 @@ class CampaignCoPilot:
             use_gpt_formatting: If True, use ChatGPT to format final responses
         """
         try:
-            # Initialize SnowLeopard client
-            api_key = api_key or os.environ.get('SNOWLEOPARD_API_KEY')
-            if api_key:
-                self.sl_client = SnowLeopardPlaygroundClient(api_key=api_key)
-            else:
-                raise ValueError("SNOWLEOPARD_API_KEY not found. Please provide api_key parameter or set environment variable.")
+            print("🔧 Initializing Campaign Co-Pilot...")
 
-            # Initialize OpenAI client
+            # Initialize base Agent with SnowLeopard
+            self.agent = Agent(
+                datafile_id=datafile_id,
+                api_key=api_key,
+                data_only=data_only,
+                max_display_rows=max_display_rows
+                )
+
+            # Initialize OpenAI client for campaign response formatting
             self.use_gpt_formatting = use_gpt_formatting
             if use_gpt_formatting:
                 openai_api_key = openai_api_key or os.environ.get('OPENAI_API_KEY')
@@ -85,156 +91,81 @@ class CampaignCoPilot:
                     logger.warning("OPENAI_API_KEY not found. Disabling GPT formatting.")
                     self.use_gpt_formatting = False
 
-            self.datafile_id = datafile_id
             self.conversation_history = []
-            self.query_history = []
-            self.data_only = data_only
-            self.dataset_info = None
-            self.max_display_rows = max_display_rows
 
-            print("🔧 Initializing Campaign Co-Pilot...")
-            # Initialize by getting dataset info
-            self._initialize_dataset_info()
-            print(self.dataset_info)
+            print(f"📊 Dataset: {self.agent.get_dataset_info()}")
+            print("✅ Campaign Co-Pilot ready!")
 
-        except ImportError:
-            raise ImportError("Required clients not found. Please install: pip install snowleopard-client openai")
         except Exception as e:
             raise Exception(f"Failed to initialize Campaign Co-Pilot: {e}")
 
-    def _initialize_dataset_info(self):
-        """Get basic dataset information for context"""
-        try:
-            dataset_info = self.ask_question(
-                "Summarize the data.",
-                data_only=True
-                )
-            if dataset_info and len(dataset_info) > 0:
-                self.dataset_info = dataset_info[0].iat[0, 0]
-                logger.debug(f"📊 Dataset: {self.dataset_info}")
-                logger.debug("✅ Agent initialized with dataset information")
-            else:
-                logger.warning("⚠️ No dataset info returned")
-                self.dataset_info = "Unknown dataset"
-        except Exception as e:
-            logger.exception(f"⚠️ Could not initialize dataset info: {e}")
-            self.dataset_info = "Unknown dataset"
-
-    def ask_question(self, question: str, data_only=None) -> List[DataFrame]:
+    def _identify_campaign_action(self, user_message: str) -> tuple:
         """
-        Use SnowLeopard SDK to get data with streaming support
+        Identify the campaign action based on user message keywords
 
         Args:
-            question: Natural language question
+            user_message: User's input message
         Returns:
-            list of DataFrames
+            Tuple of (action_name, action_config)
         """
-        # Use SnowLeopard's retrieve method
-        # result: models.RetrieveResponse = self.sl_client.retrieve(self.datafile_id, question) if self.data_only else self.sl_client.response(self.datafile_id, question)
-        result = None
-        response_status, sql_list = None, None
-        if data_only is None:
-            data_only = self.data_only
+        message_lower = user_message.lower()
+        words = re.findall(r'\b\w+\b', message_lower)
 
-        if data_only:
-            result = self.sl_client.retrieve(self.datafile_id, question)
-            response_status = result.responseStatus
-            sql_list = [data.query for data in result.data]
-            logger.debug(f"📡 Received response: {response_status}")
-        else:
-            # response() yields multiple updates - wait for the last one
-            reply = []
-            for partial_result in self.sl_client.response(self.datafile_id, question):
-                response_status = getattr(partial_result, 'responseStatus', None)
-                reply.append(partial_result)
+        campaign_action_name = next(
+            (CAMPAIGN_ACTION_MAP.get(word) for word in words
+             if word in CAMPAIGN_ACTION_MAP),
+            None
+            )
 
-                if response_status == 'SUCCESS':
-                    result = partial_result
-                    sql_list = [data.query for data in reply[1].data]
-                    logger.debug(f"📡 Received response: {response_status}")
+        if campaign_action_name:
+            campaign_action = CAMPAIGN_REQUEST_MAP.get(campaign_action_name)
+            return campaign_action_name, campaign_action
 
-        if not result:
-            logger.error("No response received from SnowLeopard")
-            return []
+        return 'general_query', None
 
-        if response_status == 'SUCCESS':
-            self.query_history.append({
-                'timestamp': datetime.now(),
-                'question': question,
-                'type': 'natural_language',
-                'response_status': response_status,
-                'sql_list': sql_list,
-                })
-            return self._extract_data_from_result(result.llmResponse if isinstance(result, models.ResponseLLMResult) else result.data)
-        else:
-            logger.error(f"Failed to answer question: {question}, status: {result.responseStatus}")
-            self.query_history.append({
-                'timestamp': datetime.now(),
-                'question': question,
-                'type': 'natural_language',
-                'response_status': response_status,
-                'response_body': result.data,
-                })
-            # logger.debug(f"Failed to answer question: {question}, response_status: {response_status}, response_body: {result.data}")
-            return []
-
-    def _extract_data_from_result(self, result_data_list, use_pandas=True) -> List[DataFrame]:
+    def _execute_campaign_workflow(
+        self,
+        campaign_action: Dict,
+        user_message: str
+        ) -> tuple:
         """
-        Extract DataFrame from SnowLeopard result
+        Execute a multi-step campaign workflow
 
         Args:
-            result_data_list: List of result data from SnowLeopard
-            use_pandas: If True, convert to DataFrame
+            campaign_action: Campaign action configuration
+            user_message: Original user message
         Returns:
-            List of data/DataFrames with the data
+            Tuple of (results_list, total_steps)
         """
-        if not result_data_list:
-            return []
-        result_data_list = result_data_list if isinstance(result_data_list, list) else [result_data_list]
+        print("\n" + "=" * 80)
+        print(campaign_action['name'])
+        print("=" * 80 + "\n")
+        total_steps = len(campaign_action['steps'])
+        results = []
 
-        records = []
-        for data in result_data_list:
-            if hasattr(data, "query"): # isinstance(data, models.RetrieveResponse):
-                # Log the query for transparency
-                logger.debug(f"   📝 SQL Generated&Executed {data.schemaId}({data.schemaType}) [{len(data.rows)} rows]: {data.query}")
-            if isinstance(data, str):
-                records.append(data)
-            elif isinstance(data, models.SchemaData):
-                records.append(DataFrame(data.rows) if use_pandas else data.rows)
-            elif isinstance(data, dict) and 'complete_answer' in data:
-                records.append(data['complete_answer'])
-            else:
-                records.append(data)
+        for step in campaign_action['steps']:
+            print(f"   Step {step['id']}/{total_steps}: {step['step']}...")
 
-        return records
+            question = step.get('question')
+            if not question:
+                question = step['question_template'].format(user_message=user_message)
 
-    def _format_result(self, result: list) -> str:
-        """Format SnowLeopard result for display"""
-        if not result:
-            return "No data available"
+            result = self.agent.ask_question(question)
+            results.append(self.agent.format_result(result))
 
-        formatted_result = []
-        for dataset in result:
-            if 'complete_answer' in dataset:
-                formatted_result.append(str(dataset['complete_answer']))
-            if isinstance(dataset, DataFrame) and not dataset.empty:
-                formatted_result.append(dataset.head(self.max_display_rows).to_string(index=False))
-            elif isinstance(dataset, str) and dataset:
-                formatted_result.append(dataset)
-
-        return '\n\n'.join(formatted_result) if formatted_result else "No data available"
+        return results, total_steps
 
     def _format_with_gpt(
         self,
         raw_response: str,
         user_question: str,
         action_type: str
-    ) -> str:
+        ) -> str:
         """
         Use ChatGPT to format the raw data response into a polished, actionable message
 
         Args:
-            raw_response: Raw data output from SnowLeopard queries
+            raw_response: Raw data output from Agent queries
             user_question: Original user question
             action_type: Type of action (e.g., 'analyze_performance', 'recommend_contacts')
         Returns:
@@ -245,7 +176,7 @@ class CampaignCoPilot:
 
         try:
             # Get the workflow name for context
-            workflow_name = CAMPAIGN__REQUEST_MAP.get(action_type, {}).get('name', action_type)
+            workflow_name = CAMPAIGN_REQUEST_MAP.get(action_type, {}).get('name', action_type)
 
             # Create a prompt for GPT to format the response
             system_prompt = """You are a marketing analytics assistant helping format campaign data into clear, actionable insights.
@@ -277,14 +208,14 @@ Keep the tone professional but conversational. Use formatting to make it scannab
 
             # Call ChatGPT
             response = self.openai_client.chat.completions.create(
-                model="gpt-4o",  # or "gpt-4o-mini" for faster/cheaper responses
+                model="gpt-4o",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
-                ],
+                    ],
                 temperature=0.7,
                 max_tokens=1500
-            )
+                )
 
             formatted_response = response.choices[0].message.content
             logger.debug("✨ Response formatted with ChatGPT")
@@ -296,14 +227,14 @@ Keep the tone professional but conversational. Use formatting to make it scannab
             # Fall back to raw response if GPT formatting fails
             return raw_response
 
-    def chat(self, user_message: str) -> Dict[str, Any]:
+    def chat(self, user_message: str, question_only=False) -> Dict[str, Any]:
         """
-        Main conversational interface with agentic reasoning and GPT formatting
+        Main conversational interface with campaign workflow routing
 
         Args:
             user_message: User's question or command
         Returns:
-            Dict with 'message' (formatted response), 'data' (raw data), 'sql' (queries used)
+            Dict with 'message', 'raw_message', 'action_type', 'sql_queries'
         """
         self.conversation_history.append({
             'role': 'user',
@@ -313,52 +244,42 @@ Keep the tone professional but conversational. Use formatting to make it scannab
 
         logger.debug(f"\n💭 Processing: '{user_message}'")
 
-        # Route to an appropriate handler based on intent
-        message_lower = user_message.lower()
-
         try:
-            words = re.findall(r'\b\w+\b', message_lower)
-            campaign_action_name = next(
-                (CAMPAIGN_ACTION_MAP.get(word) for word in words if word in CAMPAIGN_ACTION_MAP),
-                None
-                )
-            # campaign_action_name = next((CAMPAIGN_ACTION_MAP.get(m.group(0)) for m in re.finditer(r'\b\w+\b', message_lower)), None)
-            campaign_action = CAMPAIGN__REQUEST_MAP.get(campaign_action_name)
+            campaign_action_name, campaign_action = 'general_query', None
+            if not question_only:
+                # Identify campaign action
+                campaign_action_name, campaign_action = self._identify_campaign_action(
+                    user_message
+                    )
 
+            # Execute workflow
             if not campaign_action:
-                campaign_action_name = 'general_query'
+                # General query - single question
                 logger.debug(f"🔍 Action: {campaign_action_name}")
+                result = self.agent.ask_question(user_message)
+                raw_response = self.agent.format_result(result)
                 total_steps = 1
-                result = self.ask_question(user_message)
-                raw_response = self._format_result(result)
             else:
+                # Campaign workflow - multiple steps
                 logger.debug(f"🎯 Action: {campaign_action_name}")
-                logger.debug(campaign_action['name'])
-                total_steps = len(campaign_action['steps'])
-                result = []
+                logger.debug(f"   Workflow: {campaign_action['name']}")
 
-                for step in campaign_action['steps']:
-                    print(f"   Step {step['id']}/{total_steps}: {step['step']}...")
-                    question = step.get('question')
+                results, total_steps = self._execute_campaign_workflow(
+                    campaign_action, user_message
+                    )
+                raw_response = '\n\n'.join(results)
 
-                    if not question:
-                        question = step['question_template'].format(user_message=user_message)
-
-                    res = self.ask_question(question)
-                    result.append(self._format_result(res))
-
-                raw_response = '\n\n'.join(result)
-
-            # Format the response with ChatGPT
+            # Format response with ChatGPT
             formatted_response = self._format_with_gpt(
                 raw_response=raw_response,
                 user_question=user_message,
                 action_type=campaign_action_name
-            )
+                )
 
+            # Store in conversation history
             self.conversation_history.append({
                 'action_type': campaign_action_name,
-                'role': 'agent',
+                'role': 'copilot',
                 'content': formatted_response,
                 'raw_content': raw_response,
                 'timestamp': datetime.now()
@@ -368,67 +289,45 @@ Keep the tone professional but conversational. Use formatting to make it scannab
                 'action_type': campaign_action_name,
                 'message': formatted_response,
                 'raw_message': raw_response,
-                'sql_queries': [elem['sql_list'] for elem in self.query_history[-total_steps:] if 'sql_list' in elem]
-            }
+                'sql_queries': [
+                    elem['sql_list']
+                    for elem in self.agent.get_query_history()[-total_steps:]
+                    if 'sql_list' in elem
+                    ]
+                }
 
         except Exception as e:
             logger.exception("Error processing request")
             error_response = {
-                'message': f"❌ Error processing request: {str(e)}\n\nPlease try rephrasing your question or check your database connection.",
+                'message': (
+                    f"❌ Error processing request: {str(e)}\n\n"
+                    "Please try rephrasing your question or check your database connection."
+                ),
                 'type': 'error',
                 'error': str(e)
                 }
             self.conversation_history.append({
-                'role': 'agent',
+                'role': 'copilot',
                 'content': error_response,
                 'timestamp': datetime.now()
                 })
             return error_response
 
-    def get_query_history(self) -> List[Dict]:
-        """Get history of all queries executed"""
-        return self.query_history
-
     def get_conversation_history(self) -> List[Dict]:
         """Get full conversation history"""
         return self.conversation_history
 
-
-def example_usage():
-    """
-    Example: How to use Campaign Co-Pilot with SnowLeopard
-    """
-
-    print("=" * 80)
-    print("🤖 CAMPAIGN CO-PILOT - POWERED BY SNOWLEOPARD")
-    print("=" * 80)
-
-    """
-    Initialize with your database ID
-    You can set SNOWLEOPARD_API_KEY as environment variable or pass it directly
-
-    Option 1: Using environment variable
-    export SNOWLEOPARD_API_KEY="your_api_key_here"
-    agent = CampaignCoPilot(datafile_id="your_database_id")
-
-    Option 2: Passing API key directly
-    agent = CampaignCoPilot(
-        datafile_id="your_database_id",
-        api_key="your_api_key_here"
-        )
-    """
-
-    print("\n📋 Ask questions")
-
-    print("\n" + "=" * 80)
-    print("✅ Campaign Co-Pilot ready to use with your SnowLeopard database!")
-    print("=" * 80)
+    def get_query_history(self) -> List[Dict]:
+        """Get history of all queries executed by the agent"""
+        return self.agent.get_query_history()
 
 
-def run_interactive(agent):
+def run_interactive(copilot: CampaignCoPilot):
     """Interactive chat mode"""
+    print("\n" + "=" * 80)
     print("Campaign Co-Pilot ready! Ask me anything...")
-    print("Type 'exit' to quit\n")
+    print("Type 'exit' to quit")
+    print("=" * 80 + "\n")
 
     while True:
         user_input = input("You: ")
@@ -436,18 +335,50 @@ def run_interactive(agent):
         if user_input.lower() in ['exit', 'quit']:
             break
 
-        response = agent.chat(user_input)
-        print(f"\n🤖 Agent:\n{response['message']}\n")
+        response = copilot.chat(user_input, question_only=True)
+        print(f"\n🤖 Co-Pilot:\n{response['message']}\n")
 
         # Optionally show SQL queries
         if response.get('sql_queries'):
             print(f"📝 SQL Queries executed: {len(response['sql_queries'])}")
 
 
-def run_analysis(agent):
-    """Run predefined analyses"""
+def run_campaign_action(copilot: CampaignCoPilot):
+    # Choose mode for campaign action by name
+    campaign_actions = [c['name'] for c in CAMPAIGN_REQUEST_MAP.values()]
+
+    while True:
+        mode = input("  " +
+                     "\n  ".join([f"({i + 1}) {name}" for i, name in enumerate(campaign_actions)]) +
+                     "\n ask question - it will be parsed to possible pre-defined actions" +
+                     "\n\n  exit/quit\n\nSelection:"
+                     )
+
+        if mode.lower() in ['exit', 'quit']:
+            break
+
+        campaign_action, query = None, None
+        try:
+            cid = int(mode) - 1
+            if 0 < cid < len(campaign_actions):
+                campaign_action = campaign_actions[cid]
+                query = campaign_actions[cid].split(':')[1] # assumption on name
+        except ValueError:
+            campaign_action = 'general_query'
+            query = mode
+
+        response = copilot.chat(query)
+        print(f"\n🤖 Co-Pilot:\n{response['message']}\n")
+
+        # Optionally show SQL queries
+        if response.get('sql_queries'):
+            print(f"📝 SQL Queries executed: {len(response['sql_queries'])}")
+
+
+def run_analysis(copilot: CampaignCoPilot):
+    """Run predefined campaign analyses"""
     print("\n" + "=" * 80)
-    print("📊 RUNNING COMPREHENSIVE ANALYSIS")
+    print("📊 RUNNING COMPREHENSIVE CAMPAIGN ANALYSIS")
     print("=" * 80 + "\n")
 
     analyses = [
@@ -456,12 +387,11 @@ def run_analysis(agent):
         ("Optimize strategy", "🚀 Strategy Optimization")
         ]
 
-    # Generate a report
     report = {}
     for query, title in analyses:
-        print(f"\n{title}")
-        print("-" * 40)
-        response = agent.chat(query)
+        # print(f"\n{title}")
+        # print("-" * 40)
+        response = copilot.chat(query)
         report[query] = response
         print(response['message'])
 
@@ -469,24 +399,31 @@ def run_analysis(agent):
 
 
 if __name__ == "__main__":
+    print("=" * 80)
+    print("🤖 CAMPAIGN CO-PILOT - POWERED BY SNOWLEOPARD")
+    print("=" * 80 + "\n")
+
     try:
-        agent = CampaignCoPilot(
+        copilot = CampaignCoPilot(
             datafile_id=DATAFILE_ID,
             api_key=SNOWLEOPARD_API_KEY,
-            data_only=False,
             openai_api_key=OPENAI_API_KEY,
+            data_only=False,
             use_gpt_formatting=True
             )
 
         # Choose mode
-        mode = input("Choose mode: (1) Interactive Chat, (2) Run Performance Analysis: ")
+        mode = input("\nChoose mode:\n  (1) Interactive Chat\n  (2) Run Performance Analysis\n  (3) Run Campaign Analysis\n\nSelection: ")
 
-        if mode == "2":
-            run_analysis(agent)
+        if mode == "3":
+            run_campaign_action(copilot)
+        elif mode == "2":
+            run_analysis(copilot)
         else:
-            run_interactive(agent)
+            run_interactive(copilot)
+        print("\n" + "=" * 80)
 
     except Exception as e:
-        logger.exception('Failed to initialize agent')
+        logger.exception('Failed to initialize Campaign Co-Pilot')
         print("\n❌ Error: Make sure you have set SNOWLEOPARD_API_KEY and OPENAI_API_KEY environment variables")
-        example_usage()
+        print("Set them in your .env file or export them in your shell")

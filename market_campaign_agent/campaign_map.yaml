@@ -15,8 +15,6 @@ analyze_performance:
     step: Identifying segment performance
   words:
   - performance
-  - how
-  - doing
   - metrics
   - dashboard
 analyze_segments:
@@ -41,7 +39,7 @@ analyze_segments:
   - categories
   - category
 analyze_timing:
-  name: "⏰ AGENTIC WORKFLOW: Timing Analysis"
+  name: "⏰  AGENTIC WORKFLOW: Timing Analysis"
   steps:
   - id: 1
     question: What is the conversion rate for each day of the week? Show day_of_week,
