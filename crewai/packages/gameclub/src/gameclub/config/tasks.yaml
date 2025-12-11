@@ -1,0 +1,15 @@
+research_task:
+  description: >
+    Use available tools to find games relevant to this theme: {theme}
+  expected_output: >
+    A list with up to the top 10 games relevant to the theme: {theme}
+  agent: researcher
+
+reporting_task:
+  description: >
+    Use the context you got to make a plan for a game discussion club that plays one game a month revolving around a theme.
+    The theme for the next few months is: {theme}
+  expected_output: >
+    A list of games to play for the next few months.
+    Formatted as markdown without '```'
+  agent: reporting_analyst
