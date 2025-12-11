@@ -34,14 +34,14 @@ class CoachingAnalyzer:
         
         query_lower = query.lower()
         
-        # Route to appropriate analyzer
-        if any(word in query_lower for word in ['category', 'categories', 'spending by', 'spend']):
-            return self.analyze_spending_by_category(rows)
-        
-        elif any(word in query_lower for word in ['merchant', 'where', 'at which', 'which store']):
+        # Determine query type
+        if any(word in query_lower for word in ['merchant', 'where', 'most at', 'spent the most']):
             return self.analyze_spending_by_merchant(rows)
         
-        elif any(word in query_lower for word in ['trend', 'trend', 'over time', 'month', 'week']):
+        elif any(word in query_lower for word in ['category', 'categories', 'spending by']):
+            return self.analyze_spending_by_category(rows)
+        
+        elif any(word in query_lower for word in ['trend', 'over time', 'month', 'week']):
             return self.analyze_trends(rows)
         
         else:
