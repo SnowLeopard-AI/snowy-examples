@@ -7,9 +7,9 @@ const { SnowLeopardPlaygroundClient } = require("@snowleopard-ai/client");
 const snowy = new SnowLeopardPlaygroundClient();
 
 // This is a datafile id that corresponds to a superheroes.db datafile uploaded at https://try.snowleopard.ai
-const datafileId = process.env.SNOWLEOPARD_EXAMPLE_DATAFILE_ID;
+const datafileId = process.env.SNOWLEOPARD_DATAFILE_ID;
 if (!datafileId) {
-  console.error('environment variable SNOWLEOPARD_EXAMPLE_DATAFILE_ID required');
+  console.error('environment variable SNOWLEOPARD_DATAFILE_ID required');
   process.exit(1);
 }
 
