@@ -36,7 +36,7 @@ Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API
       "command": "uv",
       "args": [
         "--directory",
-        "/path/to/snowy-examples/fastmcp",
+        "/path/to/snowy-examples/quickstart/fastmcp",
         "run",
         "fastmcp",
         "run",
