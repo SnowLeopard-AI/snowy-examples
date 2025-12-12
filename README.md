@@ -20,19 +20,19 @@ To start playing with the examples, make sure you have:
 
 1. **Install dependencies**
 2. **Configuration**
-    - Get a `SNOW LEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
-    - Get your `SNOW LEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
+   The Following are typically set as environment variables:
+    - `SNOW_LEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
+    - `SNOW_LEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
 
 Check the README inside each folder for exact steps after that.
 
 
 ## Quickstart Examples
-* [**fastmcp Quick Start Guide**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - FastMCP + Snow Leopard Example
-* [**langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain Snow Leopard AI Quick Start Guide
-* [**langgraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph Snow Leopard AI Quick Start Guide
+* [**fastmcp**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - FastMCP + Snow Leopard Example
+* [**langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain Snow Leopard Quick Start Guide
+* [**langgraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph Snow Leopard Quick Start Guide
 * [**pydantic-ai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/pydantic-ai) - Pydantic + Snow Leopard Example
 * [**vercel-ai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/vercel-ai) - Vercel AI + Snow Leopard Example
-
 
 
 ## 📁 Agent Examples
