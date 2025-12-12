@@ -19,13 +19,11 @@ To start playing with the examples, make sure you have:
 ### Most examples follow this pattern:
 
 1. **Install dependencies**
-2. **Configure your API key**
-   Typically using an environment variable such as:
+2. **Configuration**
+    - Get a `SNOW LEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
+    - Get your `SNOW LEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
 
-    - `SNOW LEOPARD_API_KEY` [You can create an API key here](https://auth.snowleopard.ai/account/api_keys)
-    - `SNOW LEOPARD_DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - click the `Copy ID` button for your file)
-
-Check the README inside each folder for exact steps.
+Check the README inside each folder for exact steps after that.
 
 
 ## Quickstart Examples
