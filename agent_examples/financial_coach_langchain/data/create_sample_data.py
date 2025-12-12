@@ -3,7 +3,7 @@
 Sample Financial Data Generator
 
 Generates a realistic SQLite database with 6 months of personal finance transactions.
-This is perfect for testing the SnowleopardAI Financial Coach.
+This is perfect for testing the Snow Leopard Financial Coach.
 
 Usage:
     python data/create_sample_data.py
