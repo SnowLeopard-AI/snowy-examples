@@ -43,7 +43,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 class CampaignCoPilot:
     """
     Marketing Campaign Co-Pilot that orchestrates campaign intelligence
-    using an Agent (SnowLeopard) for data retrieval and OpenAI for formatting
+    using an Agent (Snow Leopard) for data retrieval and OpenAI for formatting
 
     Usage:
         copilot = CampaignCoPilot(datafile_id="your_datafile_id")
@@ -63,8 +63,8 @@ class CampaignCoPilot:
         Initialize Campaign Co-Pilot with Agent and OpenAI
 
         Args:
-            datafile_id: Database ID for SnowLeopard
-            api_key: Optional SnowLeopard API key (if not provided, reads from env)
+            datafile_id: Database ID for Snow Leopard
+            api_key: Optional Snow Leopard API key (if not provided, reads from env)
             openai_api_key: Optional OpenAI API key (if not provided, reads from env)
             data_only: If True, only retrieve data without natural language response
             max_display_rows: Maximum rows to display in results
@@ -73,7 +73,7 @@ class CampaignCoPilot:
         try:
             print("🔧 Initializing Campaign Co-Pilot...")
 
-            # Initialize base Agent with SnowLeopard
+            # Initialize base Agent with Snow Leopard
             self.agent = Agent(
                 datafile_id=datafile_id,
                 api_key=api_key,
@@ -400,7 +400,7 @@ def run_analysis(copilot: CampaignCoPilot):
 
 if __name__ == "__main__":
     print("=" * 80)
-    print("🤖 CAMPAIGN CO-PILOT - POWERED BY SNOWLEOPARD")
+    print("🤖 CAMPAIGN CO-PILOT - POWERED BY SNOW LEOPARD")
     print("=" * 80 + "\n")
 
     try:

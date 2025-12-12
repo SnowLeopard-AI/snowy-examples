@@ -1,7 +1,7 @@
 # 🚀 Marketing Campaign Co-Pilot Agent
 
 AI-powered marketing analytics assistant combining:
-- SnowLeopard for natural-language → SQL querying
+- Snow Leopard for natural-language → SQL querying
 - OpenAI GPT for polished, executive-ready insights
 - Agentic multi-step workflows for deeper analysis
 
@@ -26,7 +26,7 @@ sqlite3 "marketing_campaign_dataset.db" <<EOF
 EOF
 ```
 
-Upload to SnowLeopard → 'Copy ID' for SNOWLEOPARD_DATAFILE_ID.
+Upload to [try.snowleopard.ai](https://try.snowleopard.ai) → 'Copy ID' for SNOWLEOPARD_DATAFILE_ID.
 
 ## 📦 Installation
 1. Clone repository
@@ -95,7 +95,7 @@ custom_workflow:
 ```sh
 market_campaign_agent_sdk/
 ├── market_campaign_agent.py  # Main application & orchestration
-├── agent.py                   # SnowLeopard SDK wrapper
+├── agent.py                   # Snow Leopard SDK wrapper
 ├── config.py                  # Configuration management
 ├── workflow_router.py         # Campaign action detection
 ├── response_formatter.py      # GPT response formatting

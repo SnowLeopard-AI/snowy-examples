@@ -1,7 +1,7 @@
 [project]
 name = "snowleopard-openai-example"
 version = "0.1.1"
-description = "A marketing campaign agent powered by SnowLeopard and OpenAI"
+description = "A marketing campaign agent powered by Snow Leopard and OpenAI"
 readme = "README.md"
 requires-python = ">=3.10"
 

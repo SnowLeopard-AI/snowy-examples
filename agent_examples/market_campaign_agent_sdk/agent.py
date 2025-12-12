@@ -19,10 +19,10 @@ logger.addHandler(console)
 
 class Agent:
     """
-    Base agent class that handles SnowLeopard SQL Query SDK interactions
+    Base agent class that handles Snow Leopard SQL Query SDK interactions
 
     This class provides core functionality for:
-    - Connecting to SnowLeopard API
+    - Connecting to Snow Leopard API
     - Asking natural language questions
     - Retrieving and formatting data
     - Maintaining query history
@@ -42,16 +42,16 @@ class Agent:
         max_display_rows: int = DEFAULT_MAX_ROWS,
         ):
         """
-        Initialize agent with SnowLeopard client SDK
+        Initialize agent with Snow Leopard client SDK
 
         Args:
-            datafile_id: Database ID for SnowLeopard
-            api_key: Optional SnowLeopard API key (if not provided, reads from env)
+            datafile_id: Database ID for Snow Leopard
+            api_key: Optional Snow Leopard API key (if not provided, reads from env)
             data_only: If True, only retrieve data without natural language response
             max_display_rows: Maximum rows to display in results
         """
         try:
-            # Initialize SnowLeopard client
+            # Initialize Snow Leopard client
             api_key = api_key or os.environ.get('SNOWLEOPARD_API_KEY')
             if not api_key:
                 raise ValueError(
@@ -98,7 +98,7 @@ class Agent:
         data_only: Optional[bool] = None
         ) -> List[DataFrame]:
         """
-        Use SnowLeopard SDK to get data with streaming support
+        Use Snow Leopard SDK to get data with streaming support
 
         Args:
             question: Natural language question
@@ -131,7 +131,7 @@ class Agent:
                         logger.debug(f"📡 Received response: {response_status}")
 
             if not result:
-                logger.error("No response received from SnowLeopard")
+                logger.error("No response received from Snow Leopard")
                 return []
 
             if response_status == 'SUCCESS':
@@ -170,10 +170,10 @@ class Agent:
         use_pandas: bool = True
         ) -> List[DataFrame]:
         """
-        Extract DataFrame from SnowLeopard result
+        Extract DataFrame from Snow Leopard result
 
         Args:
-            result_data_list: List of result data from SnowLeopard
+            result_data_list: List of result data from Snow Leopard
             use_pandas: If True, convert to DataFrame
         Returns:
             List of data/DataFrames with the data
@@ -208,7 +208,7 @@ class Agent:
 
     def format_result(self, result: list) -> str:
         """
-        Format SnowLeopard result for display
+        Format Snow Leopard result for display
 
         Args:
             result: List of DataFrames or strings to format
