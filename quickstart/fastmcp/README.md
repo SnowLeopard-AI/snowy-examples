@@ -27,7 +27,7 @@ This will start the MCP server that can be connected to by any MCP client (like 
 
 Add to your Claude Desktop configuration:
 
-Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API_KEY`, and `SNOWLEOPARD_EXAMPLE_DATAFILE_ID`
+Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API_KEY`, and `SNOWLEOPARD_DATAFILE_ID`
 
 ```json
 {
@@ -36,7 +36,7 @@ Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API
       "command": "uv",
       "args": [
         "--directory",
-        "/path/to/snowy-examples/fastmcp",
+        "/path/to/snowy-examples/quickstart/fastmcp",
         "run",
         "fastmcp",
         "run",
@@ -44,7 +44,7 @@ Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API
       ],
       "env": {
         "SNOWLEOPARD_API_KEY": "your-api-key",
-        "SNOWLEOPARD_EXAMPLE_DATAFILE_ID": "your-datafile-id"
+        "SNOWLEOPARD_DATAFILE_ID": "your-datafile-id"
       }
     }
   }

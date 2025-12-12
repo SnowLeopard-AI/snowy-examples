@@ -11,14 +11,14 @@ agent = Agent(
     instructions='Be concise, reply with one sentence.',
 )
 
-# Instantiate your SnowLeopard Client.
+# Instantiate your Snow Leopard Client.
 # Note! This requires env var SNOWLEOPARD_API_KEY
 snowy = SnowLeopardPlaygroundClient()
 
 # This is a datafile id that corresponds to a superheroes.db datafile uploaded at http//try.snowleopard.ai
-datafile_id = os.environ.get('SNOWLEOPARD_EXAMPLE_DATAFILE_ID')
+datafile_id = os.environ.get('SNOWLEOPARD_DATAFILE_ID')
 if not datafile_id:
-    print("environment variable SNOWLEOPARD_EXAMPLE_DATAFILE_ID required", file=sys.stderr)
+    print("environment variable SNOWLEOPARD_DATAFILE_ID required", file=sys.stderr)
     sys.exit(1)
 
 # Define the get_data tool for your agent. This allows the agent to retrieve data using Snow Leopard
