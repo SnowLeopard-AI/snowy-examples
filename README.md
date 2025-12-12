@@ -1,6 +1,6 @@
 # Snow Leopard API Examples
 
-This repository contains a collection of self-contained examples demonstrating how to use the **[Snowleopard APIs](https://docs.snowleopard.ai/)** in different environments, languages, and scenarios. 
+This repository contains a collection of self-contained examples demonstrating how to use the **[Snow Leopard APIs](https://docs.snowleopard.ai/)** in different environments, languages, and scenarios. 
 
 There are two folders in this repo:
 1. **Quickstarts**: Simple code snippets to get started with an agent framework quickly
@@ -13,7 +13,7 @@ Each folder within these topic-folders focuses on a single example, including mi
 
 To start playing with the examples, make sure you have:
 
-* A valid [Snowleopard API key](https://docs.snowleopard.ai/#authentication)
+* A valid [Snow Leopard API key](https://docs.snowleopard.ai/#authentication)
 * Any language/runtime dependencies required by the specific example (Node, Python, etc.)
 
 ### Most examples follow this pattern:
@@ -22,16 +22,16 @@ To start playing with the examples, make sure you have:
 2. **Configure your API key**
    Typically using an environment variable such as:
 
-    - `SNOWLEOPARD_API_KEY` [You can create an API key here](https://auth.snowleopard.ai/account/api_keys)
-    - `SNOWLEOPARD_DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - click the `Copy ID` button for your file)
+    - `SNOW LEOPARD_API_KEY` [You can create an API key here](https://auth.snowleopard.ai/account/api_keys)
+    - `SNOW LEOPARD_DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - click the `Copy ID` button for your file)
 
 Check the README inside each folder for exact steps.
 
 
 ## Quickstart Examples
 * [**fastmcp Quick Start Guide**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - FastMCP + Snow Leopard Example
-* [**langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain Snowleopard AI Quick Start Guide
-* [**langgraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph Snowleopard AI Quick Start Guide
+* [**langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain Snow Leopard AI Quick Start Guide
+* [**langgraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph Snow Leopard AI Quick Start Guide
 * [**pydantic-ai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/pydantic-ai) - Pydantic + Snow Leopard Example
 * [**vercel-ai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/vercel-ai) - Vercel AI + Snow Leopard Example
 
