@@ -72,30 +72,6 @@ compare_segments:
   - difference
   - between
   - compares
-explain_patterns:
-  name: "🔮 AGENTIC WORKFLOW: Conversion Prediction"
-  steps:
-  - id: 1
-    question: What is the overall conversion rate, and what are the conversion rates
-      by job category, education level, and campaign attempts (1-2, 3-4, 5+)?
-    step: Getting conversion benchmarks
-  - id: 2
-    question: 'For customers who converted (y=''yes''), what percentage had: call
-      duration > 300 seconds, campaign attempts <= 2, previous contact (prev_days
-      != 999)?'
-    step: Analyzing high-probability indicators
-  words:
-  - why
-  - reason
-  - cause
-  - explain
-  - drop
-  - increase
-  - reasons
-  - causes
-  - explains
-  - drops
-  - increases
 optimize_strategy:
   name: "🚀 AGENTIC WORKFLOW: Strategy Optimization"
   steps:
