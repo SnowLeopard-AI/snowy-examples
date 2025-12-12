@@ -19,8 +19,7 @@ To start playing with the examples, make sure you have:
 ### Most examples follow this pattern:
 
 1. **Install dependencies**
-2. **Configuration**
-   The Following are typically set as environment variables:
+2. **Configuration** - The Following are typically set as environment variables:
     - `SNOW_LEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
     - `SNOW_LEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
 
