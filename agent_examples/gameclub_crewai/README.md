@@ -20,9 +20,9 @@ user plan the next meetings for a game discussion club.
         1. `uv run scripts/preparedata.py result.csv metacritic.sqlite`
 1. Upload the sqlite file to [try.snowleopard.ai](https://try.snowleopard.ai)
 1. Copy `.env.example` to `.env` in the same directory as this file and set values for the following environment variables:
-    1. `OPENAI_API_KEY`: an OpenAI API Key
     1. `SNOWLEOPARD_API_KEY`: a [Snow Leopard API key](https://auth.snowleopard.ai/account/api_keys)
-    1. `GAMECLUB_DATAFILE_ID`: the `File ID` from [try.snowleopard.ai](https://try.snowleopard.ai)
+    1. `SNOWLEOPARD_DATAFILE_ID`: the `File ID` from [try.snowleopard.ai](https://try.snowleopard.ai)
+    1. `OPENAI_API_KEY`: an OpenAI API Key
 
 ## Usage
 

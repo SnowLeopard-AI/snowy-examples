@@ -24,9 +24,9 @@ class SnowLeopardMetacriticTool(BaseTool):
     args_schema: Type[BaseModel] = SnowLeopardMetacriticToolInput
 
     def _run(self, question: str) -> str:
-        datafile_id = os.getenv('GAMECLUB_DATAFILE_ID')
+        datafile_id = os.getenv('SNOWLEOPARD_DATAFILE_ID')
         if datafile_id is None:
-            raise RuntimeError('GAMECLUB_DATAFILE_ID is not set')
+            raise RuntimeError('SNOWLEOPARD_DATAFILE_ID is not set')
         # SNOWLEOPARD_API_KEY must be set to instantiate the client
         sl_client = SnowLeopardPlaygroundClient()
         retrieve_response = sl_client.retrieve(datafile_id, question)
