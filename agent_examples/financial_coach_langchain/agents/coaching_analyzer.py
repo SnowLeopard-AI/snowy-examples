@@ -21,7 +21,7 @@ class CoachingAnalyzer:
         Route to appropriate analyzer based on query type
         
         Args:
-            rows: Raw data from SnowleopardAI
+            rows: Raw data from Snow Leopard
             query: Original user query
             analysis_context: Additional context about the query
         

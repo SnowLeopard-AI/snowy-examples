@@ -14,7 +14,7 @@
 
 3. Run the script:
    ```shell
-   cd langchain-quickstart
+   cd quickstart/langchain/
    python langchain_quickstart.py
    ```
 

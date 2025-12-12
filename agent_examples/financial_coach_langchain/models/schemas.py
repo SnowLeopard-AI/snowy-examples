@@ -68,7 +68,7 @@ class ConversationContext(BaseModel):
     last_result: Optional[Dict] = None
 
 class SnowleopardResponse(BaseModel):
-    """Response from SnowleopardAI"""
+    """Response from Snow Leopard SDK"""
     success: bool
     data: List[Dict]
     sql: str

@@ -15,7 +15,7 @@
 
 3. Run the script:
    ```shell
-   cd langgraph-quickstart
+   cd quickstart/langgraph/
    python langgraph_quickstart.py
    ```
 

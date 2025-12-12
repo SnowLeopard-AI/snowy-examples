@@ -1,6 +1,6 @@
-# 💰 SnowleopardAI Financial Coach
+# 💰 Snow Leopard Financial Coach
 
-A LangGraph-based financial coaching CLI agent that analyzes personal spending data through natural language queries. Uses SnowleopardAI to convert your questions into SQL, executes them against your SQLite dataset, and returns AI-powered financial coaching insights.
+A LangGraph-based financial coaching CLI agent that analyzes personal spending data through natural language queries. Uses Snow Leopard to convert your questions into SQL, executes them against your SQLite dataset, and returns AI-powered financial coaching insights.
 
 ---
 
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 # 2. Copy and fill .env
 cp .env.example .env
-# Edit .env with your Snowleopard API key & datafile ID
+# Edit .env with your Snow Leopard API key & datafile ID
 
 # 3. Create sample dataset
 python data/create_sample_data.py
@@ -59,7 +59,7 @@ This application expects a **SQLite database** with financial transaction data. 
 2. **Use the sample dataset** (personal_finance.db, included in repo. Download data from (Kaggle)[https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data])
     1. Use the provided `personal_finance.db` file or download from Kaggle (https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data) and run `data/transform_personal_finance.py`
 
-#### Step 2: Upload to SnowleopardAI Playground
+#### Step 2: Upload to Snow Leopard Playground
 
 1. Go to http://try.snowleopard.ai
 2. **"Create New Datafile"** → Select `financial_data.db`
@@ -85,7 +85,7 @@ cp .env.example .env
 Edit `.env`:
 
 ```bash
-# SnowleopardAI API Credentials
+# Snow Leopard API Credentials
 SNOWLEOPARD_API_KEY=sk-proj-abc123...          # Your Snowleopard API key
 SNOWLEOPARD_DATAFILE_ID=datafile_xyz789        # Your uploaded datafile ID
 
@@ -153,7 +153,7 @@ You should see:
    ║ SnowleopardAI Financial Coach          ║ 
    ╚════════════════════════════════════════╝
 
-Powered by SnowleopardAI, LangGraph, and real personal finance data
+Powered by Snow Leopard, LangGraph, and real personal finance data
 
 ✓ Ready to help with your finances!
 
@@ -263,7 +263,7 @@ ORDER BY total_spending DESC
 2. QUERY ENRICHMENT (enrich_query_node)
    Add context: time period, entity type, intent
             ↓
-3. SNOWLEOPARD API CALL (query_snowleopard_node)
+3. SNOW LEOPARD API CALL (query_snowleopard_node)
    User query → LLM → SQL → SQLite execution
    Returns: rows, sql, execution_time_ms
             ↓
@@ -408,7 +408,7 @@ You: Financial overview
 - **Never commit `.env`** → Listed in `.gitignore`
 - **API keys only in `.env`** → Not in code
 - **Sample data is fake** → Use your own real data
-- **Queries go to Snowleopard** → They handle SQL execution
+- **Queries go to Snow Leopard** → They handle SQL execution
 - **No data stored locally** → Stateless per request
 
 ---
@@ -437,7 +437,7 @@ sed -i 's/DEBUG=False/DEBUG=True/' .env
 # 2. Run and check logs
 python main.py
 
-# 3. Look for: "[Snowleopard] ✓ Extracted N rows"
+# 3. Look for: "[Snow Leopard] ✓ Extracted N rows"
 # If N=0, your datafile might be empty or schema mismatched
 ```
 
@@ -455,7 +455,7 @@ pip install --upgrade -r requirements.txt
 python data/create_sample_data.py
 
 # This creates ./financial_data.db
-# Then upload to Snowleopard Playground
+# Then upload to Snow Leopard Playground
 ```
 
 ---
