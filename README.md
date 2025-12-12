@@ -20,8 +20,8 @@ To start playing with the examples, make sure you have:
 
 1. **Install dependencies**
 2. **Configuration** - The Following are typically set as environment variables:
-    - `SNOW_LEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
-    - `SNOW_LEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
+    - `SNOWLEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
+    - `SNOWLEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
 
 Check the README inside each folder for exact steps after that.
 
@@ -37,7 +37,7 @@ Check the README inside each folder for exact steps after that.
 ## 📁 Agent Examples
 * [**financial_coach_langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain) - An example agent built using [Langchain]([url](https://www.langchain.com/)) that acts as a personal _Financial Coach_. 
 * [**gameclub_crewai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai) - An example agent built using [Crew AI](https://www.crewai.com/) that helps you build a _Game Discussion Club Plan_.
-* [**market_campaign_agent_sdk**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/market_campaign_agent_sdk) - An example agent built with [Snow Leopard's Python SDK](https://docs.snowleopard.ai/#python-sdk) directly, that acts as a "chat with your data" Marketing Campaign Co-Pilot Agent.
+* [**market_campaign_agent_sdk**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/market_campaign_agent_sdk) - An example agent built with [Snow Leopard's Python SDK](https://docs.snowleopard.ai/#python-sdk) directly, that acts as a "chat with your data" _Marketing Campaign Co-Pilot Agent_.
 
 
 ## 📝 License
