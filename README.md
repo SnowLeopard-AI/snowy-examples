@@ -37,7 +37,6 @@ Check the README inside each folder for exact steps after that.
 ## 📁 Agent Examples
 * [**financial_coach_langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain) - An example agent built using [Langchain]([url](https://www.langchain.com/)) that acts as a personal _Financial Coach_. 
 * [**gameclub_crewai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai) - An example agent built using [Crew AI](https://www.crewai.com/) that helps you build a _Game Discussion Club Plan_.
-* [**market_campaign_agent_sdk**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/market_campaign_agent_sdk) - An example agent built with [Snow Leopard's Python SDK](https://docs.snowleopard.ai/#python-sdk) directly, that acts as a "chat with your data" _Marketing Campaign Co-Pilot Agent_.
 
 
 ## 📝 License
