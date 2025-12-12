@@ -3,7 +3,7 @@ Financial Coach Agent - LangGraph Implementation
 
 Multi-node agent that:
 1. Enriches user queries with context
-2. Queries SnowleopardAI for financial data
+2. Queries Snow Leopard for financial data
 3. Analyzes data and generates coaching insights
 4. Formats response with recommendations
 """
@@ -34,8 +34,8 @@ class FinancialCoachState(BaseModel):
     enriched_query: str = Field(default="", description="Enriched version of query")
     analysis_context: Dict[str, Any] = Field(default_factory=dict, description="Query context")
 
-    # SnowleopardAI response
-    snowleopard_response: Dict[str, Any] = Field(default_factory=dict, description="Raw response from SnowleopardAI")
+    # Snow Leopard response
+    snowleopard_response: Dict[str, Any] = Field(default_factory=dict, description="Raw response from Snow Leopard SDK")
 
     # Coaching insights
     coaching_insights: Dict[str, Any] = Field(default_factory=dict, description="Coaching analysis and recommendations")
@@ -79,18 +79,18 @@ def enrich_query_node(state: FinancialCoachState) -> Dict:
 
 def query_snowleopard_node(state: FinancialCoachState) -> Dict:
     """
-    Node 2: Query SnowleopardAI for financial data
+    Node 2: Query Snow Leopard for financial data
     Uses the enriched query to get relevant financial data
     """
-    logger.info(f"[Turn {state.conversation_turn}] Querying SnowleopardAI")
+    logger.info(f"[Turn {state.conversation_turn}] Querying with Snow Leopard")
 
-    # Query SnowleopardAI
+    # Query Snow Leopard
     response = query_snowleopard(state.current_query)
 
     if response.get('success'):
-        logger.info(f"✓ SnowleopardAI returned {len(response.get('rows', []))} rows in {response.get('execution_time_ms')}ms")
+        logger.info(f"✓ Snow Leopard returned {len(response.get('rows', []))} rows in {response.get('execution_time_ms')}ms")
     else:
-        logger.warning(f"⚠️ SnowleopardAI query failed: {response.get('error')}")
+        logger.warning(f"⚠️ Snow Leopard query failed: {response.get('error')}")
 
     return {
         'snowleopard_response': response
@@ -100,7 +100,7 @@ def query_snowleopard_node(state: FinancialCoachState) -> Dict:
 def analyze_and_coach_node(state: FinancialCoachState) -> Dict:
     """
     Node 3: Analyze financial data and generate coaching insights
-    Transforms raw SnowleopardAI response into:
+    Transforms raw Snow Leopard SDK response into:
     - Financial analysis
     - Pattern recognition
     - Actionable recommendations

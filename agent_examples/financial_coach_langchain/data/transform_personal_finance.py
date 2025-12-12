@@ -249,7 +249,7 @@ def transform_csv_to_sqlite(csv_file, db_name='finance_coach.db'):
     print(f"  - merchants: {len(unique_merchants)} records")
     print(f"  - transactions: {len(df)} records")
     print(f"\nIndices: 5 created (for fast queries)")
-    print(f"Views: 3 created (for SnowleopardAI queries)")
+    print(f"Views: 3 created (for Snow Leopard queries)")
     print("="*60)
     
     conn.close()
@@ -268,4 +268,4 @@ if __name__ == "__main__":
     
     # Transform
     db_path = transform_csv_to_sqlite(csv_file)
-    print(f"\n✓ Ready for SnowleopardAI: {db_path}")
+    print(f"\n✓ Ready for Snow Leopard: {db_path}")

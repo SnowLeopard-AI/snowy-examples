@@ -1,9 +1,9 @@
 """
-SnowleopardAI Financial Coach - Main Application
+Snow Leopard Financial Coach - Main Application
 
 This is the entry point for the conversational financial coach.
 It provides a CLI interface where users can ask questions about their finances,
-and the app uses SnowleopardAI to generate and execute SQL queries.
+and the app uses Snow Leopard to generate and execute SQL queries.
 """
 
 import os
@@ -40,8 +40,8 @@ conversation_turn = 0
 
 def initialize_app():
     """Initialize the financial coach application"""
-    print_header("💰 SnowleopardAI Financial Coach")
-    console.print("[dim]Powered by SnowleopardAI, LangGraph, and real personal finance data[/dim]\n")
+    print_header("💰 Snow Leopard Financial Coach")
+    console.print("[dim]Powered by Snow Leopard, LangGraph, and real personal finance data[/dim]\n")
 
     global coach_app
 

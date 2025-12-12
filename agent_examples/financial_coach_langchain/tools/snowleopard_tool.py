@@ -1,5 +1,5 @@
 """
-Snowleopard Tool - wrapper for Snowleopard Playground API
+Snow Leopard Tool - wrapper for Snow Leopard Playground API
 """
 
 import logging
@@ -16,7 +16,7 @@ _client = None
 
 
 def get_client() -> SnowLeopardPlaygroundClient:
-    """Get or create Snowleopard client"""
+    """Get or create Snow Leopard client"""
     global _client
     
     if _client is None:
@@ -25,13 +25,13 @@ def get_client() -> SnowLeopardPlaygroundClient:
             raise ValueError("SNOWLEOPARD_API_KEY not set")
         
         _client = SnowLeopardPlaygroundClient(api_key=api_key)
-        logger.info("[Snowleopard] Client initialized")
+        logger.info("[Snow Leopard] Client initialized")
     
     return _client
 
 
 def query_snowleopard(query: str) -> Dict[str, Any]:
-    """Query Snowleopard for financial data
+    """Query Snow Leopard for financial data
     
     Args:
         query: User's natural language query
@@ -49,11 +49,11 @@ def query_snowleopard(query: str) -> Dict[str, Any]:
         
         logger.info(f"[Snowleopard] Query: {query[:80]}...")
         
-        # Call Snowleopard API with correct parameter names
+        # Call Snow Leopard API with correct parameter names
         result = client.retrieve(datafile_id=datafile_id, user_query=query)
         
         # Extract SchemaData object attributes cleanly
-        # Result is guaranteed to be a SchemaData object from Snowleopard API
+        # Result is guaranteed to be a SchemaData object from Snow Leopard API
         # Use getattr() to safely extract attributes with fallbacks
         
         response_status = getattr(result, 'responseStatus', '')
@@ -61,18 +61,18 @@ def query_snowleopard(query: str) -> Dict[str, Any]:
         sql = getattr(result.data[0], 'query', '')
         execution_time = round((time.time() - start_time) * 1000)
         
-        logger.info(f"[Snowleopard] ✓ Extracted {len(rows)} rows from SchemaData")
+        logger.info(f"[Snow Leopard] ✓ Extracted {len(rows)} rows from SchemaData")
         
         # Debug logging: Show structure of first row if data present
         if rows:
-            logger.debug(f"[Snowleopard] Response type: {type(rows)}")
+            logger.debug(f"[Snow Leopard] Response type: {type(rows)}")
             first_row = rows[0] if isinstance(rows, list) and rows else None
             
             if first_row and isinstance(first_row, dict):
-                logger.debug(f"[Snowleopard] Row keys: {list(first_row.keys())}")
-                logger.debug(f"[Snowleopard] Sample row: {json.dumps(first_row, indent=2, default=str)}")
+                logger.debug(f"[Snow Leopard] Row keys: {list(first_row.keys())}")
+                logger.debug(f"[Snow Leopard] Sample row: {json.dumps(first_row, indent=2, default=str)}")
             elif first_row:
-                logger.debug(f"[Snowleopard] Row content: {first_row}")
+                logger.debug(f"[Snow Leopard] Row content: {first_row}")
         
         return {
             'success': True,
@@ -83,9 +83,9 @@ def query_snowleopard(query: str) -> Dict[str, Any]:
         }
     
     except Exception as e:
-        logger.error(f"[Snowleopard] ❌ Failed: {str(e)}")
+        logger.error(f"[Snow Leopard] ❌ Failed: {str(e)}")
         import traceback
-        logger.error(f"[Snowleopard] Traceback: {traceback.format_exc()}")
+        logger.error(f"[Snow Leopard] Traceback: {traceback.format_exc()}")
         
         return {
             'success': False,
