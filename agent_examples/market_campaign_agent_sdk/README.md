@@ -26,13 +26,13 @@ sqlite3 "marketing_campaign_dataset.db" <<EOF
 EOF
 ```
 
-Upload to SnowLeopard → copy the DATAFILE_ID.
+Upload to SnowLeopard → 'Copy ID' for SNOWLEOPARD_DATAFILE_ID.
 
 ## 📦 Installation
 1. Clone repository
 ```sh
 git clone git@github.com:SnowLeopard-AI/snowy-examples.git
-cd snowy-examples/market_campaign_agent
+cd snowy-examples/agent_examples/market_campaign_agent_sdk
 ```
 
 2. Install dependencies
@@ -47,8 +47,8 @@ pip install -e .
 
     Fill in:
     - `SNOWLEOPARD_API_KEY` ([Get one here](https://0647839.propelauthtest.com/account/api_keys))
+    - `SNOWLEOPARD_DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - copy ID)
     - `OPENAI_API_KEY` ([Get one here](https://platform.openai.com/api-keys))
-    - `DATAFILE_ID` ([try.snowleopard.ai](https://try.snowleopard.ai) - copy ID)
 
 ### ▶️ Running the Agent
 `python3 market_campaign_agent.py`
@@ -60,8 +60,10 @@ Choose:
 
 2 — Run full analysis report
 
+3 — Run Campaign Analysis
 
-### 🧠 Example queries
+
+### 🧠 Example queries to chat
 
 - “How is the campaign performing?”
 - “Who should I contact today?”
@@ -91,7 +93,7 @@ custom_workflow:
 
 ## Project structure
 ```sh
-market_campaign_agent/
+market_campaign_agent_sdk/
 ├── market_campaign_agent.py  # Main application & orchestration
 ├── agent.py                   # SnowLeopard SDK wrapper
 ├── config.py                  # Configuration management
