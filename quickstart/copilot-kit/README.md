@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CopilotKit + Snow Leopard Example
 
-## Getting Started
+A Next.js application demonstrating how to integrate Snow Leopard with CopilotKit to create an interactive AI chat interface with data retrieval capabilities.
 
-First, run the development server:
+This project showcases:
+- **[app/api/copilotkit/route.ts](app/api/copilotkit/route.ts)** - CopilotKit runtime with Snow Leopard backend action integration
+- **[app/page.tsx](app/page.tsx)** - CopilotChat UI component
+- **[app/layout.tsx](app/layout.tsx)** - CopilotKit provider setup
 
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Snow Leopard API key](https://auth.snowleopard.ai/account)
+- OpenAI API key
+
+## Setup
+
+1. Upload `northwind.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/northwind.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
+
+2. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Create a `.env` file and add your API keys and datafile ID:
+```bash
+OPENAI_API_KEY=your-openai-api-key
+SNOWLEOPARD_API_KEY=your-snowleopard-api-key
+SNOWLEOPARD_DATAFILE_ID=your-datafile-id
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the CopilotKit chat interface.
 
-To learn more about Next.js, take a look at the following resources:
+You can now ask questions about the Northwind database:
+```
+> How many customers are there?
+> What are the top selling products?
+> Show me orders from Germany
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The AI assistant will use the Snow Leopard backend action to retrieve data and answer your questions!
