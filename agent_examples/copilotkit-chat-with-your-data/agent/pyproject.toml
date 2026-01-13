@@ -10,4 +10,5 @@ dependencies = [
     "pydantic-ai-slim[openai]",
     "python-dotenv",
     "logfire>=4.10.0",
+    "snowleopard>=0.2.0",
 ]
