@@ -1,0 +1,11 @@
+// State of the agent, make sure this aligns with your agent's state.
+
+type SchemaData = {
+  query: string;
+  rows: any[];
+  columns?: string[];
+};
+
+export type AgentState = {
+  data_responses?: Record<string, SchemaData>;
+}
