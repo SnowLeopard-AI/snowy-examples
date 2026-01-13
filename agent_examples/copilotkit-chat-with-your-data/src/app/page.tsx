@@ -23,8 +23,8 @@ export default function CopilotKitPage() {
             message: "Which customers have placed the highest number of orders?",
           },
           {
-            title: "What are top performing territories?",
-            message: "What are top performing territories?",
+            title: "What are the top 20 performing territories by revenue?",
+            message: "What are top 20 performing territories by revenue?",
           },
         ]}
       >
