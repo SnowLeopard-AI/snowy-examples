@@ -1,7 +1,6 @@
 "use client";
 
-import {ProverbsCard} from "@/components/proverbs";
-import {WeatherCard} from "@/components/weather";
+import {DataTable} from "@/components/data-table";
 import {DataQueryCard} from "@/components/data-query";
 import {AgentState} from "@/lib/types";
 import {useCoAgent, useFrontendTool, useRenderToolCall,} from "@copilotkit/react-core";
@@ -58,7 +57,7 @@ export default function CopilotKitPage() {
 
 function YourMainContent({ themeColor }: { themeColor: string }) {
   // 🪁 Shared State: https://docs.copilotkit.ai/pydantic-ai/shared-state
-  const { state, setState } = useCoAgent<AgentState>({
+  const { state } = useCoAgent<AgentState>({
     name: "my_agent",
     initialState: {},
   });
@@ -87,7 +86,7 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
       style={{ backgroundColor: themeColor }}
       className="h-screen flex justify-center items-center flex-col transition-colors duration-300"
     >
-      <ProverbsCard state={state} setState={setState} />
+      <DataTable state={state} />
     </div>
   );
 }

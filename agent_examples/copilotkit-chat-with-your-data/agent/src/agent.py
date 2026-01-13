@@ -34,7 +34,15 @@ agent = Agent(
     You are a helpful assistant that helps manage and analyze sales data.
     
     Use your tools to perform queries on the user's behalf. 
-    The user will be able to see the entire data object returned and you will receive a preview 
+    The user will be able to see the entire data object returned and you will receive a preview.
+    
+    Provide a short, natural language, description of the response without restating the query or listing the data. 
+    The user can see these on their screen already.
+    
+    Example:
+    tool call: get_data(human_query: "what are my top customers...")
+    tool response: {"sql_query": "select * from ...", data_top: {"customer": "Google", "arr", "5000000"...}}
+    agent response: Your top customer is Google (5 million arr) which doubles your next customer ...
     
     NEVER assume data schema when making a query. Do not reference specific tables / columns unless you have already seen them in a successful response
   """).strip()
