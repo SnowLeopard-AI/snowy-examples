@@ -2,6 +2,7 @@
 
 import {ProverbsCard} from "@/components/proverbs";
 import {WeatherCard} from "@/components/weather";
+import {DataQueryCard} from "@/components/data-query";
 import {AgentState} from "@/lib/types";
 import {useCoAgent, useFrontendTool, useRenderToolCall,} from "@copilotkit/react-core";
 import {CopilotKitCSSProperties, CopilotSidebar} from "@copilotkit/react-ui";
@@ -62,14 +63,20 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
     initialState: {},
   });
 
-  //🪁 Generative UI: https://docs.copilotkit.ai/pydantic-ai/generative-ui
   useRenderToolCall(
     {
-      name: "get_weather",
-      description: "Get the weather for a given location.",
-      parameters: [{ name: "location", type: "string", required: true }],
+      name: "get_data",
+      description: "Retrieve data from Northwind dataset with natural language queries.",
+      parameters: [{ name: "human_query", type: "string", required: true }],
       render: ({ args, result }) => {
-        return <WeatherCard location={args.location} themeColor={themeColor} />;
+        return (
+          <DataQueryCard
+            query={result?.sql_query}
+            numRows={result?.num_rows}
+            dataPreview={result?.data_top}
+            themeColor={themeColor}
+          />
+        );
       },
     },
     [themeColor],
