@@ -31,20 +31,16 @@ export function DataQueryCard({
   query,
   numRows,
   dataPreview,
-  themeColor
 }: {
   query?: string;
   numRows?: number;
   dataPreview?: any[];
-  themeColor: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div
-      style={{ backgroundColor: themeColor }}
-      className="rounded-xl shadow-xl mt-6 mb-4 max-w-2xl w-full"
-    >
+    <div className="rounded-xl shadow-xl mt-6 mb-4 max-w-2xl w-full bg-indigo-500">
+
       <div className="bg-white/20 p-4 w-full">
         <button
           onClick={() => setIsExpanded(!isExpanded)}

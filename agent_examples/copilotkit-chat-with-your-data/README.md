@@ -115,3 +115,5 @@ cd agent
 uv sync
 uv run src/main.py
 ```
+
+![](demo.mov)
