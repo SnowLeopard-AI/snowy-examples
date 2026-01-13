@@ -1,5 +1,10 @@
 # CopilotKit Snow Leopard Data Agent
 
+This example agent demonstrates how to build a "chat with your data" agent using Snow Leopard, CopilotKit, and Pydantic AI.
+
+The agent has a server-side tool that allows it to get data from Snow Leopard. This tool returns a preview but adds the  
+entire data response into an AG-UI state object so it can be rendered onscreen for the user.
+
 ## Prerequisites
 
 - OpenAI API Key (for the PydanticAI agent)
@@ -36,7 +41,5 @@ pnpm dev
 This will start both the UI and agent servers concurrently.
 
 Now head over to [http://localhost:3000](http://localhost:3000) to start chatting with your data!
-
-If your application is running successfully, you should see something like this:
 
 ![](demo.mov)
