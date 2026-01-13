@@ -17,8 +17,7 @@ load_dotenv()
 # =====
 # State
 # =====
-class ProverbsState(BaseModel):
-  """List of the proverbs being written."""
+class DataState(BaseModel):
   data_responses: dict[str, SchemaData] = Field(
     default_factory=dict,
     description='Successful data queries',
@@ -29,7 +28,7 @@ class ProverbsState(BaseModel):
 # =====
 agent = Agent(
   model = OpenAIResponsesModel('gpt-5-mini'),
-  deps_type=StateDeps[ProverbsState],
+  deps_type=StateDeps[DataState],
   system_prompt=dedent("""
     You are a helpful assistant that helps manage and analyze sales data.
     
@@ -52,14 +51,7 @@ agent = Agent(
 # Tools
 # =====
 @agent.tool
-def get_proverbs(ctx: RunContext[StateDeps[ProverbsState]]) -> list[str]:
-  """Get the current list of proverbs."""
-  print(f"📖 Getting proverbs: {ctx.deps.state.proverbs}")
-  return ctx.deps.state.proverbs
-
-
-@agent.tool
-def get_data(ctx: RunContext[StateDeps[ProverbsState]], human_query: str):
+def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
   """Retrieve data from "Northwind" dataset with natural language queries.
   This dataset includes information about orders, product categories, customer demographics, orders, employees, and geographic regions.
   You can use this data to create dashboards that provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.
@@ -103,7 +95,7 @@ def get_data(ctx: RunContext[StateDeps[ProverbsState]], human_query: str):
     )
 
 @agent.tool
-def read_get_data_response(ctx: RunContext[StateDeps[ProverbsState]], tool_call_id: str, start_row: int = 0, end_row: int = 20):
+def read_get_data_response(ctx: RunContext[StateDeps[DataState]], tool_call_id: str, start_row: int = 0, end_row: int = 20):
   """"""
   print(f"📊 Reading Data Response")
   response = ctx.deps.state.data_responses.get(tool_call_id)
