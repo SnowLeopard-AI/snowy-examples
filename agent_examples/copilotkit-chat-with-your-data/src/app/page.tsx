@@ -2,6 +2,7 @@
 
 import {DataTable} from "@/components/data-table";
 import {DataQueryCard} from "@/components/data-query";
+import {Dashboard} from "@/components/Dashboard";
 import {AgentState} from "@/lib/types";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
 import {CopilotSidebar} from "@copilotkit/react-ui";
@@ -56,9 +57,21 @@ function YourMainContent() {
     },
   });
 
+  // Get the last query from data_responses
+  const dataResponses = state.data_responses || {};
+  const toolCallIds = Object.keys(dataResponses);
+  const lastToolCallId = toolCallIds[toolCallIds.length - 1];
+  const lastQuery = lastToolCallId ? dataResponses[lastToolCallId] : null;
+
   return (
-    <div className="h-screen flex justify-center items-center flex-col bg-indigo-500">
-      <DataTable state={state} />
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {lastQuery ? (
+        <div className="p-4">
+          <DataTable rows={lastQuery.rows} query={lastQuery.query} />
+        </div>
+      ) : (
+        <Dashboard />
+      )}
     </div>
   );
 }

@@ -104,7 +104,7 @@ export function PieChart({
           innerRadius={innerRadius}
           outerRadius={outerRadius}
           paddingAngle={paddingAngle}
-          label={showLabel ? renderCustomizedLabel : undefined}
+          label={showLabel ? (renderCustomizedLabel as any) : undefined}
           labelLine={false}
         >
           {data.map((entry, index) => (
