@@ -67,14 +67,14 @@ export function BarChart({
           />
         )}
         
-        <Tooltip 
-          formatter={(value: number) => [valueFormatter(value), ""]}
+        <Tooltip
+          formatter={(value: number | undefined) => [valueFormatter(value ?? 0), ""]}
           labelFormatter={(value) => `${value}`}
           separator=""
           itemStyle={{ padding: "2px 0" }}
           cursor={{ fill: "rgba(236, 236, 236, 0.4)" }}
-          contentStyle={{ 
-            backgroundColor: "white", 
+          contentStyle={{
+            backgroundColor: "white",
             borderRadius: "0.375rem",
             border: "1px solid #e5e7eb",
             boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",

@@ -43,5 +43,3 @@ pnpm dev
 This will start both the UI and agent servers concurrently.
 
 Now head over to [http://localhost:3000](http://localhost:3000) to start chatting with your data!
-
-![](demo.mov)
