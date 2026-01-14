@@ -11,4 +11,4 @@ members = [
 ]
 
 [tool.uv.sources]
-gameclub = { workspace = true, editable = true }
+gameclub = { workspace = true }

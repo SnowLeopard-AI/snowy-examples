@@ -2551,14 +2551,14 @@ wheels = [
 
 [[package]]
 name = "snowleopard"
-version = "0.1.1"
+version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/39/c6cb0656b0b0e8c0e108d64f1c46bd96ab4c4de39ed95fa105437dc6fb4c/snowleopard-0.1.1.tar.gz", hash = "sha256:f335f36ca472e62de2ac965f58449e5640c92f950162b8c7c40ac4d5bd8ed994", size = 6334, upload-time = "2025-11-27T00:53:11.547Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/28/eb5aa7036107a49233479e566dbc602f1f7ea97bc4f8cf8de0def921c49e/snowleopard-0.2.0.tar.gz", hash = "sha256:4a69b79705123aa57f8e4138d9d49337c32a21f127a9aabc6793a503c7292dd2", size = 6966, upload-time = "2026-01-07T19:56:54.733Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/87/7130a07038ef61e394662fb9a0bdc248f814e3c4aaeeb3ace2d5042c7887/snowleopard-0.1.1-py3-none-any.whl", hash = "sha256:c321b6e6ab7ff374b4d068aa77090466977928eb0903a2f3cef11a0d1093ef99", size = 8974, upload-time = "2025-11-27T00:53:10.419Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/21/e5a7b2db0fe893d42651c30bdb544d7965c30cfff508ea943360ed01388c/snowleopard-0.2.0-py3-none-any.whl", hash = "sha256:02d3c25d4a9d0d237d424062c6e83f9af8aa0176bc5382ea5e37e75be9c877be", size = 9522, upload-time = "2026-01-07T19:56:53.491Z" },
 ]
 
 [[package]]
@@ -2578,7 +2578,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "pydantic-ai", specifier = ">=1.26.0" },
-    { name = "snowleopard", specifier = ">=0.1.1" },
+    { name = "snowleopard", specifier = ">=0.2.0" },
 ]
 
 [package.metadata.requires-dev]

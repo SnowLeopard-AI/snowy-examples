@@ -10,7 +10,7 @@ from langchain_core.tools import Tool
 from langchain_classic.agents import AgentExecutor, create_react_agent
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
 
 
 # ============================================================================
@@ -19,7 +19,7 @@ from snowleopard import SnowLeopardPlaygroundClient
 
 def create_snowleopard_tool():
     """Create a SnowLeopard tool that LangChain can use."""
-    client = SnowLeopardPlaygroundClient(api_key=os.getenv("SNOWLEOPARD_API_KEY"))
+    client = SnowLeopardClient(api_key=os.getenv("SNOWLEOPARD_API_KEY"))
     
     def query_data(natural_language_query: str) -> str:
         """Query your database using natural language."""

@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "pydantic-ai>=1.26.0",
-    "snowleopard>=0.1.1",
+    "snowleopard>=0.2.0",
 ]
 
 [dependency-groups]

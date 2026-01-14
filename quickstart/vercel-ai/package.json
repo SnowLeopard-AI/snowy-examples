@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@ai-sdk/openai": "^2.0.77",
-    "@snowleopard-ai/client": "^0.1.1",
+    "@snowleopard-ai/client": "^0.2.0",
     "ai": "^5.0.106",
     "zod": "^4.1.13"
   }
