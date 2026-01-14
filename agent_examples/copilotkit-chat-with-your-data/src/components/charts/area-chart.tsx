@@ -19,6 +19,7 @@ interface AreaChartProps {
   showYAxis?: boolean
   showGrid?: boolean
   yAxisWidth?: number
+  stacked?: boolean
 }
 
 export function AreaChart({
@@ -33,6 +34,7 @@ export function AreaChart({
   showYAxis = true,
   showGrid = true,
   yAxisWidth = 55,
+  stacked = false,
 }: AreaChartProps) {
   return (
     <ResponsiveContainer width="100%" height="100%" className={className}>
@@ -90,6 +92,7 @@ export function AreaChart({
             key={category}
             type="monotone"
             dataKey={category}
+            stackId={stacked ? "1" : undefined}
             stroke={colors[i % colors.length]}
             fill={colors[i % colors.length]}
             fillOpacity={0.1}

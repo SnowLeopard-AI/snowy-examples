@@ -86,6 +86,7 @@ export function Dashboard() {
               showGrid={true}
               showXAxis={true}
               showYAxis={true}
+              stacked={true}
             />
           </div>
         </CardContent>
