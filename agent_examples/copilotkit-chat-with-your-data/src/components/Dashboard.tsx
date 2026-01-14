@@ -71,18 +71,18 @@ export function Dashboard() {
       {/* Charts */}
       <Card className="col-span-1 md:col-span-2 lg:col-span-4">
         <CardHeader className="pb-1 pt-3">
-          <CardTitle className="text-base font-medium">Monthly Revenue Trend</CardTitle>
-          <CardDescription className="text-xs">Revenue from July 1996 to May 1998</CardDescription>
+          <CardTitle className="text-base font-medium">Monthly Revenue by Region</CardTitle>
+          <CardDescription className="text-xs">Revenue trends from July 1996 to May 1998</CardDescription>
         </CardHeader>
         <CardContent className="p-3">
           <div className="h-60">
             <AreaChart
               data={monthlyRevenueData}
               index="date"
-              categories={["revenue"]}
-              colors={colors.revenue}
+              categories={["Eastern", "Western", "Northern", "Southern"]}
+              colors={["#059669", "#0ea5e9", "#8b5cf6", "#f59e0b"]}
               valueFormatter={(value) => `$${value.toLocaleString()}`}
-              showLegend={false}
+              showLegend={true}
               showGrid={true}
               showXAxis={true}
               showYAxis={true}
