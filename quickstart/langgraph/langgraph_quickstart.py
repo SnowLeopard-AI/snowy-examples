@@ -11,7 +11,7 @@ from langgraph.graph import StateGraph, END
 from typing_extensions import TypedDict
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
 
 
 
@@ -33,7 +33,7 @@ class GraphState(TypedDict):
 from dotenv import load_dotenv
 load_dotenv()
 
-snowleopard_client = SnowLeopardPlaygroundClient(
+snowleopard_client = SnowLeopardClient(
     api_key=os.getenv("SNOWLEOPARD_API_KEY")
 )
 

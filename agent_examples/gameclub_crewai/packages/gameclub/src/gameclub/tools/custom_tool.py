@@ -3,7 +3,7 @@ import os
 
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
 from typing import Type
 
 
@@ -28,6 +28,6 @@ class SnowLeopardMetacriticTool(BaseTool):
         if datafile_id is None:
             raise RuntimeError('SNOWLEOPARD_DATAFILE_ID is not set')
         # SNOWLEOPARD_API_KEY must be set to instantiate the client
-        sl_client = SnowLeopardPlaygroundClient()
-        retrieve_response = sl_client.retrieve(datafile_id, question)
+        sl_client = SnowLeopardClient()
+        retrieve_response = sl_client.retrieve(user_query=question, datafile_id=datafile_id)
         return json.dumps(retrieve_response.data[0].rows)
