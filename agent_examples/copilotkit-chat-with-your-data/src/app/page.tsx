@@ -65,12 +65,11 @@ function YourMainContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {lastQuery ? (
+      <Dashboard />
+      {lastQuery && (
         <div className="p-4">
           <DataTable rows={lastQuery.rows} query={lastQuery.query} />
         </div>
-      ) : (
-        <Dashboard />
       )}
     </div>
   );

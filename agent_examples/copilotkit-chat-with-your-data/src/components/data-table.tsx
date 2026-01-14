@@ -5,7 +5,7 @@ export function DataTable({rows, query}: {
 }) {
   if (!rows || rows.length === 0) {
     return (
-      <div className="bg-white/90 rounded-xl shadow-2xl p-8 max-w-6xl w-full mx-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 w-full">
         <div className="text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +26,7 @@ export function DataTable({rows, query}: {
   }
 
   return (
-    <div className="bg-white/90 rounded-xl shadow-2xl p-6 max-w-6xl w-full mx-4">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 w-full">
       <div className="mb-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Query Results</h2>
         <p className="text-sm text-gray-600 mb-3">
