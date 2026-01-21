@@ -1,3 +1,4 @@
+import logging
 import os
 from textwrap import dedent
 
@@ -13,6 +14,7 @@ from snowleopard import SnowLeopardClient
 from snowleopard.models import RetrieveResponseError, ErrorSchemaData, SchemaData
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 
 # =====
 # State
@@ -61,23 +63,27 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
   Example: {"human_query": "Which customers have placed the highest number of orders? Provide the top 20 customers by order count, include
   customer id, company name, and number of orders, sorted descending by number of orders."}"""
 
-  print(f"📊 Getting Data: \"{human_query}\"")
-  response = SnowLeopardClient().retrieve(
-    user_query=human_query,
-    datafile_id=(os.environ['SNOWLEOPARD_DATAFILE_ID']),
-  )
+  logger.info(f"📊 Getting Data: \"{human_query}\"")
+  try:
+    response = SnowLeopardClient().retrieve(
+      user_query=human_query,
+      datafile_id=(os.environ['SNOWLEOPARD_DATAFILE_ID']),
+    )
+  except Exception as e:
+    logger.exception(f"📊 Error retrieving data from Snow Leopard")
+    return f"{type(e).__name__}: {e}"
   if isinstance(response, RetrieveResponseError):
-    print(f"📊 Response Error")
+    logger.info(f"📊 Response Error")
     return f"{response.responseStatus}: {response.description}"
   elif isinstance(response.data[-1], ErrorSchemaData):
-    print(f"📊 Data Retrieval Error")
+    logger.info(f"📊 Data Retrieval Error")
     data = response.data[-1]
     rtn = [f"query: {data.query}", f"error: {data.error}"]
     if data.datastoreExceptionInfo:
       rtn.append(f"exception_info: {data.datastoreExceptionInfo}")
     return "\n".join(rtn)
   else:
-    print(f"📊 Data Retrieval Success")
+    logger.info(f"📊 Data Retrieval Success")
     data = response.data[-1]
     ctx.deps.state.data_responses[ctx.tool_call_id] = data
     return ToolReturn(
@@ -97,7 +103,7 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
 @agent.tool
 def read_get_data_response(ctx: RunContext[StateDeps[DataState]], tool_call_id: str, start_row: int = 0, end_row: int = 20):
   """"""
-  print(f"📊 Reading Data Response")
+  logger.info(f"📊 Reading Data Response")
   response = ctx.deps.state.data_responses.get(tool_call_id)
   if not response:
     valid_ids = list(ctx.deps.state.data_responses.keys())

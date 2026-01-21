@@ -12,10 +12,11 @@ const serviceAdapter = new ExperimentalEmptyAdapter();
 
 // 2. Create the CopilotRuntime instance and utilize the PydanticAI AG-UI
 //    integration to setup the connection.
+const agentUrl = process.env.AGENT_URL || "http://localhost:8000/";
 const runtime = new CopilotRuntime({
   agents: {
     // Our FastAPI endpoint URL
-    my_agent: new HttpAgent({ url: "http://localhost:8000/" }),
+    data_agent: new HttpAgent({ url: agentUrl }),
   },
 });
 

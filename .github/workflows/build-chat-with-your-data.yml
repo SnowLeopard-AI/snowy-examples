@@ -1,0 +1,64 @@
+name: Build Chat With Your Data Images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'agent_examples/copilotkit-chat-with-your-data/**'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  FRONTEND_IMAGE: ghcr.io/snowleopard-ai/snowy-examples/chat-with-your-data-frontend
+  AGENT_IMAGE: ghcr.io/snowleopard-ai/snowy-examples/chat-with-your-data-agent
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: agent_examples/copilotkit-chat-with-your-data
+          file: agent_examples/copilotkit-chat-with-your-data/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:${{ steps.sha.outputs.short }}
+            ${{ env.FRONTEND_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push agent
+        uses: docker/build-push-action@v6
+        with:
+          context: agent_examples/copilotkit-chat-with-your-data/agent
+          file: agent_examples/copilotkit-chat-with-your-data/agent/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.AGENT_IMAGE }}:${{ steps.sha.outputs.short }}
+            ${{ env.AGENT_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

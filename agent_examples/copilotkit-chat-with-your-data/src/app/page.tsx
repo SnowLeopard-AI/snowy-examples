@@ -38,7 +38,7 @@ export default function CopilotKitPage() {
 function YourMainContent() {
   // 🪁 Shared State: https://docs.copilotkit.ai/pydantic-ai/shared-state
   const { state } = useCoAgent<AgentState>({
-    name: "my_agent",
+    name: "data_agent",
     initialState: {},
   });
 

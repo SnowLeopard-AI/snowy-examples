@@ -38,7 +38,7 @@ When modifying agent state structure, **always update both files**.
 The main page (`src/app/page.tsx`) demonstrates two key patterns:
 
 1. **`useCoAgent`**: Manages shared state between frontend and agent
-   - Name: `"my_agent"` - must match the agent key in `route.ts`
+   - Name: `"data_agent"` - must match the agent key in `route.ts`
    - Provides `state` object that updates automatically when agent emits `StateSnapshotEvent`
 
 2. **`useRenderToolCall`**: Renders custom UI when agent calls the `get_data` tool
