@@ -17,5 +17,8 @@ RUN pip install sl-bigquery-mcp
 COPY --from=builder /build/dist/*.whl ./
 RUN pip install --no-deps ./*.whl
 
+ENV LOG_LEVEL=INFO
+ENV LOG_FORMAT="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
 EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
