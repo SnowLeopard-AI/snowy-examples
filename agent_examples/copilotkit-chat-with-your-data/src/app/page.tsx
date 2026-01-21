@@ -1,16 +1,11 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import {DataTable} from "@/components/data-table";
 import {DataQueryCard} from "@/components/data-query";
 import {Dashboard} from "@/components/Dashboard";
 import {AgentState} from "@/lib/types";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
-
-const CopilotSidebar = dynamic(
-  () => import("@copilotkit/react-ui").then((mod) => mod.CopilotSidebar),
-  { ssr: false }
-);
+import {CopilotSidebar} from "@copilotkit/react-ui";
 
 export default function CopilotKitPage() {
   return (
