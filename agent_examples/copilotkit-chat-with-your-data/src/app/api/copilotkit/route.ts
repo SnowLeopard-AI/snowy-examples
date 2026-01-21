@@ -16,7 +16,7 @@ const agentUrl = process.env.AGENT_URL || "http://localhost:8000/";
 const runtime = new CopilotRuntime({
   agents: {
     // Our FastAPI endpoint URL
-    my_agent: new HttpAgent({ url: agentUrl }),
+    data_agent: new HttpAgent({ url: agentUrl }),
   },
 });
 
