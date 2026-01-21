@@ -1,0 +1,14 @@
+.env
+.env.*
+
+# dependencies
+node_modules
+
+# next.js build output
+.next
+
+# git
+.git
+
+# python agent (separate image)
+agent
