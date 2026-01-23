@@ -113,6 +113,9 @@ export function DataQueryCard({
                   <button
                     className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:opacity-90"
                     style={{ backgroundColor: '#9DEDEB' }}
+                    onClick={() => {
+                      document.getElementById('query-results')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                   >
                     See full results
                   </button>

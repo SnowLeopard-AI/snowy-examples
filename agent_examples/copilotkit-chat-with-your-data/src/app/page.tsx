@@ -67,7 +67,7 @@ function YourMainContent() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Dashboard />
       {lastQuery && (
-        <div className="p-4">
+        <div id="query-results" className="p-4">
           <DataTable rows={lastQuery.rows} query={lastQuery.query} />
         </div>
       )}
