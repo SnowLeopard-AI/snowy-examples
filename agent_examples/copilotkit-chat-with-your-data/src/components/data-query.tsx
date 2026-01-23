@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 
 // Chevron icon for expand/collapse
 function ChevronIcon({ isExpanded }: { isExpanded: boolean }) {
@@ -39,10 +40,12 @@ export function DataQueryCard({
           className="flex items-center justify-between w-full text-left hover:bg-gray-50 -m-2 p-2 rounded transition-colors"
         >
           <div className="flex items-center gap-3 flex-1">
-            <img
+            <Image
               src="/snow-leopard-icon.png"
               alt="Snow Leopard"
-              className="w-10 h-10"
+              width={40}
+              height={40}
+              priority
             />
             <div>
               <h3 className="text-base font-semibold" style={{ color: '#1a1a1a' }}>Data Query Result</h3>
