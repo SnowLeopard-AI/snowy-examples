@@ -37,7 +37,7 @@ export function DataQueryCard({
       <div className="p-4 w-full">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-between w-full text-left hover:bg-gray-50 -m-2 p-2 rounded transition-colors"
+          className="flex items-center justify-between w-full text-left hover:bg-gray-50 -m-2 p-2 rounded transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-3 flex-1">
             <Image
@@ -114,7 +114,7 @@ export function DataQueryCard({
 
                 <div className="mt-4 flex flex-col items-center gap-3">
                   <button
-                    className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:opacity-90"
+                    className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:opacity-90 cursor-pointer"
                     style={{ backgroundColor: '#9DEDEB' }}
                     onClick={() => {
                       document.getElementById('query-results')?.scrollIntoView({ behavior: 'smooth' });

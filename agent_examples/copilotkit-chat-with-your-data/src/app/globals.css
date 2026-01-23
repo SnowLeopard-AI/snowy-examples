@@ -22,3 +22,8 @@ body,
 html {
   height: 100%;
 }
+
+/* CopilotKit suggestion buttons should show pointer cursor */
+button.suggestion {
+  cursor: pointer;
+}
