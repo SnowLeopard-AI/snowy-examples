@@ -46,6 +46,7 @@ export function DataQueryCard({
               width={40}
               height={40}
               priority
+              style={{ width: 'auto', height: 'auto' }}
             />
             <div>
               <h3 className="text-base font-semibold" style={{ color: '#1a1a1a' }}>Data Query Result</h3>

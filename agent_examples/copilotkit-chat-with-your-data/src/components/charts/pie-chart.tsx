@@ -93,7 +93,7 @@ export function PieChart({
   centerText,
 }: PieChartProps) {
   return (
-    <ResponsiveContainer width="100%" height="100%" className={className}>
+    <ResponsiveContainer width="100%" height={240} className={className}>
       <RechartsPieChart margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
         <Pie
           data={data}

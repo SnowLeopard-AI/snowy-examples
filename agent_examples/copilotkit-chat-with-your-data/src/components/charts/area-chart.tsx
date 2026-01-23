@@ -37,7 +37,7 @@ export function AreaChart({
   stacked = false,
 }: AreaChartProps) {
   return (
-    <ResponsiveContainer width="100%" height="100%" className={className}>
+    <ResponsiveContainer width="100%" height={240} className={className}>
       <RechartsAreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
         {showGrid && <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />}
         
