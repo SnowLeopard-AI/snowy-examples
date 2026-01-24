@@ -1,7 +1,7 @@
 "use client";
 
 import {DataTable} from "@/components/data-table";
-import {DataQueryCard} from "@/components/data-query";
+import {DataQueryCard, DataReadCard} from "@/components/data-query";
 import {Dashboard} from "@/components/Dashboard";
 import {AgentState} from "@/lib/types";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
@@ -12,11 +12,10 @@ export default function CopilotKitPage() {
     <main>
       <CopilotSidebar
         defaultOpen={true}
-        disableSystemMessage={true}
         clickOutsideToClose={false}
         labels={{
           title: "Popup Assistant",
-          initial: "👋 Hi, there! You're chatting with an agent.",
+          initial: "👋 Hi, there! You're chatting with a data-agent.",
         }}
         suggestions={[
           {
@@ -52,6 +51,25 @@ function YourMainContent() {
           query={result?.sql_query}
           numRows={result?.num_rows}
           dataPreview={result?.data_top}
+        />
+      );
+    },
+  });
+
+  useRenderToolCall({
+    name: "read_get_data_response",
+    description: "Read additional rows from a previous data query.",
+    parameters: [
+      { name: "tool_call_id", type: "string", required: true },
+      { name: "start_row", type: "number", required: false },
+      { name: "end_row", type: "number", required: false },
+    ],
+    render: ({ result }) => {
+      return (
+        <DataReadCard
+          rows={result?.data_window}
+          window={result?.window}
+          totalRows={result?.total_rows}
         />
       );
     },

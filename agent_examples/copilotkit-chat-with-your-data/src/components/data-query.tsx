@@ -17,6 +17,78 @@ function ChevronIcon({ isExpanded }: { isExpanded: boolean }) {
   );
 }
 
+// Data read card component that displays additional rows from a previous query
+export function DataReadCard({
+  rows,
+  window,
+  totalRows,
+}: {
+  rows?: any[];
+  window?: [number, number];
+  totalRows?: number;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const startRow = window?.[0] ?? 0;
+  const endRow = window?.[1] ?? (rows?.length ?? 0);
+  const total = totalRows ?? rows?.length ?? 0;
+
+  return (
+    <div
+      className="rounded-xl shadow-sm mt-2 mb-4 max-w-2xl w-full bg-white"
+      style={{ border: '1px solid #E3E3E3' }}
+    >
+      <div className="p-4 w-full">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center justify-between w-full text-left hover:bg-gray-50 -m-2 p-2 rounded transition-colors cursor-pointer"
+        >
+          <p className="text-sm" style={{ color: '#8D8A8A' }}>
+            Reading rows {startRow} - {endRow} of {total}
+          </p>
+          <ChevronIcon isExpanded={isExpanded} />
+        </button>
+
+        {isExpanded && rows && rows.length > 0 && (
+          <div className="mt-4">
+            <div
+              className="rounded overflow-x-auto max-h-64 overflow-y-auto"
+              style={{ border: '1px solid #E3E3E3' }}
+            >
+              <table className="w-full text-xs">
+                <thead className="sticky top-0" style={{ backgroundColor: '#F5F5F5' }}>
+                  <tr>
+                    {Object.keys(rows[0] || {}).map((col) => (
+                      <th
+                        key={col}
+                        className="text-left p-2 font-medium"
+                        style={{ borderBottom: '1px solid #E3E3E3' }}
+                      >
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, idx) => (
+                    <tr key={idx} className="hover:bg-gray-50">
+                      {Object.values(row).map((val: any, colIdx) => (
+                        <td key={colIdx} className="p-2">
+                          {val !== null && val !== undefined ? String(val) : '—'}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Data query card component that displays query results
 export function DataQueryCard({
   query,
