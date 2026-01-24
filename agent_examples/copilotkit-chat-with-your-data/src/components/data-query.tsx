@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Image from "next/image";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 // Chevron icon for expand/collapse
 function ChevronIcon({ isExpanded }: { isExpanded: boolean }) {
   return (
@@ -113,7 +115,7 @@ export function DataQueryCard({
         >
           <div className="flex items-center gap-3 flex-1">
             <Image
-              src="/snow-leopard-icon.png"
+              src={`${basePath}/snow-leopard-icon.png`}
               alt="Snow Leopard"
               width={40}
               height={40}
