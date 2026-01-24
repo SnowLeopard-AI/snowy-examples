@@ -35,7 +35,7 @@ export function DataReadCard({
 
   return (
     <div
-      className="rounded-xl shadow-sm mt-2 mb-4 max-w-2xl w-full bg-white"
+      className="rounded-xl shadow-sm mt-2 mb-4 mr-3 bg-white"
       style={{ border: '1px solid #E3E3E3' }}
     >
       <div className="p-4 w-full">
@@ -103,7 +103,7 @@ export function DataQueryCard({
 
   return (
     <div
-      className="rounded-xl shadow-sm mt-6 mb-4 max-w-2xl w-full bg-white"
+      className="rounded-xl shadow-sm mt-6 mb-4 mr-3 bg-white"
       style={{ border: '1px solid #E3E3E3' }}
     >
       <div className="p-4 w-full">
