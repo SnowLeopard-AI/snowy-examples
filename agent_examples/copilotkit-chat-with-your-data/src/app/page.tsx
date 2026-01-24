@@ -46,11 +46,12 @@ function YourMainContent() {
     description: "Retrieve data from Northwind dataset with natural language queries.",
     parameters: [{ name: "human_query", type: "string", required: true }],
     render: ({ result }) => {
+      const preview = result?.data_top?.slice(0, 5);
       return (
         <DataQueryCard
           query={result?.sql_query}
           numRows={result?.num_rows}
-          dataPreview={result?.data_top}
+          dataPreview={preview}
         />
       );
     },
