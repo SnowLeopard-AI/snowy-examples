@@ -37,7 +37,7 @@ export function BarChart({
   layout = "horizontal",
 }: BarChartProps) {
   return (
-    <ResponsiveContainer width="100%" height="100%" className={className}>
+    <ResponsiveContainer width="100%" height={240} className={className}>
       <RechartsBarChart 
         data={data} 
         layout={layout}

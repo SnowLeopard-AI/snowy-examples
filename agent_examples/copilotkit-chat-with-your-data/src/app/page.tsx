@@ -1,7 +1,7 @@
 "use client";
 
 import {DataTable} from "@/components/data-table";
-import {DataQueryCard} from "@/components/data-query";
+import {DataQueryCard, DataReadCard} from "@/components/data-query";
 import {Dashboard} from "@/components/Dashboard";
 import {AgentState} from "@/lib/types";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
@@ -12,11 +12,10 @@ export default function CopilotKitPage() {
     <main>
       <CopilotSidebar
         defaultOpen={true}
-        disableSystemMessage={true}
         clickOutsideToClose={false}
         labels={{
           title: "Popup Assistant",
-          initial: "👋 Hi, there! You're chatting with an agent.",
+          initial: "👋 Hi, there! You're chatting with a data-agent.",
         }}
         suggestions={[
           {
@@ -57,17 +56,35 @@ function YourMainContent() {
     },
   });
 
-  // Get the last query from data_responses
-  const dataResponses = state.data_responses || {};
-  const toolCallIds = Object.keys(dataResponses);
-  const lastToolCallId = toolCallIds[toolCallIds.length - 1];
-  const lastQuery = lastToolCallId ? dataResponses[lastToolCallId] : null;
+  useRenderToolCall({
+    name: "read_get_data_response",
+    description: "Read additional rows from a previous data query.",
+    parameters: [
+      { name: "tool_call_id", type: "string", required: true },
+      { name: "start_row", type: "number", required: false },
+      { name: "end_row", type: "number", required: false },
+    ],
+    render: ({ result }) => {
+      return (
+        <DataReadCard
+          rows={result?.data_window}
+          window={result?.window}
+          totalRows={result?.total_rows}
+        />
+      );
+    },
+  });
+
+  // Get the last query from data_responses using the explicitly tracked ID
+  const lastQuery = state.last_tool_call_id
+    ? state.data_responses?.[state.last_tool_call_id]
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Dashboard />
       {lastQuery && (
-        <div className="p-4">
+        <div id="query-results" className="p-4">
           <DataTable rows={lastQuery.rows} query={lastQuery.query} />
         </div>
       )}

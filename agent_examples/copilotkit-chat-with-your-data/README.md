@@ -5,6 +5,8 @@ This example agent demonstrates how to build a "chat with your data" agent using
 The agent has a server-side tool that allows it to get data from Snow Leopard. This tool returns a preview but adds the  
 entire data response into an AG-UI state object so it can be rendered onscreen for the user.
 
+**[Try the live demo](https://try.snowleopard.ai/demos/data-agent)**
+
 ![](data_agent.png)
 
 ## Prerequisites

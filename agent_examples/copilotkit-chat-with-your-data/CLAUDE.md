@@ -156,6 +156,21 @@ The `SNOWLEOPARD_DATAFILE_ID` should point to the uploaded Northwind database fi
 3. Pass agent state via `useCoAgent` hook if component needs data
 4. For tool-triggered UI, use `useRenderToolCall` hook
 
+### Static Assets and basePath
+The app supports deployment with a URL prefix via `NEXT_PUBLIC_BASE_PATH`. When referencing static assets (images, icons, etc.) in components, **always use the basePath**:
+
+```tsx
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+// Correct - works with basePath
+<Image src={`${basePath}/snow-leopard-icon.png`} ... />
+
+// Wrong - breaks when deployed with a prefix
+<Image src="/snow-leopard-icon.png" ... />
+```
+
+This matches the pattern used for API routes in `layout.tsx`. Next.js does **not** automatically prepend basePath to image sources.
+
 ## Snow Leopard Integration
 
 The agent uses Snow Leopard's `retrieve()` API to query the Northwind database:

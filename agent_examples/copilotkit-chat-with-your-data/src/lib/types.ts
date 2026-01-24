@@ -8,4 +8,5 @@ type SchemaData = {
 
 export type AgentState = {
   data_responses?: Record<string, SchemaData>;
+  last_tool_call_id?: string;
 }

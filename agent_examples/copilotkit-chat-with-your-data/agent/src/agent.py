@@ -24,28 +24,42 @@ class DataState(BaseModel):
     default_factory=dict,
     description='Successful data queries',
   )
+  last_tool_call_id: str | None = Field(
+    default=None,
+    description='ID of the most recent successful data query',
+  )
 
 # =====
 # Agent
 # =====
 agent = Agent(
   model = OpenAIResponsesModel('gpt-5-mini'),
-  deps_type=StateDeps[DataState],
-  system_prompt=dedent("""
+  deps_type = StateDeps[DataState],
+  instructions = dedent("""
     You are a helpful assistant that helps manage and analyze sales data.
     
     Use your tools to perform queries on the user's behalf. 
     The user will be able to see the entire data object returned and you will receive a preview.
     
-    Provide a short, natural language, description of the response without restating the query or listing the data. 
-    The user can see these on their screen already.
+    After receiving data from your tools, Provide a short, provide the user with a one sentence summary of the data aimed at answering the user's question. 
+    The user can see executed query and data returned (both the top and the full data response) above your response.
+    
+    NEVER enumerate returned rows or show raw queries.
+    Whenever a user requests data results, respond only with a short one sentence summary and a follow-up question. 
+    Wait for the user to request details before showing rows or exporting data.
     
     Example:
-    tool call: get_data(human_query: "what are my top customers...")
-    tool response: {"sql_query": "select * from ...", data_top: {"customer": "Google", "arr", "5000000"...}}
-    agent response: Your top customer is Google (5 million arr) which doubles your next customer ...
+    tool call: get_data(human_query: "what are my top two customers?")
+    tool response: {"sql_query": "select * from ...", data_top: [{"customer": "Google", "arr", "5000000"...}, {"customer": "Yahoo", "arr", "2500000"...}, ...]}
+    agent response: Your top customer is Google. Would you like me to look at arr from Google over time?
     
-    NEVER assume data schema when making a query. Do not reference specific tables / columns unless you have already seen them in a successful response
+    NEVER assume data schema when making a query. Do not reference specific tables / columns unless you have already seen them in a successful response.
+    Be concise.
+    
+    <GUARDRAILS>
+    Responses should be less than 200 words unless requested otherwise.
+    Never suggest follow up actions that you cannot perform (such as exporting data or writing CSV / Excel files)
+    </GUARDRAILS>
   """).strip()
 )
 
@@ -53,7 +67,7 @@ agent = Agent(
 # Tools
 # =====
 @agent.tool
-def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
+def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str, data_top_size: int = 5):
   """Retrieve data from "Northwind" dataset with natural language queries.
   This dataset includes information about orders, product categories, customer demographics, orders, employees, and geographic regions.
   You can use this data to create dashboards that provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.
@@ -86,10 +100,12 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
     logger.info(f"📊 Data Retrieval Success")
     data = response.data[-1]
     ctx.deps.state.data_responses[ctx.tool_call_id] = data
+    ctx.deps.state.last_tool_call_id = ctx.tool_call_id
     return ToolReturn(
       return_value=dict(
+        tool_call_id=ctx.tool_call_id,
         sql_query=data.query,
-        data_top=data.rows[:5],
+        data_top=data.rows[:data_top_size],
         num_rows=len(data.rows),
       ),
       metadata=[
@@ -102,8 +118,11 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
 
 @agent.tool
 def read_get_data_response(ctx: RunContext[StateDeps[DataState]], tool_call_id: str, start_row: int = 0, end_row: int = 20):
-  """"""
-  logger.info(f"📊 Reading Data Response")
+  """Retrieve additional data from an existing tool call result.
+  Provide the row range to read.
+  Indices are 0 indexed, so the result will be `rows[start_row:end_row]`"""
+
+  logger.info(f"📊 Reading Data Response {tool_call_id}: {start_row} - {end_row}")
   response = ctx.deps.state.data_responses.get(tool_call_id)
   if not response:
     valid_ids = list(ctx.deps.state.data_responses.keys())
