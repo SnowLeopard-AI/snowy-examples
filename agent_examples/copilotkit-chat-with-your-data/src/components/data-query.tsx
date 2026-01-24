@@ -25,7 +25,7 @@ export function DataReadCard({
   window,
   totalRows,
 }: {
-  rows?: any[];
+  rows?: object[];
   window?: [number, number];
   totalRows?: number;
 }) {
@@ -74,7 +74,7 @@ export function DataReadCard({
                 <tbody>
                   {rows.map((row, idx) => (
                     <tr key={idx} className="hover:bg-gray-50">
-                      {Object.values(row).map((val: any, colIdx) => (
+                      {Object.values(row).map((val: unknown, colIdx) => (
                         <td key={colIdx} className="p-2">
                           {val !== null && val !== undefined ? String(val) : '—'}
                         </td>
@@ -99,7 +99,7 @@ export function DataQueryCard({
 }: {
   query?: string;
   numRows?: number;
-  dataPreview?: any[];
+  dataPreview?: object[];
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -173,7 +173,7 @@ export function DataQueryCard({
                           key={idx}
                           className="hover:bg-gray-50"
                         >
-                          {Object.values(row).map((val: any, colIdx) => (
+                          {Object.values(row).map((val: unknown, colIdx) => (
                             <td
                               key={colIdx}
                               className="p-2"
