@@ -24,6 +24,10 @@ class DataState(BaseModel):
     default_factory=dict,
     description='Successful data queries',
   )
+  last_tool_call_id: str | None = Field(
+    default=None,
+    description='ID of the most recent successful data query',
+  )
 
 # =====
 # Agent
@@ -96,6 +100,7 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str, data_top_s
     logger.info(f"📊 Data Retrieval Success")
     data = response.data[-1]
     ctx.deps.state.data_responses[ctx.tool_call_id] = data
+    ctx.deps.state.last_tool_call_id = ctx.tool_call_id
     return ToolReturn(
       return_value=dict(
         tool_call_id=ctx.tool_call_id,

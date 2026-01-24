@@ -75,11 +75,10 @@ function YourMainContent() {
     },
   });
 
-  // Get the last query from data_responses
-  const dataResponses = state.data_responses || {};
-  const toolCallIds = Object.keys(dataResponses);
-  const lastToolCallId = toolCallIds[toolCallIds.length - 1];
-  const lastQuery = lastToolCallId ? dataResponses[lastToolCallId] : null;
+  // Get the last query from data_responses using the explicitly tracked ID
+  const lastQuery = state.last_tool_call_id
+    ? state.data_responses?.[state.last_tool_call_id]
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
