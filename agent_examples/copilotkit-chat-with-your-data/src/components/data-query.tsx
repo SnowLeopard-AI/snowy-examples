@@ -198,7 +198,7 @@ export function DataQueryCard({
                     See full results
                   </button>
                   <p className="poweredBy">
-                    Powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a>
+                    Data powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a>
                   </p>
                 </div>
               </div>
