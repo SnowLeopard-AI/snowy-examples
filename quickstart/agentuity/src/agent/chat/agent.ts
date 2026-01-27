@@ -33,7 +33,7 @@ const agent = createAgent('chat', {
 	handler: async (ctx, { message }) => {
 		const messages: ModelMessage[] = (await ctx.thread.state.get('messages')) ?? [{
 			role: 'system',
-			content: `You are a helpful AI assistant who can retrieve real time using your tools.
+			content: `You are a helpful AI assistant who can retrieve real time data using your tools.
 			When users ask data-related questions, use your tools to get the data to answer them.
 			After retrieving data that answers user-questions give a 1 or 2 sentence summary of the data and offer a potential follow up question.
 			

@@ -7,6 +7,9 @@ This project contains two key files:
 #### [src/agent/tools/getData.ts](src/agent/tools/getData.ts)
 The Snow Leopard Vercel AI tool definition. This is the Snow Leopard-specific portion of the project.
 
+This tool allows our agent to retrieve data using Snow Leopard's `/retrieve` endpoint. To learn more, visit [Snow 
+Leopard docs](https://docs.snowleopard.ai)
+
 #### [src/agent/chat/agent.ts](src/agent/chat/agent.ts)
 An Agentuity agent powered by Vercel AI SDK with persistent conversation history via thread state.
 
