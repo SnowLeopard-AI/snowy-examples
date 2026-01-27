@@ -197,8 +197,8 @@ export function DataQueryCard({
                   >
                     See full results
                   </button>
-                  <p className="text-xs" style={{ color: '#8D8A8A' }}>
-                    Data powered by snowleopard.ai
+                  <p className="poweredBy">
+                    Powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">SnowLeopard.ai</a>
                   </p>
                 </div>
               </div>

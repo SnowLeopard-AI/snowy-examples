@@ -7,14 +7,25 @@ import {AgentState} from "@/lib/types";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
 import {CopilotSidebar} from "@copilotkit/react-ui";
 
+function CustomHeader() {
+  return (
+    <div className="p-4 border-b border-gray-200">
+      <h2 className="text-lg font-semibold">Popup Assistant</h2>
+      <p className="text-xs mt-1" style={{ color: '#d6d6d6' }}>
+        Powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">SnowLeopard.ai</a>
+      </p>
+    </div>
+  );
+}
+
 export default function CopilotKitPage() {
   return (
     <main>
       <CopilotSidebar
         defaultOpen={true}
         clickOutsideToClose={false}
+        Header={CustomHeader}
         labels={{
-          title: "Popup Assistant",
           initial: "👋 Hi, there! You're chatting with a data-agent.",
         }}
         suggestions={[
