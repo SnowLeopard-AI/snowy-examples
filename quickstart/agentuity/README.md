@@ -1,17 +1,17 @@
 # Agentuity + Snow Leopard Example
 
-A simple example demonstrating how to use Snow Leopard with the Agentuity platform and Vercel AI SDK to create a chat agent with data retrieval capabilities and conversation history.
+A simple example demonstrating how to use [Snow Leopard](https://snowleopard.ai/) with the [Agentuity](https://agentuity.com/) platform using the [Vercel AI SDK](https://sdk.vercel.ai/) to create a **chat agent** with data retrieval capabilities and conversation history.
 
 This project contains two key files:
 
-#### [src/agent/tools/getData.ts](src/agent/tools/getData.ts)
-The Snow Leopard Vercel AI tool definition. This is the Snow Leopard-specific portion of the project.
+1. **[src/agent/tools/getData.ts](src/agent/tools/getData.ts)**
+   - This has the Snow Leopard tool definition for Vercel AI.
+   - This is the Snow Leopard-specific portion of the project.
+   - This tool allows our chat agent to retrieve data from a SQL database using Snow Leopard's `/retrieve` endpoint. To learn more, visit [Snow Leopard docs](https://docs.snowleopard.ai)
 
-This tool allows our agent to retrieve data using Snow Leopard's `/retrieve` endpoint. To learn more, visit [Snow 
-Leopard docs](https://docs.snowleopard.ai)
-
-#### [src/agent/chat/agent.ts](src/agent/chat/agent.ts)
-An Agentuity agent powered by Vercel AI SDK with persistent conversation history via thread state.
+2. **[src/agent/chat/agent.ts](src/agent/chat/agent.ts)**
+   - This defines an Agentuity agent, powered by Vercel AI SDK
+   - It has persistent conversation history via thread state
 
 ## Prerequisites
 
