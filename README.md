@@ -26,7 +26,7 @@ To start playing with the examples, make sure you have:
 Check the README inside each folder for exact steps after that.
 
 
-## Quickstart Examples
+## Integrations: Quickstart
 * [**Agentuity**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - Agentuity Platform + Snow Leopard Example
 * [**LangChain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain + Snow Leopard Quick Start Guide
 * [**LangGraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph + Snow Leopard Quick Start Guide
@@ -35,7 +35,7 @@ Check the README inside each folder for exact steps after that.
 * [**Vercel**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/vercel-ai) - Vercel AI SDK + Snow Leopard Example
 
 
-## 📁 Agent Examples
+## 📁 Agent: Examples
 * [**financial_coach_langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain) - An example agent built using [Langchain]([url](https://www.langchain.com/)) that acts as a personal _Financial Coach_. 
 * [**gameclub_crewai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai) - An example agent built using [Crew AI](https://www.crewai.com/) that helps you build a _Game Discussion Club Plan_.
 
