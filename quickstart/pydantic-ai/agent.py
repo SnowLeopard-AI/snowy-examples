@@ -4,10 +4,14 @@ import sys
 from pydantic_ai import Agent, RunContext
 from snowleopard import SnowLeopardClient
 
-# Create a pydantic agent. In this example we are using an Anthropic model
-# Note! This requires env var ANTHROPIC_API_KEY
+# Get model from environment variable with default
+# PydanticAI model format: 'provider:model-name' (e.g., 'anthropic:claude-sonnet-4-5', 'openai:gpt-4o')
+MODEL_NAME = os.environ.get('MODEL_NAME', 'anthropic:claude-sonnet-4-5')
+
+# Create a pydantic agent.
+# Note! This requires the appropriate API key env var for the model provider
 agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    MODEL_NAME,
     instructions='Be concise, reply with one sentence.',
 )
 
