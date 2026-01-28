@@ -16,6 +16,9 @@ from snowleopard.models import RetrieveResponseError, ErrorSchemaData, SchemaDat
 load_dotenv()
 logger = logging.getLogger(__name__)
 
+# Get model name from environment variable with default
+MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5-mini')
+
 # =====
 # State
 # =====
@@ -33,7 +36,7 @@ class DataState(BaseModel):
 # Agent
 # =====
 agent = Agent(
-  model = OpenAIResponsesModel('gpt-5-mini'),
+  model = OpenAIResponsesModel(MODEL_NAME),
   deps_type = StateDeps[DataState],
   instructions = dedent("""
     You are a helpful assistant that helps manage and analyze sales data.

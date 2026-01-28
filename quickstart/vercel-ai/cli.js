@@ -5,6 +5,17 @@ const { streamText } = require('ai');
 const { openai } = require('@ai-sdk/openai');
 const { getData } = require('./tool');
 
+// Get model name from CLI args or environment variable
+function getModelName() {
+  const modelArg = process.argv.find(arg => arg.startsWith('--model='));
+  if (modelArg) return modelArg.split('=')[1];
+  const idx = process.argv.indexOf('--model');
+  if (idx !== -1 && process.argv[idx + 1]) return process.argv[idx + 1];
+  return process.env.MODEL_NAME || 'gpt-4o';
+}
+
+const MODEL_NAME = getModelName();
+
 // Create readline interface
 const rl = readline.createInterface({
   input: process.stdin,
@@ -15,7 +26,7 @@ const rl = readline.createInterface({
 // Conversation history
 const messages = [];
 
-console.log('Agent REPL started. Type your commands (Ctrl+C to exit)');
+console.log(`Agent REPL started using model: ${MODEL_NAME}. Type your commands (Ctrl+C to exit)`);
 rl.prompt();
 
 // Handle user input
@@ -35,7 +46,7 @@ rl.on('line', async (input) => {
 
       while (continueGeneration) {
         const result = await streamText({
-          model: openai('gpt-4o'),
+          model: openai(MODEL_NAME),
           messages: messages,
           tools: {
             getData: getData
