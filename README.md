@@ -27,11 +27,12 @@ Check the README inside each folder for exact steps after that.
 
 
 ## Quickstart Examples
-* [**fastmcp**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - FastMCP + Snow Leopard Example
-* [**langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain Snow Leopard Quick Start Guide
-* [**langgraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph Snow Leopard Quick Start Guide
-* [**pydantic-ai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/pydantic-ai) - Pydantic + Snow Leopard Example
-* [**vercel-ai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/vercel-ai) - Vercel AI + Snow Leopard Example
+* [**Agentuity**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - Agentuity Platform + Snow Leopard Example
+* [**LangChain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain + Snow Leopard Quick Start Guide
+* [**LangGraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph + Snow Leopard Quick Start Guide
+* [**MCP**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - FastMCP + Snow Leopard Example
+* [**Pydantic**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/pydantic-ai) - Pydantic AI + Snow Leopard Example
+* [**Vercel**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/vercel-ai) - Vercel AI SDK + Snow Leopard Example
 
 
 ## 📁 Agent Examples
