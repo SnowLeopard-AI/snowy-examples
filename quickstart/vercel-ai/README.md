@@ -1,4 +1,4 @@
-# Vercel AI + Snow Leopard Example
+# Vercel AI SDK + Snow Leopard Example
 
 A simple example demonstrating how to use Snow Leopard with Vercel AI SDK to create an interactive CLI agent with data retrieval capabilities.
 
