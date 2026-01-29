@@ -189,7 +189,7 @@ export function DataQueryCard({
 
                 <div className="mt-4 flex flex-col items-center gap-3">
                   <button
-                    className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:opacity-90 cursor-pointer"
+                    className="px-4 py-2 rounded-full text-sm font-medium transition-colors hover:opacity-90 cursor-pointer"
                     style={{ backgroundColor: '#9DEDEB' }}
                     onClick={() => {
                       document.getElementById('query-results')?.scrollIntoView({ behavior: 'smooth' });
@@ -197,7 +197,7 @@ export function DataQueryCard({
                   >
                     See full results
                   </button>
-                  <p className="poweredBy">
+                  <p className="text-sm" style={{ color: '#8D8A8A' }}>
                     Data powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a>
                   </p>
                 </div>

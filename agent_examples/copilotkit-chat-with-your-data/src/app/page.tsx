@@ -11,7 +11,7 @@ function CustomHeader() {
   return (
     <div className="p-4 border-b border-gray-200">
       <h2 className="text-lg font-semibold">Popup Assistant</h2>
-      <p className="text-xs mt-1" style={{ color: '#d6d6d6' }}>
+      <p className="text-xs mt-1" style={{ color: '#8D8A8A' }}>
         Data powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a>
       </p>
     </div>
