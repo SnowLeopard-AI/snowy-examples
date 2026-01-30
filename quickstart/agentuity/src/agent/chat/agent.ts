@@ -8,6 +8,9 @@ import {generateText, type ModelMessage} from 'ai';
 import {openai} from '@ai-sdk/openai';
 import {getData} from "@agent/tools/getData.ts";
 
+// Get model name from environment variable with default
+const MODEL_NAME = process.env.MODEL_NAME || 'gpt-5-mini';
+
 
 const ToolEntrySchema = s.object({
 	toolCallId: s.string(),
@@ -45,7 +48,7 @@ const agent = createAgent('chat', {
 
 		for (let step = 0; step < 10; step++) {
 			const result = await generateText({
-				model: openai('gpt-5-mini'),
+				model: openai(MODEL_NAME),
 				messages: messages,
 				tools: {
 					getData: getData,
