@@ -36,6 +36,7 @@ Check the README inside each folder for exact steps after that.
 
 
 ## 📁 Agent: Examples
+* [**chat_with_you_data_copilotkit**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/chat_with_your_data_copilotkit) - An example “chat with your data” application built using [CopilotKit](https://www.copilotkit.ai) and [Pydantic AI](https://ai.pydantic.dev).
 * [**financial_coach_langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain) - An example agent built using [Langchain]([url](https://www.langchain.com/)) that acts as a personal _Financial Coach_. 
 * [**gameclub_crewai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai) - An example agent built using [Crew AI](https://www.crewai.com/) that helps you build a _Game Discussion Club Plan_.
 
