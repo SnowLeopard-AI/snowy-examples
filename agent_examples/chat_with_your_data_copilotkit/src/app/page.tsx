@@ -12,7 +12,7 @@ function CustomHeader() {
     <div className="p-4 border-b border-gray-200">
       <h2 className="text-lg font-semibold">Popup Assistant</h2>
       <p className="text-xs mt-1" style={{ color: '#8D8A8A' }}>
-        Data powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a>
+        Data powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a> <a href="https://docs.snowleopard.ai/recipes/copilotkit-data-agent" target="_blank" className="underline">(view cookbook)</a>
       </p>
     </div>
   );
