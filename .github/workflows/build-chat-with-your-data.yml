@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'agent_examples/copilotkit-chat-with-your-data/**'
+      - 'agent_examples/chat_with_your_data_copilotkit/**'
+      - '.github/workflows/build-chat-with-your-data.yml'
   workflow_dispatch:
 
 env:
@@ -40,8 +41,8 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v6
         with:
-          context: agent_examples/copilotkit-chat-with-your-data
-          file: agent_examples/copilotkit-chat-with-your-data/Dockerfile
+          context: agent_examples/chat_with_your_data_copilotkit
+          file: agent_examples/chat_with_your_data_copilotkit/Dockerfile
           platforms: linux/amd64
           push: true
           tags: |
@@ -77,8 +78,8 @@ jobs:
       - name: Build and push agent
         uses: docker/build-push-action@v6
         with:
-          context: agent_examples/copilotkit-chat-with-your-data/agent
-          file: agent_examples/copilotkit-chat-with-your-data/agent/Dockerfile
+          context: agent_examples/chat_with_your_data_copilotkit/agent
+          file: agent_examples/chat_with_your_data_copilotkit/agent/Dockerfile
           platforms: linux/amd64
           push: true
           tags: |
