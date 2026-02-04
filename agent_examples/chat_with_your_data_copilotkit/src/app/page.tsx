@@ -4,6 +4,7 @@ import {DataTable} from "@/components/data-table";
 import {DataQueryCard, DataReadCard} from "@/components/data-query";
 import {Dashboard} from "@/components/Dashboard";
 import {AgentState} from "@/lib/types";
+import {useRef, useState} from "react";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
 import {CopilotSidebar} from "@copilotkit/react-ui";
 
@@ -46,11 +47,16 @@ export default function CopilotKitPage() {
 }
 
 function YourMainContent() {
-  // 🪁 Shared State: https://docs.copilotkit.ai/pydantic-ai/shared-state
+  // Workaround: useCoAgent state doesn't trigger re-renders in React 19
+  // https://github.com/CopilotKit/CopilotKit/issues/2931
+  // Force a re-render when the tool call completes so useMemo re-evaluates
+  // and picks up the updated agent state from the StateSnapshotEvent.
   const { state } = useCoAgent<AgentState>({
     name: "data_agent",
     initialState: {},
   });
+  const lastTriggeredId = useRef<string | null>(null);
+  const [, setTrigger] = useState(0);
 
   useRenderToolCall({
     name: "get_data",
@@ -58,6 +64,9 @@ function YourMainContent() {
     parameters: [{ name: "human_query", type: "string", required: true }],
     render: ({ result }) => {
       const preview = result?.data_top?.slice(0, 5);
+      if (result?.sql_query) {
+        queueMicrotask(() => setTrigger(n => n + 1));
+      }
       return (
         <DataQueryCard
           query={result?.sql_query}
