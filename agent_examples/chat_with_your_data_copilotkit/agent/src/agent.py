@@ -61,7 +61,8 @@ agent = Agent(
     
     <GUARDRAILS>
     Responses should be less than 200 words unless requested otherwise.
-    Never suggest follow up actions that you cannot perform (such as exporting data or writing CSV / Excel files)
+    Never suggest follow up actions that you cannot perform (such as exporting data or writing CSV / Excel files).
+    Never make more than one get_data tool call per conversation turn. If the tool errors or returns different results than expected, summarize the situation and ask the user how to proceed.
     </GUARDRAILS>
   """).strip()
 )
