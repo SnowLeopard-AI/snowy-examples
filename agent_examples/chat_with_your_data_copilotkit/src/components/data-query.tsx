@@ -96,10 +96,12 @@ export function DataQueryCard({
   query,
   numRows,
   dataPreview,
+  error,
 }: {
   query?: string;
   numRows?: number;
   dataPreview?: object[];
+  error?: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -109,9 +111,11 @@ export function DataQueryCard({
       style={{ border: '1px solid #E3E3E3' }}
     >
       <div className="p-4 w-full">
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-between w-full text-left hover:bg-gray-50 -m-2 p-2 rounded transition-colors cursor-pointer"
+        <div
+          onClick={() => query && setIsExpanded(!isExpanded)}
+          role={query ? 'button' : undefined}
+          tabIndex={query ? 0 : undefined}
+          className={`flex items-center justify-between w-full text-left -m-2 p-2 rounded transition-colors ${query ? 'hover:bg-gray-50 cursor-pointer' : ''}`}
         >
           <div className="flex items-center gap-3 flex-1">
             <Image
@@ -125,12 +129,12 @@ export function DataQueryCard({
             <div>
               <h3 className="text-base font-semibold" style={{ color: '#1a1a1a' }}>Data Query Result</h3>
               <p className="text-sm" style={{ color: '#8D8A8A' }}>
-                {numRows !== undefined ? `${numRows} rows returned` : 'Loading...'}
+                {numRows !== undefined ? `${numRows} rows returned` : error ? 'Error retrieving data' : 'Loading...'}
               </p>
             </div>
           </div>
-          <ChevronIcon isExpanded={isExpanded} />
-        </button>
+          {query && <ChevronIcon isExpanded={isExpanded} />}
+        </div>
 
         {isExpanded && (
           <>

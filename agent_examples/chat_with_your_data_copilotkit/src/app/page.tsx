@@ -63,6 +63,7 @@ function YourMainContent() {
           query={result?.sql_query}
           numRows={result?.num_rows}
           dataPreview={preview}
+          error={typeof result === "string" ? result : undefined}
         />
       );
     },
