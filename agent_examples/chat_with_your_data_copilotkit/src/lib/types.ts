@@ -2,7 +2,7 @@
 
 type SchemaData = {
   query: string;
-  rows: any[];
+  rows: Record<string, unknown>[];
   columns?: string[];
 };
 
