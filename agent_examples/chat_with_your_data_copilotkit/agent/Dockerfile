@@ -2,7 +2,7 @@ FROM ghcr.io/astral-sh/uv:python3.12-alpine AS builder
 
 WORKDIR /build
 COPY pyproject.toml uv.lock ./
-RUN uv pip compile pyproject.toml --output-file requirements.txt
+RUN uv export --frozen --no-dev --output-file requirements.txt
 
 COPY src/ src/
 RUN uv build
