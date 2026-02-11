@@ -4,13 +4,23 @@ LangChain + SnowLeopard - Simple Quick Start Guide
 This is an integration example of SnowLeopard with LangChain.
 """
 
+import argparse
 import os
 import sys
 from langchain_core.tools import Tool
 from langchain_classic.agents import AgentExecutor, create_react_agent
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
+
+
+def get_model_name():
+    """Get model name from CLI args or environment variable."""
+    parser = argparse.ArgumentParser(description='LangChain + SnowLeopard Quick Start')
+    parser.add_argument('--model', type=str, default=None,
+                        help='Model name (default: gpt-4o or MODEL_NAME env var)')
+    args, _ = parser.parse_known_args()
+    return args.model or os.getenv('MODEL_NAME', 'gpt-4o')
 
 
 # ============================================================================
@@ -19,7 +29,7 @@ from snowleopard import SnowLeopardPlaygroundClient
 
 def create_snowleopard_tool():
     """Create a SnowLeopard tool that LangChain can use."""
-    client = SnowLeopardPlaygroundClient(api_key=os.getenv("SNOWLEOPARD_API_KEY"))
+    client = SnowLeopardClient(api_key=os.getenv("SNOWLEOPARD_API_KEY"))
     
     def query_data(natural_language_query: str) -> str:
         """Query your database using natural language."""
@@ -62,9 +72,10 @@ def create_snowleopard_tool():
 # STEP 2: Create LangChain Agent
 # ============================================================================
 
-def create_agent():
+def create_agent(model_name: str = None):
     """Create a simple LangChain agent with SnowLeopard tool."""
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    model = model_name or get_model_name()
+    llm = ChatOpenAI(model=model, temperature=0)
     tools = [create_snowleopard_tool()]
     
     # ReAct prompt format (required for this agent type)
@@ -127,8 +138,9 @@ def main():
         return
     
     # Create agent
-    print("Creating LangChain agent with SnowLeopard...")
-    agent = create_agent()
+    model_name = get_model_name()
+    print(f"Creating LangChain agent with SnowLeopard using model: {model_name}...")
+    agent = create_agent(model_name)
     
     # Ask a question
     query = "What data is in the database? Show me a summary."

@@ -4,6 +4,7 @@ LangGraph + SnowLeopard - Simple Quick Start Guide
 This is an integration example of SnowLeopard with LangGraph.
 """
 
+import argparse
 import os
 import sys
 from typing import Any
@@ -11,8 +12,16 @@ from langgraph.graph import StateGraph, END
 from typing_extensions import TypedDict
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
 
+
+def get_model_name():
+    """Get model name from CLI args or environment variable."""
+    parser = argparse.ArgumentParser(description='LangGraph + SnowLeopard Quick Start')
+    parser.add_argument('--model', type=str, default=None,
+                        help='Model name (default: gpt-4o or MODEL_NAME env var)')
+    args, _ = parser.parse_known_args()
+    return args.model or os.getenv('MODEL_NAME', 'gpt-4o')
 
 
 # ============================================================================
@@ -33,7 +42,9 @@ class GraphState(TypedDict):
 from dotenv import load_dotenv
 load_dotenv()
 
-snowleopard_client = SnowLeopardPlaygroundClient(
+MODEL_NAME = get_model_name()
+
+snowleopard_client = SnowLeopardClient(
     api_key=os.getenv("SNOWLEOPARD_API_KEY")
 )
 
@@ -83,7 +94,7 @@ def query_database(state: GraphState) -> GraphState:
 
 def analyze_and_answer(state: GraphState) -> GraphState:
     """Node 2: Use LLM to analyze results and provide final answer."""
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model=MODEL_NAME, temperature=0)
     
     prompt = f"""
 You have the following database query result:
@@ -144,7 +155,7 @@ def main():
         return
     
     # Create the graph
-    print("Creating LangGraph workflow with SnowLeopard...\n")
+    print(f"Creating LangGraph workflow with SnowLeopard using model: {MODEL_NAME}...\n")
     graph = create_graph()
     
     # Run the graph

@@ -8,25 +8,25 @@ import time
 from typing import Dict, Any
 import json
 
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
 
 logger = logging.getLogger(__name__)
 
 _client = None
 
 
-def get_client() -> SnowLeopardPlaygroundClient:
+def get_client() -> SnowLeopardClient:
     """Get or create Snow Leopard client"""
     global _client
-    
+
     if _client is None:
         api_key = os.getenv('SNOWLEOPARD_API_KEY')
         if not api_key:
             raise ValueError("SNOWLEOPARD_API_KEY not set")
-        
-        _client = SnowLeopardPlaygroundClient(api_key=api_key)
+
+        _client = SnowLeopardClient(api_key=api_key)
         logger.info("[Snow Leopard] Client initialized")
-    
+
     return _client
 
 

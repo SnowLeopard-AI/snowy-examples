@@ -2,18 +2,22 @@ import os
 import sys
 
 from pydantic_ai import Agent, RunContext
-from snowleopard import SnowLeopardPlaygroundClient
+from snowleopard import SnowLeopardClient
 
-# Create a pydantic agent. In this example we are using an Anthropic model
-# Note! This requires env var ANTHROPIC_API_KEY
+# Get model from environment variable with default
+# PydanticAI model format: 'provider:model-name' (e.g., 'anthropic:claude-sonnet-4-5', 'openai:gpt-4o')
+MODEL_NAME = os.environ.get('MODEL_NAME', 'anthropic:claude-sonnet-4-5')
+
+# Create a pydantic agent.
+# Note! This requires the appropriate API key env var for the model provider
 agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    MODEL_NAME,
     instructions='Be concise, reply with one sentence.',
 )
 
 # Instantiate your Snow Leopard Client.
 # Note! This requires env var SNOWLEOPARD_API_KEY
-snowy = SnowLeopardPlaygroundClient()
+snowy = SnowLeopardClient()
 
 # This is a datafile id that corresponds to a superheroes.db datafile uploaded at http//try.snowleopard.ai
 datafile_id = os.environ.get('SNOWLEOPARD_DATAFILE_ID')
@@ -31,6 +35,6 @@ def get_data(ctx: RunContext[str], user_query: str) -> str:
     Contains physical characteristics and publication history
     """
     print(f"[Tool Call]: get_data {user_query}")
-    response = snowy.retrieve(datafile_id, user_query)
+    response = snowy.retrieve(user_query=user_query, datafile_id=datafile_id)
     print(f"[Tool Response]: {response}")
     return str(response)

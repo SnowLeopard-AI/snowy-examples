@@ -1,10 +1,10 @@
 const { tool } = require('ai');
 const { z } = require('zod');
-const { SnowLeopardPlaygroundClient } = require("@snowleopard-ai/client");
+const { SnowLeopardClient } = require("@snowleopard-ai/client");
 
 // Instantiate your SnowLeopard Client.
 // Note! This requires env var SNOWLEOPARD_API_KEY
-const snowy = new SnowLeopardPlaygroundClient();
+const snowy = new SnowLeopardClient();
 
 // This is a datafile id that corresponds to a superheroes.db datafile uploaded at https://try.snowleopard.ai
 const datafileId = process.env.SNOWLEOPARD_DATAFILE_ID;
@@ -21,7 +21,7 @@ const getData = tool({
   }),
   execute: async ({ userQuestion }) => {
     console.log(`[Tool Call] ${userQuestion}`);
-    let resp = await snowy.retrieve(datafileId, userQuestion);
+    let resp = await snowy.retrieve({ userQuery: userQuestion, datafileId: datafileId });
     console.log(`[Tool Response] ${JSON.stringify(resp, null, 2)}`);
     return resp
   }

@@ -1,0 +1,139 @@
+import logging
+import os
+from textwrap import dedent
+
+from ag_ui.core import EventType, StateSnapshotEvent
+# load environment variables
+from dotenv import load_dotenv
+from pydantic import BaseModel, Field
+from pydantic_ai import Agent, RunContext
+from pydantic_ai.ag_ui import StateDeps
+from pydantic_ai.messages import ToolReturn
+from pydantic_ai.models.openai import OpenAIResponsesModel
+from snowleopard import SnowLeopardClient
+from snowleopard.models import RetrieveResponseError, ErrorSchemaData, SchemaData
+
+load_dotenv()
+logger = logging.getLogger(__name__)
+
+# Get model name from environment variable with default
+MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5-mini')
+
+# =====
+# State
+# =====
+class DataState(BaseModel):
+  data_responses: dict[str, SchemaData] = Field(
+    default_factory=dict,
+    description='Successful data queries',
+  )
+  last_tool_call_id: str | None = Field(
+    default=None,
+    description='ID of the most recent successful data query',
+  )
+
+# =====
+# Agent
+# =====
+agent = Agent(
+  model = OpenAIResponsesModel(MODEL_NAME),
+  deps_type = StateDeps[DataState],
+  instructions = dedent("""
+    You are a helpful assistant that helps manage and analyze sales data.
+    
+    Use your tools to perform queries on the user's behalf. 
+    The user will be able to see the entire data object returned and you will receive a preview.
+    
+    After receiving data from your tools, Provide a short, provide the user with a one sentence summary of the data aimed at answering the user's question. 
+    The user can see executed query and data returned (both the top and the full data response) above your response.
+    
+    NEVER enumerate returned rows or show raw queries.
+    Whenever a user requests data results, respond only with a short one sentence summary and a follow-up question. 
+    Wait for the user to request details before showing rows or exporting data.
+    
+    Example:
+    tool call: get_data(human_query: "what are my top two customers?")
+    tool response: {"sql_query": "select * from ...", data_top: [{"customer": "Google", "arr", "5000000"...}, {"customer": "Yahoo", "arr", "2500000"...}, ...]}
+    agent response: Your top customer is Google. Would you like me to look at arr from Google over time?
+    
+    NEVER assume data schema when making a query. Do not reference specific tables / columns unless you have already seen them in a successful response.
+    Be concise.
+    
+    <GUARDRAILS>
+    Responses should be less than 200 words unless requested otherwise.
+    Never suggest follow up actions that you cannot perform (such as exporting data or writing CSV / Excel files).
+    Never make more than one get_data tool call per conversation turn. If the tool errors or returns different results than expected, summarize the situation and ask the user how to proceed.
+    </GUARDRAILS>
+  """).strip()
+)
+
+# =====
+# Tools
+# =====
+@agent.tool
+def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str, data_top_size: int = 5):
+  """Retrieve data from "Northwind" dataset with natural language queries.
+  This dataset includes information about orders, product categories, customer demographics, orders, employees, and geographic regions.
+  You can use this data to create dashboards that provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.
+
+  When asking questions, infer user intent and be specific and ask in natural language without making any assumptions on DB structure or schema.
+
+  Example: {"human_query": "Which customers have placed the highest number of orders? Provide the top 20 customers by order count, include
+  customer id, company name, and number of orders, sorted descending by number of orders."}"""
+
+  logger.info(f"📊 Getting Data: \"{human_query}\"")
+  try:
+    response = SnowLeopardClient().retrieve(
+      user_query=human_query,
+      datafile_id=(os.environ['SNOWLEOPARD_DATAFILE_ID']),
+    )
+  except Exception as e:
+    logger.exception(f"📊 Error retrieving data from Snow Leopard")
+    return f"{type(e).__name__}: {e}"
+  if isinstance(response, RetrieveResponseError):
+    logger.info(f"📊 Response Error")
+    return f"{response.responseStatus}: {response.description}"
+  elif isinstance(response.data[-1], ErrorSchemaData):
+    logger.info(f"📊 Data Retrieval Error")
+    data = response.data[-1]
+    rtn = [f"query: {data.query}", f"error: {data.error}"]
+    if data.datastoreExceptionInfo:
+      rtn.append(f"exception_info: {data.datastoreExceptionInfo}")
+    return "\n".join(rtn)
+  else:
+    logger.info(f"📊 Data Retrieval Success")
+    data = response.data[-1]
+    ctx.deps.state.data_responses[ctx.tool_call_id] = data
+    ctx.deps.state.last_tool_call_id = ctx.tool_call_id
+    return ToolReturn(
+      return_value=dict(
+        tool_call_id=ctx.tool_call_id,
+        sql_query=data.query,
+        data_top=data.rows[:data_top_size],
+        num_rows=len(data.rows),
+      ),
+      metadata=[
+        StateSnapshotEvent(
+          type=EventType.STATE_SNAPSHOT,
+          snapshot=ctx.deps.state,
+        ),
+      ],
+    )
+
+@agent.tool
+def read_get_data_response(ctx: RunContext[StateDeps[DataState]], tool_call_id: str, start_row: int = 0, end_row: int = 20):
+  """Retrieve additional data from an existing tool call result.
+  Provide the row range to read.
+  Indices are 0 indexed, so the result will be `rows[start_row:end_row]`"""
+
+  logger.info(f"📊 Reading Data Response {tool_call_id}: {start_row} - {end_row}")
+  response = ctx.deps.state.data_responses.get(tool_call_id)
+  if not response:
+    valid_ids = list(ctx.deps.state.data_responses.keys())
+    return f"No successful \"get_data\" found with tool_call_id. Valid ids: {valid_ids}"
+  else:
+    return dict(
+      window = (start_row, end_row),
+      data_window = response.rows[start_row:end_row],
+      total_rows = len(response.rows),
+    )

@@ -1,0 +1,31 @@
+{
+	"name": "agentuity",
+	"version": "0.0.1",
+	"license": "Apache-2.0",
+	"private": true,
+	"module": ".agentuity/app.js",
+	"type": "module",
+	"scripts": {
+		"build": "agentuity build",
+		"dev": "agentuity dev",
+		"start": "bun .agentuity/app.js",
+		"deploy": "agentuity deploy",
+		"typecheck": "bunx tsc --noEmit"
+	},
+	"dependencies": {
+		"@agentuity/evals": "latest",
+		"@agentuity/runtime": "latest",
+		"@agentuity/schema": "latest",
+		"@agentuity/workbench": "latest",
+		"@ai-sdk/openai": "latest",
+		"@snowleopard-ai/client": "^0.2.1",
+		"ai": "latest",
+		"openai": "latest",
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"@agentuity/cli": "latest",
+		"@types/bun": "latest",
+		"typescript": "^5"
+	}
+}
