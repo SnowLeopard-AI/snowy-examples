@@ -9,11 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@copilotkit/react-core": "^1.50.1",
-    "@copilotkit/react-ui": "^1.50.1",
-    "@copilotkit/runtime": "^1.50.1",
-    "@snowleopard-ai/client": "^0.2.0",
-    "next": "16.1.1",
+    "@copilotkit/react-core": "^1.51.3",
+    "@copilotkit/react-ui": "^1.51.3",
+    "@copilotkit/runtime": "^1.51.3",
+    "@snowleopard-ai/client": "^0.3.0",
+    "next": "16.1.5",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
