@@ -46,21 +46,23 @@ export function BarChart({
         {showGrid && <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />}
         
         {showXAxis && (
-          <XAxis 
-            dataKey={index} 
-            axisLine={false} 
-            tickLine={false} 
+          <XAxis
+            dataKey={layout === "horizontal" ? index : undefined}
+            axisLine={false}
+            tickLine={false}
             tick={{ fill: "#6b7280", fontSize: 12 }}
             dy={10}
             type={layout === "horizontal" ? "category" : "number"}
+            tickFormatter={layout === "horizontal" ? undefined : valueFormatter}
           />
         )}
-        
+
         {showYAxis && (
-          <YAxis 
-            tickFormatter={valueFormatter} 
-            axisLine={false} 
-            tickLine={false} 
+          <YAxis
+            dataKey={layout === "horizontal" ? undefined : index}
+            tickFormatter={layout === "horizontal" ? valueFormatter : undefined}
+            axisLine={false}
+            tickLine={false}
             tick={{ fill: "#6b7280", fontSize: 12 }}
             width={yAxisWidth}
             type={layout === "horizontal" ? "number" : "category"}

@@ -1,10 +1,9 @@
 "use client";
 
-import {DataTable} from "@/components/data-table";
 import {DataQueryCard, DataReadCard} from "@/components/data-query";
 import {Dashboard} from "@/components/Dashboard";
 import {AgentState} from "@/lib/types";
-import {useRef, useState} from "react";
+import {DynamicChartsProvider} from "@/lib/dynamic-charts-context";
 import {useCoAgent, useRenderToolCall} from "@copilotkit/react-core";
 import {CopilotSidebar} from "@copilotkit/react-ui";
 
@@ -22,6 +21,7 @@ function CustomHeader() {
 export default function CopilotKitPage() {
   return (
     <main>
+      <DynamicChartsProvider>
       <CopilotSidebar
         defaultOpen={true}
         clickOutsideToClose={false}
@@ -42,6 +42,7 @@ export default function CopilotKitPage() {
       >
         <YourMainContent />
       </CopilotSidebar>
+      </DynamicChartsProvider>
     </main>
   );
 }
@@ -51,27 +52,23 @@ function YourMainContent() {
   // https://github.com/CopilotKit/CopilotKit/issues/2931
   // Force a re-render when the tool call completes so useMemo re-evaluates
   // and picks up the updated agent state from the StateSnapshotEvent.
-  const { state } = useCoAgent<AgentState>({
+  useCoAgent<AgentState>({
     name: "data_agent",
     initialState: {},
   });
-  const lastTriggeredId = useRef<string | null>(null);
-  const [, setTrigger] = useState(0);
 
   useRenderToolCall({
     name: "get_data",
     description: "Retrieve data from Northwind dataset with natural language queries.",
     parameters: [{ name: "human_query", type: "string", required: true }],
-    render: ({ result }) => {
-      const preview = result?.data_top?.slice(0, 5);
-      if (result?.sql_query) {
-        queueMicrotask(() => setTrigger(n => n + 1));
-      }
+    render: ({ result, args }) => {
       return (
         <DataQueryCard
           query={result?.sql_query}
           numRows={result?.num_rows}
-          dataPreview={preview}
+          dataPreview={result?.data_top}
+          allData={result?.data_top}
+          humanQuery={args?.human_query}
           error={typeof result === "string" ? result : undefined}
         />
       );
@@ -97,19 +94,9 @@ function YourMainContent() {
     },
   });
 
-  // Get the last query from data_responses using the explicitly tracked ID
-  const lastQuery = state.last_tool_call_id
-    ? state.data_responses?.[state.last_tool_call_id]
-    : null;
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Dashboard />
-      {lastQuery && (
-        <div id="query-results" className="p-4">
-          <DataTable rows={lastQuery.rows} query={lastQuery.query} />
-        </div>
-      )}
     </div>
   );
 }

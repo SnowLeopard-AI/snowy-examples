@@ -71,7 +71,7 @@ agent = Agent(
 # Tools
 # =====
 @agent.tool
-def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str, data_top_size: int = 5):
+def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
   """Retrieve data from "Northwind" dataset with natural language queries.
   This dataset includes information about orders, product categories, customer demographics, orders, employees, and geographic regions.
   You can use this data to create dashboards that provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.
@@ -109,7 +109,7 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str, data_top_s
       return_value=dict(
         tool_call_id=ctx.tool_call_id,
         sql_query=data.query,
-        data_top=data.rows[:data_top_size],
+        data_top=data.rows,
         num_rows=len(data.rows),
       ),
       metadata=[
