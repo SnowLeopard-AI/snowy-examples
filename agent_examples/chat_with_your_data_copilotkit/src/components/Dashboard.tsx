@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./cha
 import { AreaChart } from "./charts/area-chart";
 import { BarChart } from "./charts/bar-chart";
 import { DonutChart } from "./charts/pie-chart";
+import { useDynamicCharts } from "@/lib/dynamic-charts-context";
+import { DynamicChart } from "@/lib/types";
 import {
   monthlyRevenueData,
   productPerformanceData,
@@ -18,6 +20,103 @@ import {
   calculateRevenueGrowth
 } from "../data/dashboard-data";
 
+function pivotData(
+  data: Record<string, string | number>[],
+  index: string,
+  pivotCol: string,
+  valueCol: string,
+): { pivoted: Record<string, string | number>[]; series: string[] } {
+  const grouped = new Map<string, Record<string, string | number>>();
+  const seriesSet = new Set<string>();
+  for (const row of data) {
+    const key = String(row[index]);
+    const series = String(row[pivotCol]);
+    seriesSet.add(series);
+    if (!grouped.has(key)) grouped.set(key, { [index]: row[index] });
+    grouped.get(key)![series] = row[valueCol];
+  }
+  return { pivoted: Array.from(grouped.values()), series: Array.from(seriesSet) };
+}
+
+function DynamicChartRenderer({ chart, colorIndex = 0 }: { chart: DynamicChart; colorIndex?: number }) {
+  const { recommendation, data: rawData } = chart;
+  const allColors = ["#3b82f6", "#10b981", "#6366f1", "#f59e0b", "#ef4444", "#ec4899", "#14b8a6", "#f97316"];
+
+  // Coerce unknown values to string | number for chart components
+  let data = rawData.map((row) => {
+    const out: Record<string, string | number> = {};
+    for (const [k, v] of Object.entries(row)) {
+      if (v == null) continue;
+      out[k] = typeof v === "number" ? v : String(v);
+    }
+    return out;
+  });
+
+  // Pivot data if a pivot column is specified
+  let categories = recommendation.categories;
+  if (recommendation.pivot_column) {
+    const result = pivotData(data, recommendation.index, recommendation.pivot_column, recommendation.categories[0]);
+    data = result.pivoted;
+    categories = result.series;
+  }
+
+  // For single-category charts, rotate the starting color so each chart looks different
+  const colors = categories.length === 1
+    ? [allColors[colorIndex % allColors.length]]
+    : allColors;
+
+  switch (recommendation.chart_type) {
+    case "area":
+      return (
+        <AreaChart
+          data={data}
+          index={recommendation.index}
+          categories={categories}
+          colors={colors}
+          showLegend={true}
+          showGrid={true}
+          stacked={true}
+        />
+      );
+    case "line":
+      return (
+        <AreaChart
+          data={data}
+          index={recommendation.index}
+          categories={categories}
+          colors={colors}
+          showLegend={true}
+          showGrid={true}
+          stacked={false}
+        />
+      );
+    case "bar":
+      return (
+        <BarChart
+          data={data}
+          index={recommendation.index}
+          categories={categories}
+          colors={colors}
+          showLegend={categories.length > 1}
+          showGrid={true}
+          layout={recommendation.layout ?? "horizontal"}
+        />
+      );
+    case "donut":
+      return (
+        <DonutChart
+          data={data}
+          index={recommendation.index}
+          category={recommendation.categories[0]}
+          colors={colors}
+          showLegend={true}
+          innerRadius={45}
+          outerRadius="90%"
+        />
+      );
+  }
+}
+
 export function Dashboard() {
   // Calculate metrics
   const totalRevenue = calculateTotalRevenue();
@@ -26,6 +125,7 @@ export function Dashboard() {
   const averageOrderValue = calculateAverageOrderValue();
   const totalProducts = calculateTotalProducts();
   const revenueGrowth = calculateRevenueGrowth();
+  const { charts, removeChart } = useDynamicCharts();
 
   // Color palettes for different charts
   const colors = {
@@ -67,6 +167,28 @@ export function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Dynamic Charts */}
+      {charts.map((chart) => (
+        <Card key={chart.id} className="col-span-1 md:col-span-1 lg:col-span-2 relative">
+          <button
+            onClick={() => removeChart(chart.id)}
+            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 z-10 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
+            title="Remove chart"
+          >
+            &times;
+          </button>
+          <CardHeader className="pb-1 pt-3">
+            <CardTitle className="text-base font-medium">{chart.recommendation.title}</CardTitle>
+            <CardDescription className="text-xs">{chart.recommendation.description}</CardDescription>
+          </CardHeader>
+          <CardContent className="p-3">
+            <div className="h-60">
+              <DynamicChartRenderer chart={chart} colorIndex={chart.colorIndex} />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
 
       {/* Charts */}
       <Card className="col-span-1 md:col-span-2 lg:col-span-4">

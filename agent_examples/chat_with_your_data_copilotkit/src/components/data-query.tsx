@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
+import { useDynamicCharts } from "@/lib/dynamic-charts-context";
+import { ChartRecommendation } from "@/lib/types";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -96,14 +98,47 @@ export function DataQueryCard({
   query,
   numRows,
   dataPreview,
+  allData,
+  humanQuery,
   error,
 }: {
   query?: string;
   numRows?: number;
   dataPreview?: object[];
+  allData?: Record<string, unknown>[];
+  humanQuery?: string;
   error?: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [chartStatus, setChartStatus] = useState<"idle" | "loading" | "added">("idle");
+  const { addChart } = useDynamicCharts();
+
+  const chartData = allData ?? (dataPreview as Record<string, unknown>[] | undefined);
+
+  async function handleAddChart() {
+    if (!chartData || chartData.length === 0) return;
+    setChartStatus("loading");
+    try {
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+      const columns = Object.keys(chartData[0]);
+      const sampleRows = chartData.slice(0, 10);
+      const res = await fetch(`${basePath}/api/chart-recommendation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ columns, sample_rows: sampleRows, sql_query: query, user_question: humanQuery }),
+      });
+      const recommendation: ChartRecommendation = await res.json();
+      addChart({
+        id: crypto.randomUUID(),
+        recommendation,
+        data: chartData,
+      });
+      setChartStatus("added");
+    } catch (err) {
+      console.error("Failed to get chart recommendation", err);
+      setChartStatus("idle");
+    }
+  }
 
   return (
     <div
@@ -150,9 +185,9 @@ export function DataQueryCard({
               </div>
             )}
 
-            {dataPreview && dataPreview.length > 0 && (
+            {chartData && chartData.length > 0 && (
               <div className="mt-4">
-                <p className="text-xs font-medium mb-2">Preview (Top {dataPreview.length} Rows)</p>
+                <p className="text-xs font-medium mb-2">Data ({chartData.length} Rows)</p>
                 <div
                   className="rounded overflow-x-auto max-h-64 overflow-y-auto"
                   style={{ border: '1px solid #E3E3E3' }}
@@ -160,7 +195,7 @@ export function DataQueryCard({
                   <table className="w-full text-xs">
                     <thead className="sticky top-0" style={{ backgroundColor: '#F5F5F5' }}>
                       <tr>
-                        {Object.keys(dataPreview[0] || {}).map((col) => (
+                        {Object.keys(chartData[0] || {}).map((col) => (
                           <th
                             key={col}
                             className="text-left p-2 font-medium"
@@ -172,7 +207,7 @@ export function DataQueryCard({
                       </tr>
                     </thead>
                     <tbody>
-                      {dataPreview.map((row, idx) => (
+                      {chartData.map((row, idx) => (
                         <tr
                           key={idx}
                           className="hover:bg-gray-50"
@@ -191,16 +226,7 @@ export function DataQueryCard({
                   </table>
                 </div>
 
-                <div className="mt-4 flex flex-col items-center gap-3">
-                  <button
-                    className="px-4 py-2 rounded-full text-sm font-medium transition-colors hover:opacity-90 cursor-pointer"
-                    style={{ backgroundColor: '#9DEDEB' }}
-                    onClick={() => {
-                      document.getElementById('query-results')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    See full results
-                  </button>
+                <div className="mt-4 flex justify-center">
                   <p className="text-sm" style={{ color: '#8D8A8A' }}>
                     Data powered by <a href="https://www.snowleopard.ai/" target="_blank" className="underline">snowleopard.ai</a>
                   </p>
@@ -210,6 +236,28 @@ export function DataQueryCard({
           </>
         )}
       </div>
+
+      {chartData && chartData.length > 0 && !error && (
+        <div className="px-4 pb-3">
+          <button
+            onClick={handleAddChart}
+            disabled={chartStatus !== "idle"}
+            className={`w-full py-2 text-sm font-medium rounded-lg border transition-colors ${
+              chartStatus === "added"
+                ? "bg-green-50 text-green-700 border-green-200"
+                : chartStatus === "loading"
+                  ? "bg-gray-50 text-gray-400 border-gray-200"
+                  : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50 cursor-pointer"
+            }`}
+          >
+            {chartStatus === "added"
+              ? "Added to Dashboard"
+              : chartStatus === "loading"
+                ? "Analyzing..."
+                : "Add as Chart"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

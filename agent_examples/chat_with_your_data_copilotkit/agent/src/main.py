@@ -6,9 +6,17 @@ logging.basicConfig(
     format=os.environ.get("LOG_FORMAT", "%(levelname)s - %(name)s - %(message)s"),
 )
 
-from agent import DataState, StateDeps, agent
+from starlette.routing import Route
 
-app = agent.to_ag_ui(deps=StateDeps(DataState()))
+from agent import DataState, StateDeps, agent
+from chart_recommendation import chart_recommendation_endpoint
+
+app = agent.to_ag_ui(
+    deps=StateDeps(DataState()),
+    routes=[
+        Route("/chart-recommendation", chart_recommendation_endpoint, methods=["POST"]),
+    ],
+)
 
 if __name__ == "__main__":
     # run the app
