@@ -11,4 +11,5 @@ dependencies = [
     "python-dotenv",
     "logfire>=4.10.0",
     "snowleopard>=0.2.0",
+    "sl-bigquery-mcp>=0.1.9",
 ]
