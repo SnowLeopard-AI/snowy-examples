@@ -13,7 +13,6 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY --from=builder /build/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install sl-bigquery-mcp
 COPY --from=builder /build/dist/*.whl ./
 RUN pip install --no-deps ./*.whl
 
