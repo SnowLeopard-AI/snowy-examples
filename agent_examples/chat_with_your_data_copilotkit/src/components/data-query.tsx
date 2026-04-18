@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { useDynamicCharts } from "@/lib/dynamic-charts-context";
 import { ChartRecommendation } from "@/lib/types";
@@ -110,14 +110,56 @@ export function DataQueryCard({
   error?: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [chartStatus, setChartStatus] = useState<"idle" | "loading" | "added">("idle");
-  const { addChart } = useDynamicCharts();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const { charts, addChart } = useDynamicCharts();
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const chartData = allData ?? (dataPreview as Record<string, unknown>[] | undefined);
+  const sourceKey = query;
+  const isAdded = !!sourceKey && charts.some((c) => c.sourceKey === sourceKey);
+  const chartStatus: "idle" | "loading" | "added" = isAdded ? "added" : isLoading ? "loading" : "idle";
+
+  function findScrollParent(el: HTMLElement | null): HTMLElement | null {
+    let node = el?.parentElement ?? null;
+    while (node) {
+      const style = getComputedStyle(node);
+      if (/(auto|scroll|overlay)/.test(style.overflowY) && node.scrollHeight > node.clientHeight) {
+        return node;
+      }
+      node = node.parentElement;
+    }
+    return null;
+  }
+
+  function toggleExpanded() {
+    if (!query) return;
+    const el = cardRef.current;
+    const scrollParent = findScrollParent(el);
+    const topBefore = el?.getBoundingClientRect().top ?? 0;
+
+    // Nudge the chat container's scrollTop by -1px so CopilotKit's scroll
+    // handler flips its "user scrolled up" flag. This prevents its
+    // MutationObserver from auto-scrolling to bottom when the card expands.
+    // The flag is reset on the next user message, preserving the "jump to
+    // bottom on new response" behavior.
+    if (scrollParent && scrollParent.scrollTop > 0) {
+      scrollParent.scrollTop -= 1;
+    }
+
+    setIsExpanded((prev) => !prev);
+
+    requestAnimationFrame(() => {
+      if (!el || !scrollParent) return;
+      const topAfter = el.getBoundingClientRect().top;
+      const diff = topAfter - topBefore;
+      if (diff !== 0) scrollParent.scrollTop += diff;
+    });
+  }
 
   async function handleAddChart() {
     if (!chartData || chartData.length === 0) return;
-    setChartStatus("loading");
+    setIsLoading(true);
     try {
       const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
       const columns = Object.keys(chartData[0]);
@@ -132,22 +174,24 @@ export function DataQueryCard({
         id: crypto.randomUUID(),
         recommendation,
         data: chartData,
+        sourceKey,
       });
-      setChartStatus("added");
     } catch (err) {
       console.error("Failed to get chart recommendation", err);
-      setChartStatus("idle");
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
     <div
+      ref={cardRef}
       className="rounded-xl shadow-sm mt-6 mb-4 mr-3 bg-white"
       style={{ border: '1px solid #E3E3E3' }}
     >
       <div className="p-4 w-full">
         <div
-          onClick={() => query && setIsExpanded(!isExpanded)}
+          onClick={toggleExpanded}
           role={query ? 'button' : undefined}
           tabIndex={query ? 0 : undefined}
           className={`flex items-center justify-between w-full text-left -m-2 p-2 rounded transition-colors ${query ? 'hover:bg-gray-50 cursor-pointer' : ''}`}
@@ -242,13 +286,24 @@ export function DataQueryCard({
           <button
             onClick={handleAddChart}
             disabled={chartStatus !== "idle"}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             className={`w-full py-2 text-sm font-medium rounded-lg border transition-colors ${
               chartStatus === "added"
                 ? "bg-green-50 text-green-700 border-green-200"
                 : chartStatus === "loading"
                   ? "bg-gray-50 text-gray-400 border-gray-200"
-                  : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  : "cursor-pointer"
             }`}
+            style={
+              chartStatus === "idle"
+                ? {
+                    backgroundColor: isHovered ? "#7dd9d7" : "#9dedeb",
+                    color: "#1a1a1a",
+                    borderColor: "#7dd9d7",
+                  }
+                : undefined
+            }
           >
             {chartStatus === "added"
               ? "Added to Dashboard"
