@@ -30,4 +30,5 @@ export interface DynamicChart {
   colorIndex: number;
   recommendation: ChartRecommendation;
   data: Record<string, unknown>[];
+  sourceKey?: string;
 }
