@@ -14,7 +14,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5-mini')
+MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5.4')
 
 
 class ChartRecommendation(BaseModel):
