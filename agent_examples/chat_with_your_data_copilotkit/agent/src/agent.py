@@ -17,7 +17,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 # Get model name from environment variable with default
-MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5-mini')
+MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5.4')
 
 # =====
 # State
