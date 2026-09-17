@@ -13,21 +13,22 @@ Each folder within these topic-folders focuses on a single example, including mi
 
 To start playing with the examples, make sure you have:
 
-* A valid [Snow Leopard API key](https://docs.snowleopard.ai/#authentication)
+* A [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance with at least one data source connected
+* A valid [Snow Leopard Cloud API key](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
 * Any language/runtime dependencies required by the specific example (Node, Python, etc.)
 
 ### Most examples follow this pattern:
 
 1. **Install dependencies**
 2. **Configuration** - The Following are typically set as environment variables:
-    - `SNOWLEOPARD_API_KEY` - You can create an API key [here](https://auth.snowleopard.ai/account/api_keys)
-    - `SNOWLEOPARD_DATAFILE_ID` - Go to [Snow Leopard Playground](https://try.snowleopard.ai), upload a datafile, and then click the `Copy ID` button for that file
+    - `SNOWLEOPARD_API_KEY` - Create an API key from your instance's **Keys** tab. See [API Keys](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
+    - `SNOWLEOPARD_INSTANCE_ID` - Copy the instance ID from your instance's **Connection Info** tab. See [Connection Info](https://docs.snowleopard.ai/cloud/getting-started#connection-info)
 
 Check the README inside each folder for exact steps after that.
 
 
 ## Integrations: Quickstart
-* [**Agentuity**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - Agentuity Platform + Snow Leopard Example
+* [**Agentuity**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/agentuity) - Agentuity Platform + Snow Leopard Example
 * [**LangChain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langchain) - LangChain + Snow Leopard Quick Start Guide
 * [**LangGraph**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/langgraph) - LangGraph + Snow Leopard Quick Start Guide
 * [**MCP**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/quickstart/fastmcp) - FastMCP + Snow Leopard Example
@@ -37,7 +38,7 @@ Check the README inside each folder for exact steps after that.
 
 ## 📁 Agent: Examples
 * [**chat_with_you_data_copilotkit**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/chat_with_your_data_copilotkit) - An example “chat with your data” application built using [CopilotKit](https://www.copilotkit.ai) and [Pydantic AI](https://ai.pydantic.dev).
-* [**financial_coach_langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain) - An example agent built using [Langchain]([url](https://www.langchain.com/)) that acts as a personal _Financial Coach_. 
+* [**financial_coach_langchain**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/financial_coach_langchain) - An example agent built using [LangChain](https://www.langchain.com/) that acts as a personal _Financial Coach_. 
 * [**gameclub_crewai**](https://github.com/SnowLeopard-AI/snowy-examples/tree/main/agent_examples/gameclub_crewai) - An example agent built using [Crew AI](https://www.crewai.com/) that helps you build a _Game Discussion Club Plan_.
 
 

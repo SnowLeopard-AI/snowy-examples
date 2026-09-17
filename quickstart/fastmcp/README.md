@@ -8,12 +8,13 @@ MCP protocol.
 ## Prerequisites
 
 - [uv](https://docs.astral.sh/uv/) package manager
-- [Snow Leopard API key](https://auth.snowleopard.ai/account/api_keys)
+- [Snow Leopard Cloud API key](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
 - [Claude Desktop app](https://claude.ai/download)
 
 ## Setup
 
-1. Upload `superheroes.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID.
+1. Create a [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance, connect a data source, and note the instance ID from the instance's **Connection Info** tab. See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started) for details.
+   - Don't have data? Load the [sample Northwind dataset](https://github.com/SnowLeopard-AI/northwind_psql) into a PostgreSQL database that Snow Leopard Cloud can reach, such as a hosted [Neon](https://neon.com) or [Supabase](https://supabase.com) database. Run the dataset's `northwind.sql` script against your database, then [add the database as a data source](https://docs.snowleopard.ai/cloud/getting-started#adding-a-data-source) in your instance.
 
 ## Usage
 We will launch the MCP server using fastmcp:
@@ -27,7 +28,7 @@ This will start the MCP server that can be connected to by any MCP client (like 
 
 Add to your Claude Desktop configuration:
 
-Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API_KEY`, and `SNOWLEOPARD_DATAFILE_ID`
+Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API_KEY`, and `SNOWLEOPARD_INSTANCE_ID`
 
 ```json
 {
@@ -44,13 +45,13 @@ Note! You need to update the `/path/to/snowy-examples/fastmcp`, `SNOWLEOPARD_API
       ],
       "env": {
         "SNOWLEOPARD_API_KEY": "your-api-key",
-        "SNOWLEOPARD_DATAFILE_ID": "your-datafile-id"
+        "SNOWLEOPARD_INSTANCE_ID": "your-instance-id"
       }
     }
   }
 }
 ```
 
-Now you can ask Claude questions about superhero data and it will use the Snow Leopard tool to retrieve information!
+Now you can ask Claude questions about Northwind data and it will use the Snow Leopard tool to retrieve information!
 
 ![screenshot](screenshot.png)

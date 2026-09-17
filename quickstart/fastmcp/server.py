@@ -10,21 +10,21 @@ mcp = FastMCP("Snowy")
 # Note! This requires env var SNOWLEOPARD_API_KEY
 snowy = SnowLeopardClient()
 
-# This is a datafile id that corresponds to a superheroes.db datafile uploaded at https://try.snowleopard.ai
-datafile_id = os.environ.get('SNOWLEOPARD_DATAFILE_ID')
-if not datafile_id:
-    print("environment variable SNOWLEOPARD_DATAFILE_ID required", file=sys.stderr)
+# This is the id of your Snow Leopard Cloud instance, found on the Connection Info tab at https://cloud.snowleopard.ai
+instance_id = os.environ.get('SNOWLEOPARD_INSTANCE_ID')
+if not instance_id:
+    print("environment variable SNOWLEOPARD_INSTANCE_ID required", file=sys.stderr)
     sys.exit(1)
 
 # Our snowy mcp server will expose a single tool "get_data" that allows agents to retrieve data from SnowLeopard
 @mcp.tool
 def get_data(user_query: str):
     """
-    Retrieve superhero data.
-    Superhero/comic book character database
-    Contains physical characteristics and publication history
+    Retrieve data from "Northwind" dataset with natural language queries.
+    This dataset includes information about orders, product categories, customer demographics, employees, and geographic regions.
+    You can use this data to provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.
     """
-    return snowy.retrieve(user_query=user_query, datafile_id=datafile_id)
+    return snowy.retrieve(user_query=user_query, instance_id=instance_id)
 
 
 if __name__ == "__main__":

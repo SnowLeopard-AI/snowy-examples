@@ -10,7 +10,7 @@
         "@agentuity/schema": "latest",
         "@agentuity/workbench": "latest",
         "@ai-sdk/openai": "latest",
-        "@snowleopard-ai/client": "^0.2.1",
+        "@snowleopard-ai/client": "^0.5.1",
         "ai": "latest",
         "openai": "latest",
         "zod": "^4.3.6",
@@ -531,7 +531,7 @@
 
     "@sindresorhus/is": ["@sindresorhus/is@5.6.0", "", {}, "sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g=="],
 
-    "@snowleopard-ai/client": ["@snowleopard-ai/client@0.2.1", "", {}, "sha512-8yDUufS+Fako23CKegFDb6Ab2jHh2xwqAabfT/iJTvCMrOo0BNs1ZrTvwIEm2PSn+cDqmmjdmKtqhKNy1+lU8Q=="],
+    "@snowleopard-ai/client": ["@snowleopard-ai/client@0.5.1", "", {}, "sha512-k2tZ2Z1jYOdXXN35g0E+bhsm6EYBpHSMQ8c6RlETy1Mri9HL8Z1WsnEO1GP5vYj/twsVuav8nu0BVFcc29+K3Q=="],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 

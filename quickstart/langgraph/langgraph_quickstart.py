@@ -59,7 +59,7 @@ def query_database(state: GraphState) -> GraphState:
     
     # Call SnowLeopard API
     response = snowleopard_client.retrieve(
-        datafile_id=os.getenv("SNOWLEOPARD_DATAFILE_ID"),
+        instance_id=os.getenv("SNOWLEOPARD_INSTANCE_ID"),
         user_query=question
     )
     
@@ -146,8 +146,8 @@ def main():
         print("Error: Set SNOWLEOPARD_API_KEY environment variable")
         return
     
-    if not os.getenv("SNOWLEOPARD_DATAFILE_ID"):
-        print("Error: Set SNOWLEOPARD_DATAFILE_ID environment variable")
+    if not os.getenv("SNOWLEOPARD_INSTANCE_ID"):
+        print("Error: Set SNOWLEOPARD_INSTANCE_ID environment variable")
         return
     
     if not os.getenv("OPENAI_API_KEY"):

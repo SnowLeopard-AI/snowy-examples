@@ -6,17 +6,18 @@ A simple example demonstrating how to use Snow Leopard with Pydantic models for 
 
 - [uv](https://docs.astral.sh/uv/) package manager
 - Anthropic API key
-- [Snow Leopard API key](https://auth.snowleopard.ai/account/api_keys)
+- [Snow Leopard Cloud API key](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
 
 ## Setup
 
-1. Upload `superheroes.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
+1. Create a [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance, connect a data source, and note the instance ID from the instance's **Connection Info** tab. See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started) for details.
+   - Don't have data? Load the [sample Northwind dataset](https://github.com/SnowLeopard-AI/northwind_psql) into a PostgreSQL database that Snow Leopard Cloud can reach, such as a hosted [Neon](https://neon.com) or [Supabase](https://supabase.com) database. Run the dataset's `northwind.sql` script against your database, then [add the database as a data source](https://docs.snowleopard.ai/cloud/getting-started#adding-a-data-source) in your instance.
 
-2. Set your API keys and datafile id:
+2. Set your API keys and instance ID:
 ```bash
 export ANTHROPIC_API_KEY=...
 export SNOWLEOPARD_API_KEY=...
-export SNOWLEOPARD_DATAFILE_ID=...
+export SNOWLEOPARD_INSTANCE_ID=...
 ```
 
 ## Usage
@@ -27,5 +28,5 @@ uv run clai --agent agent:agent
 
 Now we have entered an interactive repl where we can ask questions:
 ```
-clai ➤ How many superheroes are there?
+clai ➤ How many customers do we have?
 ```

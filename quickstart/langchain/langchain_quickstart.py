@@ -34,7 +34,7 @@ def create_snowleopard_tool():
     def query_data(natural_language_query: str) -> str:
         """Query your database using natural language."""
         response = client.retrieve(
-            datafile_id=os.getenv("SNOWLEOPARD_DATAFILE_ID"),
+            instance_id=os.getenv("SNOWLEOPARD_INSTANCE_ID"),
             user_query=natural_language_query
         )
         
@@ -129,8 +129,8 @@ def main():
         print("Error: Set SNOWLEOPARD_API_KEY environment variable")
         return
     
-    if not os.getenv("SNOWLEOPARD_DATAFILE_ID"):
-        print("Error: Set SNOWLEOPARD_DATAFILE_ID environment variable")
+    if not os.getenv("SNOWLEOPARD_INSTANCE_ID"):
+        print("Error: Set SNOWLEOPARD_INSTANCE_ID environment variable")
         return
     
     if not os.getenv("OPENAI_API_KEY"):
