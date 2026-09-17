@@ -6,10 +6,10 @@ const { SnowLeopardClient } = require("@snowleopard-ai/client");
 // Note! This requires env var SNOWLEOPARD_API_KEY
 const snowy = new SnowLeopardClient();
 
-// This is a datafile id that corresponds to a superheroes.db datafile uploaded at https://try.snowleopard.ai
-const datafileId = process.env.SNOWLEOPARD_DATAFILE_ID;
-if (!datafileId) {
-  console.error('environment variable SNOWLEOPARD_DATAFILE_ID required');
+// This is the id of your Snow Leopard Cloud instance, found on the Connection Info tab at https://cloud.snowleopard.ai
+const instanceId = process.env.SNOWLEOPARD_INSTANCE_ID;
+if (!instanceId) {
+  console.error('environment variable SNOWLEOPARD_INSTANCE_ID required');
   process.exit(1);
 }
 
@@ -21,7 +21,7 @@ const getData = tool({
   }),
   execute: async ({ userQuestion }) => {
     console.log(`[Tool Call] ${userQuestion}`);
-    let resp = await snowy.retrieve({ userQuery: userQuestion, datafileId: datafileId });
+    let resp = await snowy.retrieve({ userQuery: userQuestion, instanceId: instanceId });
     console.log(`[Tool Response] ${JSON.stringify(resp, null, 2)}`);
     return resp
   }

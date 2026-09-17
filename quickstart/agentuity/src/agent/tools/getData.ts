@@ -3,8 +3,8 @@ import {z} from "zod";
 import {SnowLeopardClient} from "@snowleopard-ai/client";
 
 
-const datafileId = process.env.SNOWLEOPARD_DATAFILE_ID!;
-if (!datafileId) { throw new Error("SNOWLEOPARD_DATAFILE_ID environment variable is required"); }
+const instanceId = process.env.SNOWLEOPARD_INSTANCE_ID!;
+if (!instanceId) { throw new Error("SNOWLEOPARD_INSTANCE_ID environment variable is required"); }
 const snowLeopardToken = process.env.SNOWLEOPARD_API_KEY!;
 if (!snowLeopardToken) { throw new Error("SNOWLEOPARD_API_KEY environment variable is required"); }
 const snowy = new SnowLeopardClient({ apiKey: snowLeopardToken });
@@ -17,7 +17,7 @@ export const getData = tool({
     }),
     execute: async ({userQuestion}) => {
         console.log(`[Tool Call] ${userQuestion}`);
-        const resp = await snowy.retrieve({userQuery: userQuestion, datafileId: datafileId!});
+        const resp = await snowy.retrieve({userQuery: userQuestion, instanceId: instanceId!});
         console.log(`[Tool Response] ${JSON.stringify(resp, null, 2)}`);
         return resp;
     },

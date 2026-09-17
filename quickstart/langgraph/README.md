@@ -5,7 +5,7 @@
 
 1. Set environment variables:
    export SNOWLEOPARD_API_KEY="your-api-key"
-   export SNOWLEOPARD_DATAFILE_ID="your-datafile-id"
+   export SNOWLEOPARD_INSTANCE_ID="your-instance-id"
    export OPENAI_API_KEY="your-openai-key"
 
 2. Install dependencies:

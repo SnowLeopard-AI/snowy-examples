@@ -17,22 +17,23 @@ This project contains two key files:
 
 - [Agentuity CLI](https://agentuity.com/)
 - [Bun](https://bun.sh/) runtime
-- [Snow Leopard API key](https://auth.snowleopard.ai/account/api_keys)
+- [Snow Leopard Cloud API key](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
 - [OpenAI API key](https://platform.openai.com/api-keys)
 
 ## Setup
 
-1. Upload `northwind.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/northwind.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and note the datafile ID
+1. Create a [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance, connect a data source, and note the instance ID from the instance's **Connection Info** tab. See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started) for details.
+   - Don't have data? Use our sample `northwind.db` dataset ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/northwind.db)).
 
 2. Install dependencies:
 ```bash
 bun install
 ```
 
-3. Set your API keys and datafile id in `.env`:
+3. Set your API keys and instance ID in `.env`:
 ```
 SNOWLEOPARD_API_KEY=...
-SNOWLEOPARD_DATAFILE_ID=...
+SNOWLEOPARD_INSTANCE_ID=...
 OPENAI_API_KEY=...
 ```
 
