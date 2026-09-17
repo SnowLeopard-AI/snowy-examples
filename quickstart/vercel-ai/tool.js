@@ -13,9 +13,9 @@ if (!instanceId) {
   process.exit(1);
 }
 
-// Create a tool for retrieving superhero data
+// Create a tool for retrieving Northwind data
 const getData = tool({
-  description: 'Retrieve superhero data.\nSuperhero/comic book character database\nContains physical characteristics and publication history',
+  description: 'Retrieve data from "Northwind" dataset with natural language queries.\nThis dataset includes information about orders, product categories, customer demographics, employees, and geographic regions.\nYou can use this data to provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.',
   inputSchema: z.object({
     userQuestion: z.string().describe('the natural language query to answer'),
   }),

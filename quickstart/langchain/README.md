@@ -1,24 +1,33 @@
 # LangChain Snowleopard AI Quick Start Guide
 
 
+## Prerequisites
+
+- Python 3.10+
+- [Snow Leopard Cloud API key](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
+- OpenAI API key
+
 ## HOW TO USE THE CODE
-1. Set environment variables:
+1. Create a [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance, connect a data source, and note the instance ID from the instance's **Connection Info** tab. See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started) for details.
+   - Don't have data? Load the [sample Northwind dataset](https://github.com/SnowLeopard-AI/northwind_psql) into a PostgreSQL database that Snow Leopard Cloud can reach, such as a hosted [Neon](https://neon.com) or [Supabase](https://supabase.com) database. Run the dataset's `northwind.sql` script against your database, then [add the database as a data source](https://docs.snowleopard.ai/cloud/getting-started#adding-a-data-source) in your instance.
+
+2. Set environment variables:
    export SNOWLEOPARD_API_KEY="your-api-key"
    export SNOWLEOPARD_INSTANCE_ID="your-instance-id"
    export OPENAI_API_KEY="your-openai-key"
 
-2. Install dependencies:
+3. Install dependencies:
    ```
    pip install langchain langchain-classic langchain-openai snowleopard python-dotenv
    ```
 
-3. Run the script:
+4. Run the script:
    ```shell
    cd quickstart/langchain/
    python langchain_quickstart.py
    ```
 
-4. Expected output:
+5. Expected output:
    ```
    > Entering new AgentExecutor...
    Thought: I need to query the database...
@@ -28,7 +37,7 @@
    Final Answer: [summary]
    ```
 
-5. Customize by changing the query in main():
+6. Customize by changing the query in main():
    query = "What are the top 5 customers by revenue?"
 
 ---

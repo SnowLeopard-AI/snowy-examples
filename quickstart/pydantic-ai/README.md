@@ -11,7 +11,7 @@ A simple example demonstrating how to use Snow Leopard with Pydantic models for 
 ## Setup
 
 1. Create a [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance, connect a data source, and note the instance ID from the instance's **Connection Info** tab. See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started) for details.
-   - Don't have data? Use our sample `superheroes.db` dataset ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/superheroes.db)).
+   - Don't have data? Load the [sample Northwind dataset](https://github.com/SnowLeopard-AI/northwind_psql) into a PostgreSQL database that Snow Leopard Cloud can reach, such as a hosted [Neon](https://neon.com) or [Supabase](https://supabase.com) database. Run the dataset's `northwind.sql` script against your database, then [add the database as a data source](https://docs.snowleopard.ai/cloud/getting-started#adding-a-data-source) in your instance.
 
 2. Set your API keys and instance ID:
 ```bash
@@ -28,5 +28,5 @@ uv run clai --agent agent:agent
 
 Now we have entered an interactive repl where we can ask questions:
 ```
-clai ➤ How many superheroes are there?
+clai ➤ How many customers do we have?
 ```

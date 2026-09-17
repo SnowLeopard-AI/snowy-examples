@@ -30,9 +30,9 @@ if not instance_id:
 @agent.tool
 def get_data(ctx: RunContext[str], user_query: str) -> str:
     """
-    Retrieve superhero data.
-    Superhero/comic book character database
-    Contains physical characteristics and publication history
+    Retrieve data from "Northwind" dataset with natural language queries.
+    This dataset includes information about orders, product categories, customer demographics, employees, and geographic regions.
+    You can use this data to provide insights into sales performance, customer behavior, shipping efficiency, and supplier contributions.
     """
     print(f"[Tool Call]: get_data {user_query}")
     response = snowy.retrieve(user_query=user_query, instance_id=instance_id)
