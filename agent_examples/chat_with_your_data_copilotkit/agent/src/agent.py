@@ -11,7 +11,7 @@ from pydantic_ai.ag_ui import StateDeps
 from pydantic_ai.messages import ToolReturn
 from pydantic_ai.models.openai import OpenAIResponsesModel
 from snowleopard import SnowLeopardClient
-from snowleopard.models import RetrieveResponseError, ErrorSchemaData, SchemaData
+from snowleopard.models import APIError, ErrorSchemaData, SchemaData
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -85,12 +85,12 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
   try:
     response = SnowLeopardClient().retrieve(
       user_query=human_query,
-      datafile_id=(os.environ['SNOWLEOPARD_DATAFILE_ID']),
+      instance_id=os.environ['SNOWLEOPARD_INSTANCE_ID'],
     )
   except Exception as e:
     logger.exception(f"📊 Error retrieving data from Snow Leopard")
     return f"{type(e).__name__}: {e}"
-  if isinstance(response, RetrieveResponseError):
+  if isinstance(response, APIError):
     logger.info(f"📊 Response Error")
     return f"{response.responseStatus}: {response.description}"
   elif isinstance(response.data[-1], ErrorSchemaData):

@@ -17,6 +17,8 @@ To start playing with the examples, make sure you have:
 * A valid [Snow Leopard Cloud API key](https://docs.snowleopard.ai/cloud/getting-started#api-keys)
 * Any language/runtime dependencies required by the specific example (Node, Python, etc.)
 
+Don't have a data source yet? Each example ships its dataset as a PostgreSQL script. [docs/postgres-setup.md](docs/postgres-setup.md) walks through loading one into a hosted PostgreSQL database and attaching it to a Cloud instance.
+
 ### Most examples follow this pattern:
 
 1. **Install dependencies**

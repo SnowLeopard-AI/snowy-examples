@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10, <3.14"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -853,7 +853,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "crewai", extras = ["tools"], specifier = "==1.6.1" },
-    { name = "snowleopard", specifier = ">=0.2.0" },
+    { name = "snowleopard", specifier = ">=0.5.1" },
 ]
 
 [[package]]
@@ -3169,14 +3169,14 @@ wheels = [
 
 [[package]]
 name = "snowleopard"
-version = "0.2.0"
+version = "0.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1d/28/eb5aa7036107a49233479e566dbc602f1f7ea97bc4f8cf8de0def921c49e/snowleopard-0.2.0.tar.gz", hash = "sha256:4a69b79705123aa57f8e4138d9d49337c32a21f127a9aabc6793a503c7292dd2", size = 6966, upload-time = "2026-01-07T19:56:54.733Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/26/e6/e1884e6d08e21f9742abd09b876bc87b9a5a0aba03e3d7eb405fcba0b012/snowleopard-0.5.1.tar.gz", hash = "sha256:5d263cf2f3a5b044f30c157e2ed811b37c301b24bad8189ce9f48976ffb8708a", size = 8229, upload-time = "2026-07-29T21:02:55.393Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c4/21/e5a7b2db0fe893d42651c30bdb544d7965c30cfff508ea943360ed01388c/snowleopard-0.2.0-py3-none-any.whl", hash = "sha256:02d3c25d4a9d0d237d424062c6e83f9af8aa0176bc5382ea5e37e75be9c877be", size = 9522, upload-time = "2026-01-07T19:56:53.491Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/83/ad7f75933f7c133d2bcf135c4b21d948c64bbc83d112c79b39206d6ab903/snowleopard-0.5.1-py3-none-any.whl", hash = "sha256:820c582e6538935e72103baeb094ab70e0fb9bd1e2051de0df524ad1d81c0d29", size = 11475, upload-time = "2026-07-29T21:02:56.158Z" },
 ]
 
 [[package]]

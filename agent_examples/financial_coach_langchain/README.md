@@ -1,6 +1,6 @@
 # 💰 Snow Leopard Financial Coach
 
-A LangGraph-based financial coaching CLI agent that analyzes personal spending data through natural language queries. Uses Snow Leopard to convert your questions into SQL, executes them against your SQLite dataset, and returns AI-powered financial coaching insights.
+A LangGraph-based financial coaching CLI agent that analyzes personal spending data through natural language queries. Uses Snow Leopard Cloud to convert your questions into SQL, executes them against your PostgreSQL dataset, and returns AI-powered financial coaching insights.
 
 ---
 
@@ -25,17 +25,19 @@ A LangGraph-based financial coaching CLI agent that analyzes personal spending d
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Copy and fill .env
+# 2. Load the sample dataset into a PostgreSQL database that Snow Leopard Cloud can reach
+psql "$DATABASE_URL" -f data/finance_coach.sql
+
+# 3. Attach the database to a Snow Leopard Cloud instance (see Dataset Setup)
+
+# 4. Copy and fill .env
 cp .env.example .env
-# Edit .env with your Snow Leopard API key & datafile ID
+# Edit .env with your Snow Leopard API key & instance ID
 
-# 3. Create sample dataset
-python data/create_sample_data.py
-
-# 4. Run the app
+# 5. Run the app
 python main.py
 
-# 5. Try a query
+# 6. Try a query
 You: Show me my spending by category
 ```
 
@@ -45,30 +47,45 @@ You: Show me my spending by category
 
 ### Overview
 
-#### Step 1: Prepare your SQLite database
+Snow Leopard Cloud queries a live PostgreSQL (or BigQuery) database, so the dataset ships as a SQL script you load
+into a database of your own.
 
-This application expects a **SQLite database** with financial transaction data. You have two options:
+#### Step 1: Get a PostgreSQL database
 
-1. **Use the sample dataset generator** (easiest - includes sample data)
-    1. Generate Sample Dataset
-    ```bash
-    python data/create_sample_data.py
-    ```
-    This generates `financial_data.db` with sample transactions from the past 6 months
+You need a PostgreSQL database that Snow Leopard Cloud can reach over the internet. A free hosted database on
+[Neon](https://neon.com) or [Supabase](https://supabase.com) works well. See
+[docs/postgres-setup.md](../../docs/postgres-setup.md) for the details and alternatives.
 
-2. **Use the sample dataset** (personal_finance.db, included in repo. Download data from (Kaggle)[https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data])
-    1. Use the provided `personal_finance.db` file or download from Kaggle (https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data) and run `data/transform_personal_finance.py`
+#### Step 2: Load the sample dataset
 
-#### Step 2: Upload to Snow Leopard Playground
+The repo includes `data/finance_coach.sql`, built from the
+[Kaggle Personal Finance dataset](https://www.kaggle.com/datasets/entrepreneurlife/personal-finance/data):
+806 transactions across 22 categories and 65 merchants, normalized into `users`, `accounts`, `categories`,
+`merchants`, and `transactions` tables plus three reporting views.
 
-1. Go to http://try.snowleopard.ai
-2. **"Create New Datafile"** → Select `financial_data.db`
-3. Give it a name: `"Personal Finance Data"`
-4. Click **"Upload"** and wait for processing
-5. Copy the generated **Datafile ID** (looks like `datafile_xxx`)
-6. Paste into `.env`:
+```bash
+psql "postgresql://USER:PASSWORD@HOST/DBNAME?sslmode=require" -f data/finance_coach.sql
+```
+
+You can also paste the file into your provider's web SQL editor. The script drops and recreates its tables, so it is
+safe to re-run.
+
+To regenerate the SQL from the CSV (for example after editing the data), run:
+
+```bash
+python data/transform_personal_finance.py
+```
+
+#### Step 3: Attach the database to Snow Leopard Cloud
+
+1. Go to https://cloud.snowleopard.ai and create an instance
+2. Click **Add Data Source**, pick PostgreSQL (or Neon / Supabase), and enter the database's host, name, username, and password
+3. On the **Keys** tab, create an API key and copy it (it is shown only once)
+4. On the **Connection Info** tab, copy the instance ID
+5. Paste both into `.env`:
    ```bash
-   SNOWLEOPARD_DATAFILE_ID=datafile_xxx
+   SNOWLEOPARD_API_KEY=...
+   SNOWLEOPARD_INSTANCE_ID=...
    ```
 ---
 
@@ -85,9 +102,9 @@ cp .env.example .env
 Edit `.env`:
 
 ```bash
-# Snow Leopard API Credentials
-SNOWLEOPARD_API_KEY=sk-proj-abc123...          # Your Snowleopard API key
-SNOWLEOPARD_DATAFILE_ID=datafile_xyz789        # Your uploaded datafile ID
+# Snow Leopard Cloud Credentials
+SNOWLEOPARD_API_KEY=...                        # API key from your instance's Keys tab
+SNOWLEOPARD_INSTANCE_ID=...                    # Instance ID from your instance's Connection Info tab
 
 # Debugging (optional)
 DEBUG=False                                    # Set to True for verbose logs
@@ -96,15 +113,15 @@ DEBUG=False                                    # Set to True for verbose logs
 #### How to Get Credentials
 
 1. **API Key:**
-   - Sign up at https://www.snowleopard.ai
-   - Go to **Account Settings** → **API Keys**
-   - Copy your API key
-   - Paste into `.env`
+   - Open your instance at https://cloud.snowleopard.ai
+   - Go to the **Keys** tab and click **Create Key**
+   - Copy the key when it is shown and paste it into `.env`
 
-2. **Datafile ID:**
-   - Upload your SQLite to Playground (see Dataset Setup)
-   - On the datafile row, click **"Copy ID"**
-   - Paste into `.env`
+2. **Instance ID:**
+   - Open your instance's **Connection Info** tab
+   - Copy the instance ID and paste it into `.env`
+
+See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started) for screenshots.
 
 ---
 
@@ -131,9 +148,9 @@ financial-coach/
 │   └── schemas.py               # Pydantic models
 │
 └── data/
-    └── create_sample_data.py    # Generate sample dataset
-    └── financial_data.db            # Sample SQLite (generated)
-    ...
+    ├── finance_coach.sql             # Sample dataset (PostgreSQL script)
+    ├── transform_personal_finance.py # Regenerates finance_coach.sql from the CSV
+    └── personal_finance/             # Source CSV from Kaggle
 ```
 
 ---
@@ -242,11 +259,12 @@ With `DEBUG=True`, the generated SQL is shown after each query:
 📋 GENERATED SQL
 ────────────────────────────────────────────────────────────────────────────
 SELECT
-  category_name,
-  SUM(amount) as total_spending
-FROM transactions
-WHERE transaction_date >= date('now', '-30 days')
-GROUP BY category_name
+  c.category_name,
+  SUM(t.amount) AS total_spending
+FROM transactions t
+JOIN categories c ON t.category_id = c.category_id
+WHERE t.transaction_type = 'debit'
+GROUP BY c.category_name
 ORDER BY total_spending DESC
 ```
 
@@ -264,7 +282,7 @@ ORDER BY total_spending DESC
    Add context: time period, entity type, intent
             ↓
 3. SNOW LEOPARD API CALL (query_snowleopard_node)
-   User query → LLM → SQL → SQLite execution
+   User query → Snow Leopard Cloud → SQL → PostgreSQL execution
    Returns: rows, sql, execution_time_ms
             ↓
 4. COACHING ANALYSIS (analyze_and_coach_node)
@@ -301,15 +319,16 @@ enriched_context = {
 
 ```sql
 SELECT 
-  category_name, 
-  SUM(amount) as total_spending
-FROM transactions
-WHERE transaction_date >= date('now', '-30 days')
-GROUP BY category_name
+  c.category_name, 
+  SUM(t.amount) AS total_spending
+FROM transactions t
+JOIN categories c ON t.category_id = c.category_id
+WHERE t.transaction_type = 'debit'
+GROUP BY c.category_name
 ORDER BY total_spending DESC
 ```
 
-**Stage 4: Raw Results (from SQLite)**
+**Stage 4: Raw Results (from PostgreSQL)**
 
 ```python
 rows = [
@@ -359,7 +378,8 @@ coaching = {
 
 ## 📝 Example Queries
 
-Try these in the CLI:
+Try these in the CLI. The sample data covers January 2018 through September 2019, so ask about those months rather
+than "this month".
 
 ### Category Analysis
 
@@ -385,7 +405,7 @@ You: Top spending merchants
 
 ```
 You: Show me my spending trends over time
-You: Compare this month vs last month
+You: Compare March 2019 vs February 2019
 You: Monthly spending breakdown
 ```
 
@@ -407,8 +427,8 @@ You: Financial overview
 
 - **Never commit `.env`** → Listed in `.gitignore`
 - **API keys only in `.env`** → Not in code
-- **Sample data is fake** → Use your own real data
-- **Queries go to Snow Leopard** → They handle SQL execution
+- **Sample data is from a public Kaggle dataset** → Use your own real data if you like
+- **Queries go to Snow Leopard Cloud** → It generates and runs the SQL against your database
 - **No data stored locally** → Stateless per request
 
 ---
@@ -425,7 +445,7 @@ ls -la .env
 grep SNOWLEOPARD_API_KEY .env
 
 # If missing, add it:
-echo "SNOWLEOPARD_API_KEY=sk-proj-your_key" >> .env
+echo "SNOWLEOPARD_API_KEY=your_key" >> .env
 ```
 
 ### "No rows returned"
@@ -438,7 +458,8 @@ sed -i 's/DEBUG=False/DEBUG=True/' .env
 python main.py
 
 # 3. Look for: "[Snow Leopard] ✓ Extracted N rows"
-# If N=0, your datafile might be empty or schema mismatched
+# If N=0, check that finance_coach.sql loaded into the database attached to your instance,
+# and that your question refers to dates the dataset covers (2018-01 through 2019-09)
 ```
 
 ### "ImportError: No module named 'snowleopard'"
@@ -448,14 +469,13 @@ python main.py
 pip install --upgrade -r requirements.txt
 ```
 
-### "Can't find financial_data.db"
+### "query failed" or a data source error
 
 ```bash
-# Generate sample data
-python data/create_sample_data.py
+# Confirm the instance can see the tables by asking it directly:
+snowy retrieve --instance "$SNOWLEOPARD_INSTANCE_ID" "How many transactions are there?"
 
-# This creates ./financial_data.db
-# Then upload to Snow Leopard Playground
+# If that fails, re-check the data source credentials on your instance page at https://cloud.snowleopard.ai
 ```
 
 ---

@@ -16,6 +16,7 @@ entire data response into an AG-UI state object so it can be rendered onscreen f
 - uv
 - Node.js 20+ 
 - npm or pnpm package manager
+- A PostgreSQL database that Snow Leopard Cloud can reach (see [docs/postgres-setup.md](../../docs/postgres-setup.md))
 
 ## Getting Started
 
@@ -24,20 +25,26 @@ entire data response into an AG-UI state object so it can be rendered onscreen f
 pnpm install
 ```
 
-2. Upload `northwind.db` ([found here](https://github.com/SnowLeopard-AI/playground_datasets/raw/refs/heads/main/northwind.db)) datafile to [try.snowleopard.ai](https://try.snowleopard.ai) and save the datafile id for later.
+2. Load the Northwind sample database into PostgreSQL. The [northwind_psql](https://github.com/SnowLeopard-AI/northwind_psql) repository has a `northwind.sql` script; run it against a hosted database such as [Neon](https://neon.com) or [Supabase](https://supabase.com):
+```bash
+psql "postgresql://USER:PASSWORD@HOST/DBNAME?sslmode=require" -f northwind.sql
+```
+[docs/postgres-setup.md](../../docs/postgres-setup.md) covers the details.
 
+3. Create a [Snow Leopard Cloud](https://cloud.snowleopard.ai) instance, add the Northwind database as a data source, create an API key on the **Keys** tab, and copy the instance ID from the **Connection Info** tab. See the [Cloud getting started guide](https://docs.snowleopard.ai/cloud/getting-started).
 
-3. Set up your tokens:
+4. Set up your tokens:
 
 Create a `.env` file inside the `agent` folder with the following content:
 
 ```
 OPENAI_API_KEY=sk-...
-SNOWLEOPARD_DATAFILE_ID=...
+SNOWLEOPARD_API_KEY=...
+SNOWLEOPARD_INSTANCE_ID=...
 ```
 
 
-4. Start the development server:
+5. Start the development server:
 ```bash
 pnpm dev
 ```
