@@ -131,10 +131,11 @@ Create `.env` file in `agent/` directory:
 
 ```
 OPENAI_API_KEY=sk-...
-SNOWLEOPARD_DATAFILE_ID=...
+SNOWLEOPARD_API_KEY=...
+SNOWLEOPARD_INSTANCE_ID=...
 ```
 
-The `SNOWLEOPARD_DATAFILE_ID` should point to the uploaded Northwind database file on Snow Leopard.
+`SNOWLEOPARD_INSTANCE_ID` is the ID of a Snow Leopard Cloud instance (from its **Connection Info** tab) that has the Northwind PostgreSQL database attached as a data source. See `docs/postgres-setup.md` at the repository root for loading the data.
 
 ## Common Patterns
 
@@ -178,7 +179,7 @@ The agent uses Snow Leopard's `retrieve()` API to query the Northwind database:
 ```python
 response = SnowLeopardClient().retrieve(
   user_query=human_query,
-  datafile_id=os.environ['SNOWLEOPARD_DATAFILE_ID'],
+  instance_id=os.environ['SNOWLEOPARD_INSTANCE_ID'],
 )
 ```
 
