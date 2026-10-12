@@ -1,5 +1,5 @@
 """
-Snow Leopard Tool - wrapper for Snow Leopard Playground API
+Snow Leopard Tool - wrapper for the Snow Leopard Cloud retrieve API
 """
 
 import logging
@@ -9,6 +9,7 @@ from typing import Dict, Any
 import json
 
 from snowleopard import SnowLeopardClient
+from snowleopard.models import APIError, ErrorSchemaData
 
 logger = logging.getLogger(__name__)
 
@@ -42,24 +43,29 @@ def query_snowleopard(query: str) -> Dict[str, Any]:
     try:
         start_time = time.time()
         client = get_client()
-        datafile_id = os.getenv('SNOWLEOPARD_DATAFILE_ID')
+        instance_id = os.getenv('SNOWLEOPARD_INSTANCE_ID')
         
-        if not datafile_id:
-            raise ValueError("SNOWLEOPARD_DATAFILE_ID not set")
+        if not instance_id:
+            raise ValueError("SNOWLEOPARD_INSTANCE_ID not set")
         
         logger.info(f"[Snowleopard] Query: {query[:80]}...")
         
-        # Call Snow Leopard API with correct parameter names
-        result = client.retrieve(datafile_id=datafile_id, user_query=query)
-        
-        # Extract SchemaData object attributes cleanly
-        # Result is guaranteed to be a SchemaData object from Snow Leopard API
-        # Use getattr() to safely extract attributes with fallbacks
-        
-        response_status = getattr(result, 'responseStatus', '')
-        rows = getattr(result.data[0], 'rows', [])
-        sql = getattr(result.data[0], 'query', '')
+        # Ask the Snow Leopard Cloud instance to answer the question against its data source
+        result = client.retrieve(instance_id=instance_id, user_query=query)
         execution_time = round((time.time() - start_time) * 1000)
+        
+        if isinstance(result, APIError):
+            raise RuntimeError(f"{result.responseStatus}: {result.description}")
+        if not result.data:
+            raise RuntimeError("Snow Leopard returned no data")
+        
+        # The last data item holds the final query; earlier items are intermediate steps
+        data = result.data[-1]
+        if isinstance(data, ErrorSchemaData):
+            raise RuntimeError(f"query failed: {data.error} (sql: {data.query})")
+        
+        rows = data.rows or []
+        sql = data.query or ''
         
         logger.info(f"[Snow Leopard] ✓ Extracted {len(rows)} rows from SchemaData")
         

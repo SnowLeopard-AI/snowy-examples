@@ -11,7 +11,7 @@ from pydantic_ai.ag_ui import StateDeps
 from pydantic_ai.messages import ToolReturn
 from pydantic_ai.models.openai import OpenAIResponsesModel
 from snowleopard import SnowLeopardClient
-from snowleopard.models import RetrieveResponseError, ErrorSchemaData, SchemaData
+from snowleopard.models import APIError, ErrorSchemaData, SchemaData
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -22,8 +22,25 @@ MODEL_NAME = os.environ.get('MODEL_NAME', 'gpt-5.4')
 # =====
 # State
 # =====
+class QueryResult(BaseModel):
+  """A data query result as it round-trips through the frontend.
+
+  Only `query` and `rows` are mirrored by the frontend `AgentState`
+  (see src/lib/types.ts), so every other field carries a default: the
+  frontend echoes this state back on the next message, and validating
+  it must not fail on fields the UI never sent.
+  """
+  query: str = ''
+  rows: list[dict[str, object]] = Field(default_factory=list)
+  columns: list[str] | None = None
+
+  @classmethod
+  def from_schema_data(cls, data: SchemaData) -> 'QueryResult':
+    return cls(query=data.query, rows=data.rows)
+
+
 class DataState(BaseModel):
-  data_responses: dict[str, SchemaData] = Field(
+  data_responses: dict[str, QueryResult] = Field(
     default_factory=dict,
     description='Successful data queries',
   )
@@ -85,12 +102,12 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
   try:
     response = SnowLeopardClient().retrieve(
       user_query=human_query,
-      datafile_id=(os.environ['SNOWLEOPARD_DATAFILE_ID']),
+      instance_id=os.environ['SNOWLEOPARD_INSTANCE_ID'],
     )
   except Exception as e:
     logger.exception(f"📊 Error retrieving data from Snow Leopard")
     return f"{type(e).__name__}: {e}"
-  if isinstance(response, RetrieveResponseError):
+  if isinstance(response, APIError):
     logger.info(f"📊 Response Error")
     return f"{response.responseStatus}: {response.description}"
   elif isinstance(response.data[-1], ErrorSchemaData):
@@ -103,7 +120,7 @@ def get_data(ctx: RunContext[StateDeps[DataState]], human_query: str):
   else:
     logger.info(f"📊 Data Retrieval Success")
     data = response.data[-1]
-    ctx.deps.state.data_responses[ctx.tool_call_id] = data
+    ctx.deps.state.data_responses[ctx.tool_call_id] = QueryResult.from_schema_data(data)
     ctx.deps.state.last_tool_call_id = ctx.tool_call_id
     return ToolReturn(
       return_value=dict(

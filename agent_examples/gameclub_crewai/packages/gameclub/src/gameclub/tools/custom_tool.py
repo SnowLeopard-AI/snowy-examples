@@ -4,6 +4,7 @@ import os
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 from snowleopard import SnowLeopardClient
+from snowleopard.models import APIError, ErrorSchemaData
 from typing import Type
 
 
@@ -24,10 +25,18 @@ class SnowLeopardMetacriticTool(BaseTool):
     args_schema: Type[BaseModel] = SnowLeopardMetacriticToolInput
 
     def _run(self, question: str) -> str:
-        datafile_id = os.getenv('SNOWLEOPARD_DATAFILE_ID')
-        if datafile_id is None:
-            raise RuntimeError('SNOWLEOPARD_DATAFILE_ID is not set')
+        instance_id = os.getenv('SNOWLEOPARD_INSTANCE_ID')
+        if not instance_id:
+            raise RuntimeError('SNOWLEOPARD_INSTANCE_ID is not set')
         # SNOWLEOPARD_API_KEY must be set to instantiate the client
         sl_client = SnowLeopardClient()
-        retrieve_response = sl_client.retrieve(user_query=question, datafile_id=datafile_id)
-        return json.dumps(retrieve_response.data[0].rows)
+        retrieve_response = sl_client.retrieve(user_query=question, instance_id=instance_id)
+        if isinstance(retrieve_response, APIError):
+            return json.dumps({'error': f'{retrieve_response.responseStatus}: {retrieve_response.description}'})
+        if not retrieve_response.data:
+            return json.dumps({'error': 'no data returned'})
+        # the last data item holds the final query; earlier items are intermediate steps
+        data = retrieve_response.data[-1]
+        if isinstance(data, ErrorSchemaData):
+            return json.dumps({'error': data.error, 'query': data.query})
+        return json.dumps(data.rows)

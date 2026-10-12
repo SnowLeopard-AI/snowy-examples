@@ -9,6 +9,21 @@ from statistics import mean
 
 logger = logging.getLogger(__name__)
 
+# Snow Leopard generates SQL from natural language, so the alias it picks for an
+# aggregate column varies by phrasing (e.g. total_spending vs total_amount).
+# Check a candidate list per semantic field instead of one exact key.
+AMOUNT_KEYS = ['total_spending', 'total_spent', 'total_amount', 'amount', 'sum_amount']
+CATEGORY_NAME_KEYS = ['category_name', 'category']
+MERCHANT_NAME_KEYS = ['merchant_name', 'merchant']
+
+
+def _first_present(row: Dict, keys: List[str], default=None):
+    """Return the first non-null value found in row for any of the candidate keys."""
+    for key in keys:
+        if row.get(key) is not None:
+            return row[key]
+    return default
+
 
 class CoachingAnalyzer:
     """Analyzes financial data and generates coaching insights"""
@@ -65,8 +80,8 @@ class CoachingAnalyzer:
                 continue
             
             # Get category name and amount
-            category_name = row.get('category_name', '')
-            amount = row.get('total_spending', 0)
+            category_name = _first_present(row, CATEGORY_NAME_KEYS, '')
+            amount = _first_present(row, AMOUNT_KEYS, 0)
             
             if not category_name or not isinstance(amount, (int, float)):
                 continue
@@ -241,13 +256,14 @@ class CoachingAnalyzer:
             if not isinstance(row, dict):
                 continue
             
-            if 'merchant_name' not in row:
+            merchant_name = _first_present(row, MERCHANT_NAME_KEYS)
+            if not merchant_name:
                 continue
-            
-            amount = row.get('total_spent', 0)
+
+            amount = _first_present(row, AMOUNT_KEYS, 0)
             if isinstance(amount, (int, float)):
                 merchants.append({
-                    'name': row['merchant_name'],
+                    'name': merchant_name,
                     'amount': amount
                 })
                 total_spending += amount

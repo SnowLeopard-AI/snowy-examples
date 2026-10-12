@@ -21,4 +21,4 @@ services:
     environment:
       - OPENAI_API_KEY
       - SNOWLEOPARD_API_KEY
-      - SNOWLEOPARD_DATAFILE_ID
+      - SNOWLEOPARD_INSTANCE_ID
